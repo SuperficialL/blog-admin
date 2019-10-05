@@ -58,7 +58,6 @@
         name: 'login',
         data() {
             const validatePassword = (rule, value, callback) => {
-                console.log(Error);
                 if (value.length < 6) {
                     callback(new Error('密码长度少于6位'))
                 } else {
@@ -100,9 +99,13 @@
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
                         this.loading = true;
-                        this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-                            this.loading = false;
-                            this.$router.push({path: this.redirect || '/'})
+                        this.$store.dispatch('LoginByUsername', this.loginForm).then((res) => {
+                            this.loading = false;   
+                            this.$router.push({path: this.redirect || '/'});
+                            this.$message({
+                                type: 'success',
+                                message: res.message
+                            })
                         }).catch(() => {
                             this.loading = false
                         })
