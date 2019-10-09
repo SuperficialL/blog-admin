@@ -1,99 +1,97 @@
 <template>
-  <div class="createPost-container">
-    <el-form ref="userForm" :model="model" class="form-container" @submit.native.prevent="save">
-
-      <sticky class-name='sub-navbar draft'>
-        <el-checkbox v-model="model.active">Active</el-checkbox>
-        <el-button v-loading="loading" style="margin-left: 10px;" type="success" native-type="submit"> {{ id ? '更新' : '新增' }}
-        </el-button>
-      </sticky>
-
-      <div class="createPost-main-container">
-        <el-row>
-          <el-col :span="24">
-            <el-form-item style="margin-bottom: 40px;" prop="title">
-              <MDinput v-model="model.username" :maxlength="100" name="name" required>
-                用户名
-              </MDinput>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="24">
-            <el-form-item style="margin-bottom: 40px;" prop="title">
-              <MDinput v-model="model.email" :maxlength="100" name="email" required>
-                邮箱
-              </MDinput>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="24">
-            <el-form-item style="margin-bottom: 40px;" prop="title">
-              <MDinput v-model="model.avatar" :maxlength="100" name="avatar" required>
-                头像
-              </MDinput>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="24">
-            <el-form-item style="margin-bottom: 40px;" prop="title">
-              <MDinput v-model="model.password" :maxlength="100" name="password" required>
-                密码
-              </MDinput>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </div>
+  <div>
+    <h1>{{id? '编辑':'新建'}}用户</h1>
+    <el-form :model="model" label-width="100px" @submit.native.prevent="save">
+      <el-form-item label="用户名">
+        <el-input v-model="model.username"></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱">
+        <el-input v-model="model.email"></el-input>
+      </el-form-item>
+      <el-form-item label="创建时间">
+        <el-date-picker v-model="model.created_time" type="datetime" placeholder="选择日期时间" readonly></el-date-picker>
+      </el-form-item>
+      <el-form-item label="最近修改时间">
+        <el-date-picker
+          v-model="model.updated_time"
+          type="datetime"
+          placeholder="选择日期时间"
+          align="left"
+          :picker-options="pickerOptions"
+        ></el-date-picker>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" native-type="submit">保存</el-button>
+      </el-form-item>
     </el-form>
-
   </div>
 </template>
 
 <script>
-import MDinput from '@/components/MDinput'
-import Sticky from '@/components/Sticky'
-import { getUser, updateUser, createUser } from '@/api'
+  import { getUser, updateUser, createUser } from "@/api/users";
 
-export default {
-  name: 'UserDetail',
-  components: { MDinput, Sticky },
-  props: ['id'],
-  data() {
-    return {
-      model: {},
-      loading: false,
+  export default {
+    name: "UserDetail",
+    props: ["id"],
+    data() {
+      return {
+        model: {},
+        loading: false,
+        pickerOptions: {
+          shortcuts: [
+            {
+              text: "今天",
+              onClick(picker) {
+                picker.$emit("pick", new Date());
+              }
+            },
+            {
+              text: "昨天",
+              onClick(picker) {
+                const date = new Date();
+                date.setTime(date.getTime() - 3600 * 1000 * 24);
+                picker.$emit("pick", date);
+              }
+            },
+            {
+              text: "一周前",
+              onClick(picker) {
+                const date = new Date();
+                date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                picker.$emit("pick", date);
+              }
+            }
+          ]
+        }
+      };
+    },
+    created() {
+      this.id && this.fetch();
+    },
+    methods: {
+      async fetch() {
+        const res = await getUser(this.id);
+        if (res.code === 200) {
+          this.model = res.data.user;
+        }
+      },
+      async save() {
+        let res;
+        if (this.id) {
+          res = await updateUser(this.id, this.model);
+        } else {
+          res = await createUser(this.model);
+        }
+        if (res.code === 200) {
+          this.$router.push("/user/list?refresh=1");
+          this.$message({
+            type: "success",
+            message: res.message
+          });
+        }
+      }
     }
-  },
-  created() {
-    this.id && this.fetch()
-  },
-  methods: {
-    async fetch() {
-      const res = await getUser(this.id)
-      this.model = res
-    },
-    async save() {
-      let res;
-      if (this.id) {
-        res = await updateUser(this.id,this.model)
-      } else {
-        res = await createUser(this.model)
-      }
-      if (res.code) {
-        this.$router.push('/user/list?refresh=1')
-        this.$message({
-          type: 'success',
-          message: '用户处理成功~'
-        })
-      }
-    },
-  }
-}
+  };
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

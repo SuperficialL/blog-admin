@@ -4,7 +4,6 @@
       :data="categories"
       row-key="_id"
       border
-      default-expand-all
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
       <el-table-column align="center" label="序号" type="index" width="80">
@@ -13,7 +12,14 @@
         </template>
       </el-table-column>
       <el-table-column prop="name" label="分类名称" align="center"></el-table-column>
-      <el-table-column prop="parent" label="父级分类" align="center"></el-table-column>
+      <el-table-column prop="path" label="路径" align="center"></el-table-column>
+      <el-table-column prop="icon" label="图标" align="center"></el-table-column>
+      <el-table-column label="创建时间" align="center">
+        <template slot-scope="scope">{{scope.row.created_time | dateFormat}}</template>
+      </el-table-column>
+      <el-table-column label="修改时间" align="center">
+        <template slot-scope="scope">{{scope.row.created_time | dateFormat}}</template>
+      </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button
@@ -29,7 +35,7 @@
 </template>
 
 <script>
-  import { getCategories, deleteCategory } from "@/api";
+  import { getCategories, deleteCategory } from "@/api/category";
 
   export default {
     data() {
@@ -46,7 +52,6 @@
       async fetch() {
         // 获取所有分类数据
         const res = await getCategories();
-        console.log(res);
         if (res.code === 200) {
           this.categories = res.data.categories;
         }
