@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-container">
     <h1>{{id? '编辑':'新建'}}分类</h1>
     <el-form label-width="80px" @submit.native.prevent="save">
       <el-form-item label="父级分类">
@@ -10,6 +10,14 @@
       <el-form-item label="名称">
         <el-input v-model="model.name"></el-input>
       </el-form-item>
+      <el-form-item label="路径">
+        <el-input v-model="model.path"></el-input>
+      </el-form-item>ss
+      <i class="icon" :class="model.icon"></i>
+      <el-form-item label="图标">
+        <el-input v-model="model.icon"></el-input>
+        <Icon @icon="getIcon" />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">保存</el-button>
       </el-form-item>
@@ -18,6 +26,7 @@
 </template>
 
 <script>
+  import Icon from "@/components/Icons";
   import {
     getCategory,
     getCategories,
@@ -26,16 +35,25 @@
   } from "@/api/category";
 
   export default {
+    components: { Icon },
     props: {
       id: {}
     },
     data() {
       return {
-        model: {},
+        model: {
+          icon: ""
+        },
         parents: []
       };
     },
     methods: {
+      // 获取Icon
+      getIcon(icon) {
+        console.log(icon, "icon");
+        this.model.icon = icon;
+      },
+      // 保存数据
       async save() {
         let res;
         if (this.id) {

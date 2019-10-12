@@ -1,70 +1,89 @@
 <template>
   <div class="app-container">
-    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" label="序号" width="60">
-        <template slot-scope="scope">
-          <span>{{(listQuery.page - 1) * listQuery.per_page + scope.$index + 1}}</span>
-        </template>
-      </el-table-column>
+    <Header />
+    <div class="content">
+      <el-table
+        v-loading="loading"
+        :data="list"
+        border
+        fit
+        highlight-current-row
+        style="width: 100%"
+      >
+        <el-table-column align="center" label="序号" width="60">
+          <template slot-scope="scope">
+            <span>{{(listQuery.page - 1) * listQuery.per_page + scope.$index + 1}}</span>
+          </template>
+        </el-table-column>
 
-      <el-table-column width="300px" align="center" label="标题">
-        <template slot-scope="scope">
-          <span>{{ scope.row.title }}</span>
-        </template>
-      </el-table-column>
+        <el-table-column width="300px" align="center" label="标题">
+          <template slot-scope="scope">
+            <span>{{ scope.row.title }}</span>
+          </template>
+        </el-table-column>
 
-      <el-table-column width="180px" align="center" label="标签">
-        <template slot-scope="scope">
-          <el-tag v-for="(tag,index) in scope.row.tags" :key="index">{{ tag.name }}</el-tag>
-        </template>
-      </el-table-column>
+        <el-table-column width="100px" align="center" label="作者">
+          <template slot-scope="scope">
+            <span>{{ scope.row.author.username }}</span>
+          </template>
+        </el-table-column>
 
-      <el-table-column width="100px" align="center" label="作者">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author.username }}</span>
-        </template>
-      </el-table-column>
+        <el-table-column width="180px" align="center" label="分类">
+          <template slot-scope="scope">
+            <span>{{ scope.row.category.name }}</span>
+          </template>
+        </el-table-column>
 
-      <el-table-column width="140px" align="center" label="日期">
-        <template slot-scope="scope">
-          <span>{{ scope.row.createdAt | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
+        <el-table-column width="180px" align="center" label="标签">
+          <template slot-scope="scope">
+            <el-tag v-for="(tag,index) in scope.row.tags" :key="index">{{ tag.title }}</el-tag>
+          </template>
+        </el-table-column>
 
-      <el-table-column class-name="status-col" label="状态" width="100px">
-        <template slot-scope="scope">
-          <el-tooltip :content="scope.row.status|statusFilter" placement="top">
-            <el-switch
-              v-model="scope.row.status"
-              active-value="p"
-              inactive-value="d"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-              @change="switchStatus(scope.row)"
-            ></el-switch>
-          </el-tooltip>
-        </template>
-      </el-table-column>
+        <el-table-column width="80px" align="center" label="访问量">
+          <template slot-scope="scope">
+            <span>{{ scope.row.views }}</span>
+          </template>
+        </el-table-column>
 
-      <el-table-column align="center" label="操作">
-        <template slot-scope="scope">
-          <el-button
-            type="primary"
-            size="small"
-            icon="el-icon-edit"
-            @click="$router.push(`/post/edit/${scope.row._id}`)"
-          >编辑</el-button>
+        <el-table-column width="80px" align="center" label="评论数">
+          <template slot-scope="scope">
+            <span>{{ scope.row.likes }}</span>
+          </template>
+        </el-table-column>
 
-          <el-button
-            type="danger"
-            size="small"
-            icon="el-icon-delete"
-            class="del-btn"
-            @click="handleDel(scope.$index, scope.row)"
-          >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+        <el-table-column width="180px" align="center" label="创建日期">
+          <template slot-scope="scope">
+            <span>{{ scope.row.created_time | dateFormat }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column width="180px" align="center" label="最后修改日期">
+          <template slot-scope="scope">
+            <span>{{ scope.row.updated_time | dateFormat }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="操作">
+          <template slot-scope="scope">
+            <el-button
+              type="primary"
+              size="small"
+              icon="el-icon-edit"
+              @click="$router.push(`/post/edit/${scope.row._id}`)"
+            >编辑</el-button>
+
+            <el-button
+              type="danger"
+              size="small"
+              icon="el-icon-delete"
+              class="del-btn"
+              @click="handleDel(scope.$index, scope.row)"
+            >删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
 
     <pagination
       v-show="total>0"
@@ -77,85 +96,75 @@
 </template>
 
 <script>
-import { getArticles, updatePostStatus, deleteArticle } from "@/api";
-import Pagination from "@/components/Pagination";
+  import { getArticles, deleteArticle } from "@/api/articles";
+  import Pagination from "@/components/Pagination";
+  import Header from "@/components/Header";
 
-export default {
-  name: "PostList",
-  components: { Pagination },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        d: "草稿",
-        p: "发表"
-      };
-      return statusMap[status];
-    }
-  },
-  data() {
-    return {
-      list: null,
-      total: 0,
-      loading: false,
-      listQuery: {
-        page: 1,
-        per_page: 10
-      }
-    };
-  },
-  created() {
-    this.getList();
-  },
-  methods: {
-    async getList() {
-      this.loading = true;
-      const res = await getArticles(this.listQuery);
-      this.loading = false;
-      if (res.code === 200) {
-        this.loading = false;
-        this.list = res.data.articles;
-        this.total = res.data.total;
-      }
-    },
-    switchStatus(row) {
-      updatePostStatus(row.id, { status: row.status }).then(response => {
-        if (response.data) {
-          this.$message.success("切换状态成功!");
-        } else {
-          this.$message.error("切换状态失败!");
+  export default {
+    name: "PostList",
+    components: { Header, Pagination },
+    data() {
+      return {
+        list: null,
+        total: 0,
+        loading: false,
+        listQuery: {
+          page: 1,
+          per_page: 10
         }
-      });
+      };
     },
-    async handleDel(index, row) {
-      this.$confirm(`此操作将永久删除 ${row.title} 这篇文章?`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "danger"
-      })
-        .then(async () => {
-          this.loading = true;
-          const res = await deleteArticle(row._id);
-          if (res) {
-            this.$message({
-              type: "success",
-              message: "删除成功!"
-            });
-            this.list.splice(index, 1);
-          }
+    created() {
+      this.getList();
+    },
+    methods: {
+      async getList() {
+        this.loading = true;
+        const res = await getArticles(this.listQuery);
+        this.loading = false;
+        if (res.code === 200) {
+          this.loading = false;
+          this.list = res.data.articles;
+          this.total = res.data.total;
+        }
+      },
+      async handleDel(index, row) {
+        this.$confirm(`此操作将永久删除 ${row.title} 这篇文章?`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "danger"
         })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除!"
+          .then(async () => {
+            this.loading = true;
+            const res = await deleteArticle(row._id);
+            if (res.code === 200) {
+              this.loading = false;
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.list.splice(index, 1);
+            }
+          })
+          .catch(() => {
+            this.loading = false;
+            this.$message({
+              type: "info",
+              message: "已取消删除!"
+            });
           });
-        });
+      }
     }
-  }
-};
+  };
 </script>
 
-<style scoped>
-.del-btn {
-  margin-left: 20px;
+<style lang="scss" scoped>
+.app-container {
+  overflow: hidden;
+  height: calc(100vh - 84px);
+  .content {
+    height: calc(100% - 60px);
+    padding-bottom: 64px;
+  }
 }
 </style>

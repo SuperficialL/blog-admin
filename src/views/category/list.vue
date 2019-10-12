@@ -1,46 +1,64 @@
 <template>
-  <div>
-    <el-table
-      :data="categories"
-      row-key="_id"
-      border
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-    >
-      <el-table-column align="center" label="序号" type="index" width="80">
-        <template slot-scope="scope">
-          <span>{{(listQuery.page - 1) * listQuery.per_page + scope.$index + 1}}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="name" label="分类名称" align="center"></el-table-column>
-      <el-table-column prop="path" label="路径" align="center"></el-table-column>
-      <el-table-column prop="icon" label="图标" align="center"></el-table-column>
-      <el-table-column label="创建时间" align="center">
-        <template slot-scope="scope">{{scope.row.created_time | dateFormat}}</template>
-      </el-table-column>
-      <el-table-column label="修改时间" align="center">
-        <template slot-scope="scope">{{scope.row.created_time | dateFormat}}</template>
-      </el-table-column>
-      <el-table-column label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button
-            type="primary"
-            size="small"
-            @click="$router.push(`/category/edit/${scope.row._id}`)"
-          >编辑</el-button>
-          <el-button type="danger" size="small" @click="remove(scope.row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+  <div class="app-container">
+    <Header />
+    <div class="content">
+      <el-table
+        :data="categories"
+        row-key="_id"
+        border
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      >
+        <el-table-column align="center" label="序号" type="index" width="80">
+          <template slot-scope="scope">
+            <span>{{(listQuery.page - 1) * listQuery.per_page + scope.$index + 1}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="name" label="分类名称" align="center"></el-table-column>
+        <el-table-column prop="path" label="路径" align="center"></el-table-column>
+        <el-table-column prop="icon" label="图标" align="center"></el-table-column>
+        <el-table-column label="创建时间" align="center">
+          <template slot-scope="scope">{{scope.row.created_time | dateFormat}}</template>
+        </el-table-column>
+        <el-table-column label="修改时间" align="center">
+          <template slot-scope="scope">{{scope.row.created_time | dateFormat}}</template>
+        </el-table-column>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button
+              type="primary"
+              size="small"
+              @click="$router.push(`/category/edit/${scope.row._id}`)"
+            >编辑</el-button>
+            <el-button type="danger" size="small" @click="remove(scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.per_page"
+      @pagination="fetch"
+    />
   </div>
 </template>
 
 <script>
+  import Header from "@/components/Header";
+  import Pagination from "@/components/Pagination";
   import { getCategories, deleteCategory } from "@/api/category";
-
+  import translateToTree from "@/utils/dataToTree";
   export default {
+    components: {
+      Header,
+      Pagination
+    },
     data() {
       return {
         loading: false,
+        total: 0,
         categories: [],
         listQuery: {
           page: 1,
@@ -53,7 +71,9 @@
         // 获取所有分类数据
         const res = await getCategories();
         if (res.code === 200) {
-          this.categories = res.data.categories;
+          const data = res.data.categories;
+          this.total = res.data.total;
+          this.categories = translateToTree(data);
         }
       },
       async remove(row) {
@@ -85,3 +105,15 @@
     }
   };
 </script>
+
+
+<style lang="scss" scoped>
+.app-container {
+  overflow: hidden;
+  height: calc(100vh - 84px);
+  .content {
+    height: calc(100% - 60px);
+    padding-bottom: 64px;
+  }
+}
+</style>

@@ -1,7 +1,7 @@
 /*
  * @author: SuperficialL
  * @Date: 2019-08-24 12:35:32
- * @LastEditTime: 2019-10-09 22:16:35
+ * @LastEditTime: 2019-10-12 23:20:05
  * @Description: 分类接口
  */
 import request from "@/utils/request";
@@ -36,7 +36,7 @@ export function updateCategory(id, data) {
 	// 修改分类数据
 	return request({
 		url: `categories/${id}`,
-		method: "put",
+		method: "patch",
 		data
 	});
 }
