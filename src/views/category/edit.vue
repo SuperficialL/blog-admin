@@ -12,8 +12,7 @@
       </el-form-item>
       <el-form-item label="路径">
         <el-input v-model="model.path"></el-input>
-      </el-form-item>ss
-      <i class="icon" :class="model.icon"></i>
+      </el-form-item>
       <el-form-item label="图标">
         <el-input v-model="model.icon"></el-input>
         <Icon @icon="getIcon" />
@@ -26,69 +25,68 @@
 </template>
 
 <script>
-  import Icon from "@/components/Icons";
-  import {
-    getCategory,
-    getCategories,
-    updateCategory,
-    createCategory
-  } from "@/api/category";
+import Icon from "@/components/Icons";
+import {
+  getCategory,
+  getCategories,
+  updateCategory,
+  createCategory
+} from "@/api/category";
 
-  export default {
-    components: { Icon },
-    props: {
-      id: {}
+export default {
+  components: { Icon },
+  props: {
+    id: {}
+  },
+  data() {
+    return {
+      model: {
+        icon: ""
+      },
+      parents: []
+    };
+  },
+  methods: {
+    // 获取Icon
+    getIcon(icon) {
+      this.model.icon = icon;
     },
-    data() {
-      return {
-        model: {
-          icon: ""
-        },
-        parents: []
-      };
-    },
-    methods: {
-      // 获取Icon
-      getIcon(icon) {
-        console.log(icon, "icon");
-        this.model.icon = icon;
-      },
-      // 保存数据
-      async save() {
-        let res;
-        if (this.id) {
-          // id存在,修改分类
-          res = await updateCategory(this.id, this.model);
-        } else {
-          // id不存在,创建分类
-          res = await createCategory(this.model);
-        }
-        if (res.code) {
-          this.$router.push("/category/list?refresh=1");
-          this.$message({
-            type: "success",
-            message: "保存成功"
-          });
-        }
-      },
-      async fetch() {
-        // 获取当前分类
-        const res = await getCategory(this.id);
-        if (res.code === 200) {
-          this.model = Object.assign({}, this.model, res.data);
-        }
-      },
-      async fetchParents() {
-        // 获取父级分类选项
-        const res = await getCategories();
-        if (res.code === 200) {
-          this.parents = res.data.categories;
-        }
+    // 保存数据
+    async save() {
+      let res;
+      if (this.id) {
+        // id存在,修改分类
+        res = await updateCategory(this.id, this.model);
+      } else {
+        // id不存在,创建分类
+        res = await createCategory(this.model);
+      }
+      if (res.code === 200) {
+        this.$router.push("/category/list?refresh=1");
+        this.$message({
+          type: "success",
+          message: "保存成功"
+        });
       }
     },
-    created() {
-      this.id && this.fetch();
-      this.fetchParents();
+    async fetch() {
+      // 获取当前分类
+      const res = await getCategory(this.id);
+      if (res.code === 200) {
+        this.model = Object.assign({}, this.model, res.data);
+      }
+    },
+    async fetchParents() {
+      // 获取父级分类选项
+      const res = await getCategories();
+      if (res.code === 200) {
+        this.parents = res.data.categories;
+      }
     }
-  };
+  },
+  created() {
+    this.id && this.fetch();
+    this.fetchParents();
+  }
+};
 </script>

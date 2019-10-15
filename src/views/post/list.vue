@@ -28,7 +28,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column width="180px" align="center" label="分类">
+        <el-table-column width="80px" align="center" label="分类">
           <template slot-scope="scope">
             <span>{{ scope.row.category.name }}</span>
           </template>
@@ -52,7 +52,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column width="180px" align="center" label="创建日期">
+        <!-- <el-table-column width="180px" align="center" label="创建日期">
           <template slot-scope="scope">
             <span>{{ scope.row.created_time | dateFormat }}</span>
           </template>
@@ -62,7 +62,7 @@
           <template slot-scope="scope">
             <span>{{ scope.row.updated_time | dateFormat }}</span>
           </template>
-        </el-table-column>
+        </el-table-column>-->
 
         <el-table-column align="center" label="操作">
           <template slot-scope="scope">
@@ -96,75 +96,75 @@
 </template>
 
 <script>
-  import { getArticles, deleteArticle } from "@/api/articles";
-  import Pagination from "@/components/Pagination";
-  import Header from "@/components/Header";
+import { getArticles, deleteArticle } from "@/api/articles";
+import Pagination from "@/components/Pagination";
+import Header from "@/components/Header";
 
-  export default {
-    name: "PostList",
-    components: { Header, Pagination },
-    data() {
-      return {
-        list: null,
-        total: 0,
-        loading: false,
-        listQuery: {
-          page: 1,
-          per_page: 10
-        }
-      };
-    },
-    created() {
-      this.getList();
-    },
-    methods: {
-      async getList() {
-        this.loading = true;
-        const res = await getArticles(this.listQuery);
+export default {
+  name: "PostList",
+  components: { Header, Pagination },
+  data() {
+    return {
+      list: null,
+      total: 0,
+      loading: false,
+      listQuery: {
+        page: 1,
+        per_page: 10
+      }
+    };
+  },
+  created() {
+    this.getList();
+  },
+  methods: {
+    async getList() {
+      this.loading = true;
+      const res = await getArticles(this.listQuery);
+      this.loading = false;
+      if (res.code === 200) {
         this.loading = false;
-        if (res.code === 200) {
-          this.loading = false;
-          this.list = res.data.articles;
-          this.total = res.data.total;
-        }
-      },
-      async handleDel(index, row) {
-        this.$confirm(`此操作将永久删除 ${row.title} 这篇文章?`, "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "danger"
-        })
-          .then(async () => {
-            this.loading = true;
-            const res = await deleteArticle(row._id);
-            if (res.code === 200) {
-              this.loading = false;
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
-              this.list.splice(index, 1);
-            }
-          })
-          .catch(() => {
+        this.list = res.data.articles;
+        this.total = res.data.total;
+      }
+    },
+    async handleDel(index, row) {
+      this.$confirm(`此操作将永久删除 ${row.title} 这篇文章?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "danger"
+      })
+        .then(async () => {
+          this.loading = true;
+          const res = await deleteArticle(row._id);
+          if (res.code === 200) {
             this.loading = false;
             this.$message({
-              type: "info",
-              message: "已取消删除!"
+              type: "success",
+              message: "删除成功!"
             });
+            this.list.splice(index, 1);
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+          this.$message({
+            type: "info",
+            message: "已取消删除!"
           });
-      }
+        });
     }
-  };
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-.app-container {
-  overflow: hidden;
-  height: calc(100vh - 84px);
-  .content {
-    height: calc(100% - 60px);
-    padding-bottom: 64px;
+  .app-container {
+    overflow: hidden;
+    height: calc(100vh - 84px);
+    .content {
+      height: calc(100% - 60px);
+      padding-bottom: 64px;
+    }
   }
-}
 </style>

@@ -46,74 +46,75 @@
 </template>
 
 <script>
-  import Header from "@/components/Header";
-  import Pagination from "@/components/Pagination";
-  import { getCategories, deleteCategory } from "@/api/category";
-  import translateToTree from "@/utils/dataToTree";
-  export default {
-    components: {
-      Header,
-      Pagination
-    },
-    data() {
-      return {
-        loading: false,
-        total: 0,
-        categories: [],
-        listQuery: {
-          page: 1,
-          per_page: 10
-        }
-      };
-    },
-    methods: {
-      async fetch() {
-        // 获取所有分类数据
-        const res = await getCategories();
-        if (res.code === 200) {
-          const data = res.data.categories;
-          this.total = res.data.total;
-          this.categories = translateToTree(data);
-        }
-      },
-      async remove(row) {
-        this.$confirm(`是否确定要删除分类?"${row.name}"`, "提示", {
-          confirmButtonText: "确认",
-          cancleButtonText: "取消",
-          type: "warning"
-        })
-          .then(async () => {
-            const res = await deleteCategory(row._id);
-            if (res.code === 200) {
-              this.$message({
-                type: "success",
-                message: "删除成功!"
-              });
-              this.fetch();
-            }
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消删除!"
-            });
-          });
+import Header from "@/components/Header";
+import Pagination from "@/components/Pagination";
+import { getCategories, deleteCategory } from "@/api/category";
+import translateToTree from "@/utils/dataToTree";
+export default {
+  components: {
+    Header,
+    Pagination
+  },
+  data() {
+    return {
+      loading: false,
+      total: 0,
+      categories: [],
+      listQuery: {
+        page: 1,
+        per_page: 10
+      }
+    };
+  },
+  methods: {
+    async fetch() {
+      // 获取所有分类数据
+      const res = await getCategories();
+      if (res.code === 200) {
+        const data = res.data.categories;
+        this.total = res.data.total;
+        this.categories = translateToTree(data);
+        console.log(this.categories, "cate");
       }
     },
-    created() {
-      this.fetch();
+    async remove(row) {
+      this.$confirm(`是否确定要删除分类?"${row.name}"`, "提示", {
+        confirmButtonText: "确认",
+        cancleButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          const res = await deleteCategory(row._id);
+          if (res.code === 200) {
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+            this.fetch();
+          }
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除!"
+          });
+        });
     }
-  };
+  },
+  created() {
+    this.fetch();
+  }
+};
 </script>
 
 
 <style lang="scss" scoped>
-.app-container {
-  overflow: hidden;
-  height: calc(100vh - 84px);
-  .content {
-    height: calc(100% - 60px);
-    padding-bottom: 64px;
+  .app-container {
+    overflow: hidden;
+    height: calc(100vh - 84px);
+    .content {
+      height: calc(100% - 60px);
+      padding-bottom: 64px;
+    }
   }
-}
 </style>

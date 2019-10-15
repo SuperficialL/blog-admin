@@ -49,13 +49,13 @@
 
       <el-table-column align="center" label="注册时间">
         <template slot-scope="scope">
-          <span>{{ scope.row.createdAt | dateFormat }}</span>
+          <span>{{ scope.row.created_time | dateFormat }}</span>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="登录时间">
         <template slot-scope="scope">
-          <span>{{ scope.row.updatedAt | dateFormat }}</span>
+          <span>{{ scope.row.updated_time | dateFormat }}</span>
         </template>
       </el-table-column>
 
