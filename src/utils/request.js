@@ -6,7 +6,7 @@ import { getToken } from "@/utils/auth";
 // create an axios instance
 const service = axios.create({
     baseURL: process.env.VUE_APP_API_URL || "/admin/",
-    timeout: 5000 // request timeout
+    timeout: 5000, // request timeout
 });
 
 // request interceptor 请求拦截
@@ -20,7 +20,7 @@ service.interceptors.request.use(
     },
     error => {
         // Do something with request error
-        console.log(error); // for debug
+        window.console.log(error); // for debug
         return Promise.reject(error);
     }
 );
@@ -36,17 +36,18 @@ service.interceptors.response.use(
             Message({
                 message: res.message,
                 type: "error",
-                duration: 3 * 1000
+                duration: 3 * 1000,
             });
         }
         return res;
     },
     error => {
-        console.log("err" + error); // for debug
+        window.console.log("err" + error);
+        // for debug
         Message({
             message: error.message,
             type: "error",
-            duration: 5 * 1000
+            duration: 5 * 1000,
         });
         return Promise.reject(error);
     }

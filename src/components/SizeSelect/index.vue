@@ -1,7 +1,13 @@
 <template>
-  <el-dropdown trigger="click" @command="handleSetSize">
+  <el-dropdown
+    trigger="click"
+    @command="handleSetSize"
+  >
     <div>
-      <svg-icon class-name="size-icon" icon-class="size" />
+      <svg-icon
+        class-name="size-icon"
+        icon-class="size"
+      />
     </div>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item
@@ -18,44 +24,44 @@
 </template>
 
 <script>
-  export default {
+export default {
     data() {
-      return {
-        sizeOptions: [
-          { label: "Default", value: "default" },
-          { label: "Medium", value: "medium" },
-          { label: "Small", value: "small" },
-          { label: "Mini", value: "mini" }
-        ]
-      };
+        return {
+            sizeOptions: [
+                { label: "Default", value: "default" },
+                { label: "Medium", value: "medium" },
+                { label: "Small", value: "small" },
+                { label: "Mini", value: "mini" }
+            ]
+        };
     },
     computed: {
-      size() {
-        return this.$store.getters.size;
-      }
+        size() {
+            return this.$store.getters.size;
+        }
     },
     methods: {
-      handleSetSize(size) {
-        this.$ELEMENT.size = size;
-        this.$store.dispatch("setSize", size);
-        this.refreshView();
-        this.$message({
-          message: "Switch Size Success",
-          type: "success"
-        });
-      },
-      refreshView() {
+        handleSetSize(size) {
+            this.$ELEMENT.size = size;
+            this.$store.dispatch("setSize", size);
+            this.refreshView();
+            this.$message({
+                message: "Switch Size Success",
+                type: "success"
+            });
+        },
+        refreshView() {
         // In order to make the cached page re-rendered
-        this.$store.dispatch("delAllCachedViews", this.$route);
+            this.$store.dispatch("delAllCachedViews", this.$route);
 
-        const { fullPath } = this.$route;
+            const { fullPath } = this.$route;
 
-        this.$nextTick(() => {
-          this.$router.replace({
-            path: "/redirect" + fullPath
-          });
-        });
-      }
+            this.$nextTick(() => {
+                this.$router.replace({
+                    path: "/redirect" + fullPath
+                });
+            });
+        }
     }
-  };
+};
 </script>

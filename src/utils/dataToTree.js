@@ -6,14 +6,14 @@
  */
 export default function translateToTree(data) {
     let parents = data.filter(
-        item => item.parent === undefined || item.parent === null
+        (item) => item.parent === undefined || item.parent === null
     );
     let children = data.filter(
-        item => item.parent !== undefined && item.parent !== null
+        (item) => item.parent !== undefined && item.parent !== null
     );
-    parents.forEach(parent => {
+    parents.forEach((parent) => {
         parent.children = [];
-        children.forEach(child => {
+        children.forEach((child) => {
             if (child.parent === parent._id) {
                 parent.children.push(child);
             }

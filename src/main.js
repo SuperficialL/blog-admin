@@ -13,45 +13,48 @@ import mavonEditor from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 Vue.use(mavonEditor);
 
-import "@/styles/index.scss"; // global css
+import "@/styles/index.scss";
+// global css
 import { getToken } from "@/utils/auth";
 
 import "@/icons"; // icon
-import * as filters from "@/utils/filters"; // global filters
+import * as filters from "@/utils/filters";
+// global filters
 
 Vue.use(Element, {
-	size: Cookies.get("size") || "medium" // set element-ui default size
+    size: Cookies.get("size") || "medium",
+    // set element-ui default size
 });
 
 // Vue.use(mavonEditor);
 
-Object.keys(filters).forEach((key) => {
-	Vue.filter(key, filters[key]);
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key]);
 });
 
 Vue.mixin({
-	computed: {
-		uploadUrl() {
-			// return process.env.VUE_APP_UPLOAD_URL || '/admin/uploads'
-			// return '/admin/uploads'
-			return "http://127.0.0.1:3000/admin/uploads";
-		}
-	},
-	methods: {
-		getAuthHeaders() {
-			return {
-				// Authorization: `Bearer ${localStorage.token || ''}`
-				Authorization: `Bearer ${getToken() || ""}`
-			};
-		}
-	}
+    computed: {
+        uploadUrl() {
+            // return process.env.VUE_APP_UPLOAD_URL || '/admin/uploads'
+            // return '/admin/uploads'
+            return "http://127.0.0.1:3000/admin/uploads";
+        },
+    },
+    methods: {
+        getAuthHeaders() {
+            return {
+                // Authorization: `Bearer ${localStorage.token || ''}`
+                Authorization: `Bearer ${getToken() || ""}`,
+            };
+        },
+    },
 });
 
 Vue.config.productionTip = false;
 
 new Vue({
-	el: "#app",
-	router,
-	store,
-	render: (h) => h(App)
+    el: "#app",
+    router,
+    store,
+    render: h => h(App),
 }).$mount("#app");
