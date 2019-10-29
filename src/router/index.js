@@ -212,6 +212,7 @@ export const constantRouterMap = [
     path: "/profile",
     component: Layout,
     redirect: "/profile/index",
+    hidden: true,
     children: [
       {
         path: "index",
