@@ -13,35 +13,35 @@
 </template>
 
 <script>
-    import {updateProfile} from '@/api'
+import {updateProfile} from "@/api";
 
-    export default {
-        props: {
-            account: {
-                type: Object,
-                default: () => {
-                    return {
-                        name: '',
-                        email: ''
-                    }
-                }
-            }
-        },
-        methods: {
-            submit() {
-                let data = {
-                    username: this.account.name,
-                    email: this.account.email
+export default {
+    props: {
+        account: {
+            type: Object,
+            default: () => {
+                return {
+                    name: "",
+                    email: ""
                 };
-                updateProfile(data).then(res=> {
-                    console.log(res);
-                });
-                this.$message({
-                    message: '用户信息更新成功!',
-                    type: 'success',
-                    duration: 5 * 1000
-                })
             }
         }
+    },
+    methods: {
+        submit() {
+            let data = {
+                username: this.account.name,
+                email: this.account.email
+            };
+            updateProfile(data).then(res=> {
+                console.log(res);
+            });
+            this.$message({
+                message: "用户信息更新成功!",
+                type: "success",
+                duration: 5 * 1000
+            });
+        }
     }
+};
 </script>

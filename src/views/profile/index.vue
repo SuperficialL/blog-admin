@@ -43,7 +43,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["name", "email", "avatar"])
+    ...mapGetters(["username", "email", "avatar"])
   },
   created() {
     this.getUser();
@@ -51,7 +51,7 @@ export default {
   methods: {
     getUser() {
       this.user = {
-        name: this.name,
+        username: this.username,
         email: this.email,
         avatar: this.avatar
       };

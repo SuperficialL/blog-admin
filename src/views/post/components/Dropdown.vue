@@ -16,33 +16,33 @@
 
 <script>
 export default {
-  name: 'Dropdown',
-  props: {
-    value: {
-      type: [Boolean, Number, String]
+    name: "Dropdown",
+    props: {
+        value: {
+            type: [Boolean, Number, String]
+        },
+        enabledText: {
+            type: String
+        },
+        disabledText: {
+            type: String
+        },
+        enabledLabel: {
+            default: true
+        },
+        disabledLabel: {
+            default: false
+        }
     },
-    enabledText: {
-      type: String
-    },
-    disabledText: {
-      type: String
-    },
-    enabledLabel: {
-      default: true
-    },
-    disabledLabel: {
-      default: false
+    computed: {
+        enabled: {
+            get() {
+                return this.value;
+            },
+            set(val) {
+                this.$emit("input", val);
+            }
+        }
     }
-  },
-  computed: {
-    enabled: {
-      get() {
-        return this.value
-      },
-      set(val) {
-        this.$emit('input', val)
-      }
-    }
-  }
-}
+};
 </script>
