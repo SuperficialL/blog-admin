@@ -14,6 +14,7 @@
         </el-form-item>
       </el-form>
     </el-col>
+
     <el-table
       v-loading="loading"
       ref="multipleTable"
@@ -61,19 +62,23 @@
 
       <el-table-column label="操作" align="center" width="230">
         <template slot-scope="scope">
-          <el-button
-            type="primary"
-            size="small"
-            icon="el-icon-edit"
-            @click="$router.push(`/user/edit/${scope.row._id}`)"
-          >编辑</el-button>
-          <el-button
-            type="danger"
-            size="small"
-            icon="el-icon-delete"
-            class="del-btn"
-            @click="handleDel(scope.$index, scope.row)"
-          >删除</el-button>
+          <el-tooltip effect="dark" content="删除" placement="top">
+            <el-button
+              type="primary"
+              size="small"
+              icon="el-icon-edit"
+              @click="$router.push(`/user/edit/${scope.row._id}`)"
+            />
+          </el-tooltip>
+          <el-tooltip effect="dark" content="删除" placement="top">
+            <el-button
+              type="danger"
+              size="small"
+              icon="el-icon-delete"
+              class="del-btn"
+              @click="handleDel(scope.$index, scope.row)"
+            />
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>

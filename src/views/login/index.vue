@@ -13,35 +13,25 @@
       </div>
 
       <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
         <el-input
           v-model="loginForm.username"
-          placeholder="用户名"
+          placeholder="请输入用户名"
           name="username"
           type="text"
-          auto-complete="on"
+          autocomplete="on"
         />
       </el-form-item>
 
       <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
         <el-input
           v-model="loginForm.password"
-          :type="passwordType"
-          placeholder="密码"
+          show-password
+          placeholder="请输入密码"
           name="password"
-          auto-complete="on"
+          autocomplete="on"
           @keyup.enter.native="handleLogin"
         />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-        </span>
       </el-form-item>
-
       <el-button
         :loading="loading"
         type="primary"
@@ -110,11 +100,14 @@ export default {
                 message: res.message
               });
             })
-            .catch(() => {
+            .catch(err => {
               this.loading = false;
             });
         } else {
-          window.console.log("错误提交!!");
+          this.$message({
+            type: "error",
+            message: "错误提交~"
+          });
           return false;
         }
       });
@@ -142,7 +135,7 @@ $cursor: #fff;
   .el-input {
     display: inline-block;
     height: 47px;
-    width: 85%;
+    width: 100%;
     input {
       height: 47px;
       padding: 12px 5px 12px 15px;
