@@ -6,7 +6,6 @@
  */
 export function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result;
-
   const later = function() {
     // 据上一次触发时间间隔
     const last = +new Date() - timestamp;

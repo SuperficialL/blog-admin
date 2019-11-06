@@ -1,7 +1,7 @@
 <template>
   <el-form>
     <el-form-item label="昵称">
-      <el-input v-model.trim="account.name" />
+      <el-input v-model.trim="account.username" />
     </el-form-item>
     <el-form-item label="邮箱">
       <el-input v-model.trim="account.email" />
@@ -19,7 +19,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          name: "",
+          username: "",
           email: ""
         };
       }

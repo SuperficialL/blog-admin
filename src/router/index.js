@@ -20,12 +20,14 @@ export const constantRouterMap = [
       }
     ]
   },
+
   {
     name: "login",
     path: "/login",
     component: () => import("@/views/login"),
     hidden: true
   },
+
   {
     path: "/",
     component: Layout,
@@ -43,6 +45,7 @@ export const constantRouterMap = [
       }
     ]
   },
+
   {
     path: "/category",
     component: Layout,
@@ -84,6 +87,7 @@ export const constantRouterMap = [
       }
     ]
   },
+
   {
     path: "/tags",
     component: Layout,
@@ -125,6 +129,7 @@ export const constantRouterMap = [
       }
     ]
   },
+
   {
     path: "/post",
     component: Layout,
@@ -208,6 +213,49 @@ export const constantRouterMap = [
       }
     ]
   },
+
+  {
+    path: "/comment",
+    component: Layout,
+    redirect: "/comment/list",
+    name: "Comment",
+    meta: {
+      title: "评论管理",
+      icon: "comment"
+    },
+    children: [
+      {
+        path: "create",
+        component: () => import("@/views/comment/edit"),
+        name: "CreateComment",
+        meta: {
+          title: "创建评论",
+          icon: "edit"
+        }
+      },
+      {
+        path: "edit/:id",
+        component: () => import("@/views/comment/edit"),
+        name: "EditComment",
+        meta: {
+          title: "编辑评论",
+          noCache: true
+        },
+        hidden: true,
+        props: true
+      },
+      {
+        path: "list",
+        component: () => import("@/views/comment/list"),
+        name: "CommentList",
+        meta: {
+          title: "评论列表",
+          icon: "list"
+        }
+      }
+    ]
+  },
+
   {
     path: "/profile",
     component: Layout,

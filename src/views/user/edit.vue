@@ -43,66 +43,66 @@
 import { getUser, updateUser, createUser } from "@/api/users";
 
 export default {
-    name: "UserDetail",
-    props: ["id"],
-    data() {
-        return {
-            model: {},
-            loading: false,
-            pickerOptions: {
-                shortcuts: [
-                    {
-                        text: "今天",
-                        onClick(picker) {
-                            picker.$emit("pick", new Date());
-                        }
-                    },
-                    {
-                        text: "昨天",
-                        onClick(picker) {
-                            const date = new Date();
-                            date.setTime(date.getTime() - 3600 * 1000 * 24);
-                            picker.$emit("pick", date);
-                        }
-                    },
-                    {
-                        text: "一周前",
-                        onClick(picker) {
-                            const date = new Date();
-                            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-                            picker.$emit("pick", date);
-                        }
-                    }
-                ]
+  name: "UserDetail",
+  props: ["id"],
+  data() {
+    return {
+      model: {},
+      loading: false,
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "今天",
+            onClick(picker) {
+              picker.$emit("pick", new Date());
             }
-        };
+          },
+          {
+            text: "昨天",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit("pick", date);
+            }
+          },
+          {
+            text: "一周前",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", date);
+            }
+          }
+        ]
+      }
+    };
+  },
+  created() {
+    this.id && this.fetch();
+  },
+  methods: {
+    async fetch() {
+      const res = await getUser(this.id);
+      if (res.code === 200) {
+        this.model = res.data.user;
+      }
     },
-    created() {
-        this.id && this.fetch();
-    },
-    methods: {
-        async fetch() {
-            const res = await getUser(this.id);
-            if (res.code === 200) {
-                this.model = res.data.user;
-            }
-        },
-        async save() {
-            let res;
-            if (this.id) {
-                res = await updateUser(this.id, this.model);
-            } else {
-                res = await createUser(this.model);
-            }
-            if (res.code === 200) {
-                this.$router.push("/user/list?refresh=1");
-                this.$message({
-                    type: "success",
-                    message: res.message
-                });
-            }
-        }
+    async save() {
+      let res;
+      if (this.id) {
+        res = await updateUser(this.id, this.model);
+      } else {
+        res = await createUser(this.model);
+      }
+      if (res.code === 200) {
+        this.$router.push("/user/list?refresh=1");
+        this.$message({
+          type: "success",
+          message: res.message
+        });
+      }
     }
+  }
 };
 </script>
 

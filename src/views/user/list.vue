@@ -1,19 +1,7 @@
 <template>
   <div class="app-container">
     <!--工具条-->
-    <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
-      <el-form :inline="true" :model="filters">
-        <el-form-item>
-          <el-input v-model="filters.keyword" placeholder="请输入搜索关键字( 昵称 / 用户名 / 邮箱 )"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="searchUser">查询</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary">新增</el-button>
-        </el-form-item>
-      </el-form>
-    </el-col>
+    <tool-bar />
 
     <el-table
       v-loading="loading"
@@ -93,22 +81,20 @@
 </template>
 
 <script>
+import ToolBar from "@/components/ToolBar";
 import Pagination from "@/components/Pagination";
 import { getUserList, deleteUser } from "@/api/users";
 
 export default {
   name: "UserList",
-  components: { Pagination },
+  components: { ToolBar, Pagination },
   data() {
     return {
-      filters: {
-        keyword: ""
-      },
       listQuery: {
         page: 1,
         per_page: 10
       },
-      list: null,
+      list: [],
       total: 0,
       loading: false
     };

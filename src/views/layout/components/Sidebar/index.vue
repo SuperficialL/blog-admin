@@ -7,6 +7,7 @@
       :text-color="variables.menuText"
       :active-text-color="variables.menuActiveText"
       mode="vertical"
+      unique-opened
     >
       <sidebar-item
         v-for="route in routes"
@@ -25,20 +26,20 @@ import { constantRouterMap } from "@/router";
 import variables from "@/styles/variables.scss";
 
 export default {
-    data() {
-        return {
-            routes: constantRouterMap
-        };
+  data() {
+    return {
+      routes: constantRouterMap
+    };
+  },
+  components: { SidebarItem },
+  computed: {
+    ...mapGetters(["sidebar"]),
+    variables() {
+      return variables;
     },
-    components: { SidebarItem },
-    computed: {
-        ...mapGetters(["sidebar"]),
-        variables() {
-            return variables;
-        },
-        isCollapse() {
-            return !this.sidebar.opened;
-        }
+    isCollapse() {
+      return !this.sidebar.opened;
     }
+  }
 };
 </script>

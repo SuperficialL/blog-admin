@@ -2,116 +2,95 @@
   <div>
     <div>
       <h1>{{id? '编辑':'新建'}}文章</h1>
-      <el-form :model="model" label-width="100px" @submit.native.prevent="save">
-        <el-row>
-          <el-form-item label="标题">
-            <el-input v-model="model.title"></el-input>
-          </el-form-item>
-        </el-row>
+      <el-form :model="model" :rules="rules" label-width="100px" @submit.native.prevent="save">
+        <el-form-item label="标题">
+          <el-input v-model="model.title"></el-input>
+        </el-form-item>
 
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="创建时间">
-              <el-date-picker v-model="model.created_time" type="datetime" placeholder="选择日期时间"></el-date-picker>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="最近修改时间">
-              <el-date-picker
-                v-model="model.updated_time"
-                type="datetime"
-                placeholder="选择日期时间"
-                align="left"
-                :picker-options="pickerOptions"
-              ></el-date-picker>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="创建时间">
+          <el-date-picker v-model="model.created_time" type="datetime" placeholder="选择日期时间"></el-date-picker>
+        </el-form-item>
 
-        <el-row>
-          <el-col>
-            <el-form-item label-width="80px" label="作者:" class="postInfo-container-item">
-              <el-select v-model="model.author" value-key="username" placeholder="搜索用户">
-                <el-option
-                  v-for="(item,index) in userListOptions"
-                  :key="index"
-                  :label="item.username"
-                  :value="item"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="最近修改时间">
+          <el-date-picker
+            v-model="model.updated_time"
+            type="datetime"
+            placeholder="选择日期时间"
+            align="left"
+            :picker-options="pickerOptions"
+          ></el-date-picker>
+        </el-form-item>
 
-        <el-row>
-          <el-col>
-            <el-form-item label-width="80px" label="标签:" class="postInfo-container-item">
-              <el-select
-                v-model="model.tags"
-                value-key="title"
-                multiple
-                filterable
-                allow-create
-                default-first-option
-                placeholder="搜索标签"
-              >
-                <el-option
-                  v-for="(item,index) in tagListOptions"
-                  :key="index"
-                  :label="item.title"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col>
-            <el-form-item label-width="80px" label="分类:" class="postInfo-container-item">
-              <el-select
-                v-model="model.category"
-                value-key="name"
-                filterable
-                allow-create
-                default-first-option
-                placeholder="搜索分类"
-              >
-                <el-option
-                  v-for="(item,index) in catListOptions"
-                  :key="index"
-                  :label="item.name"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col>
-            <el-form-item label-width="80px" label="缩略图:">
-              <el-upload
-                class="avatar-uploader"
-                :headers="getAuthHeaders()"
-                :action="uploadUrl"
-                :show-file-list="false"
-                :on-success="UploadSuccess"
-              >
-                <img v-if="model.thumbnail" :src="model.thumbnail" class="avatar" />
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <mavon-editor v-model="model.content" />
-        </el-row>
-        <el-row>
-          <el-col>
-            <el-form-item>
-              <el-button type="primary" native-type="submit">保存</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="作者:" class="postInfo-container-item">
+          <el-select v-model="model.author" value-key="username" placeholder="搜索用户">
+            <el-option
+              v-for="(item,index) in userListOptions"
+              :key="index"
+              :label="item.username"
+              :value="item"
+            />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="标签:" class="postInfo-container-item">
+          <el-select
+            v-model="model.tags"
+            value-key="title"
+            multiple
+            filterable
+            allow-create
+            default-first-option
+            placeholder="搜索标签"
+          >
+            <el-option
+              v-for="(item,index) in tagListOptions"
+              :key="index"
+              :label="item.title"
+              :value="item"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="分类:" class="postInfo-container-item">
+          <el-select
+            v-model="model.category"
+            value-key="name"
+            filterable
+            allow-create
+            default-first-option
+            placeholder="搜索分类"
+          >
+            <el-option
+              v-for="(item,index) in catListOptions"
+              :key="index"
+              :label="item.name"
+              :value="item"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="缩略图:">
+          <el-upload
+            list-type="picture-card"
+            accept="image/*"
+            :headers="getAuthHeaders()"
+            :action="uploadUrl"
+            :on-preview="handlePictureCardPreview"
+            :on-success="UploadSuccess"
+            :on-remove="handleRemove"
+          >
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="model.thumbnail" />
+          </el-dialog>
+        </el-form-item>
+
+        <mavon-editor v-model="model.content" />
+
+        <el-form-item>
+          <el-button type="primary" native-type="submit">保存</el-button>
+        </el-form-item>
       </el-form>
     </div>
   </div>
@@ -129,6 +108,7 @@ export default {
     return {
       model: {},
       rules: [],
+      dialogVisible: false,
       loading: false,
       pickerOptions: {
         shortcuts: [
@@ -168,6 +148,15 @@ export default {
     this.fetchTags();
   },
   methods: {
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePictureCardPreview(file) {
+      this.model.thumbnail = file.url;
+      // this.$set(this.model, "thumbnail", file.url);
+      this.dialogVisible = true;
+    },
+    // 获取文章
     async fetchArticle() {
       // 获取当前文章
       const res = await getArticle(this.id);
@@ -216,6 +205,7 @@ export default {
       }
     },
     UploadSuccess(res) {
+      console.log(res);
       this.$set(this.model, "img", res.url);
       // this.model.img = res
     }
