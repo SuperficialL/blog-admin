@@ -24,11 +24,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="140" align="center" label="头像">
+      <!-- <el-table-column width="140" align="center" label="头像">
         <template slot-scope="scope">
           <img :src="scope.row.avatar" width="45" height="45" />
         </template>
-      </el-table-column>
+      </el-table-column>-->
 
       <el-table-column width="180" align="center" label="邮箱">
         <template slot-scope="scope">
@@ -36,13 +36,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="注册时间">
+      <el-table-column align="center" label="评论时间">
         <template slot-scope="scope">
           <span>{{ scope.row.created_time | dateFormat }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="登录时间">
+      <el-table-column align="center" label="修改时间">
         <template slot-scope="scope">
           <span>{{ scope.row.updated_time | dateFormat }}</span>
         </template>
@@ -76,7 +76,7 @@
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.per_page"
-      @pagination="getUserList"
+      @pagination="getCommentsList"
     />
   </div>
 </template>
@@ -84,7 +84,7 @@
 <script>
 import Pagination from "@/components/Pagination";
 import ToolBar from "@/components/ToolBar";
-import { getUserList, deleteUser } from "@/api/users";
+import { getComments, deleteComment } from "@/api/comments";
 
 export default {
   name: "CommentList",
@@ -100,27 +100,32 @@ export default {
       loading: false
     };
   },
+
   methods: {
-    async getUserList() {
+    // 获取评论
+    async getCommentsList() {
       // 获取用户列表数据
       this.loading = true;
-      const res = await getUserList(this.listQuery);
+      const res = await getComments(this.listQuery);
       if (res.code === 200) {
         this.loading = false;
-        this.list = res.data.users;
+        this.list = res.data.comments;
+        this.total = res.data.total;
       }
     },
+
     searchUser() {},
+
     // 删除
     async handleDel(index, row) {
-      this.$confirm(`确认删除用户 ${row.username} 吗?`, "提示", {
+      this.$confirm(`确认删除用户 ${row.username} 的评论吗?`, "提示", {
         confirmButtonText: "确认",
         cancleButtonText: "取消",
         type: "warning"
       })
         .then(async () => {
           this.loading = true;
-          const res = await deleteUser(row._id);
+          const res = await deleteComment(row._id);
           if (res.code) {
             this.loading = false;
             this.$message({
@@ -138,8 +143,9 @@ export default {
         });
     }
   },
+
   created() {
-    this.getUserList();
+    this.getCommentsList();
   }
 };
 </script>

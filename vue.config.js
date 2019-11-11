@@ -6,9 +6,13 @@ function resolve(dir) {
 
 module.exports = {
   publicPath: process.env.NODE_ENV === "production" ? "/admin/" : "/",
-  outputDir: __dirname + "/../server/admin",
+  // 静态资源目录
+  assetsDir: "./static",
+  // 输出位置
+  outputDir: __dirname + "/../koa-server/public/admin",
   lintOnSave: true,
-  productionSourceMap: true, // 生产环境禁用
+  // 生产环境禁用, 主要用于运行时报错时的错误追踪
+  productionSourceMap: false,
   devServer: {
     proxy: {
       "/api": {
@@ -16,25 +20,29 @@ module.exports = {
         changeOrigin: true,
         ws: true,
         pathRewrite: {
-          "^/api": "",
-        },
+          "^/api": ""
+        }
       },
       "/uploads": {
         target: "http://127.0.0.1:3000/admin/uploads",
         changeOrigin: true,
-        ws: true,
+        ws: true
         // pathRewrite: {
         //     '^/api': ''
         // }
-      },
-    },
+      }
+    }
   },
   configureWebpack: {
+    // 显示各个包的体积
+    // plugins: [
+    //   new BundleAnalyzerPlugin()
+    // ],
     resolve: {
       alias: {
-        "@": resolve("src"),
-      },
-    },
+        "@": resolve("src")
+      }
+    }
   },
 
   chainWebpack: config => {
@@ -52,7 +60,7 @@ module.exports = {
       .use("svg-sprite-loader")
       .loader("svg-sprite-loader")
       .options({
-        symbolId: "icon-[name]",
+        symbolId: "icon-[name]"
       });
-  },
+  }
 };

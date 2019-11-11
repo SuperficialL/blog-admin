@@ -36,6 +36,9 @@
           <el-dropdown-item>
             <router-link to="/profile">个人中心</router-link>
           </el-dropdown-item>
+          <el-dropdown-item>
+            <router-link to="/profile/settings">个人设置</router-link>
+          </el-dropdown-item>
           <el-dropdown-item divided>
             <span style="display:block;" @click="logout">退出</span>
           </el-dropdown-item>

@@ -271,6 +271,15 @@ export const constantRouterMap = [
           icon: "user",
           affix: true
         }
+      },
+      {
+        path: "settings",
+        component: () => import("@/views/profile/settings"),
+        name: "Settings",
+        meta: {
+          title: "个人设置",
+          icon: "user"
+        }
       }
     ]
   },
@@ -279,12 +288,13 @@ export const constantRouterMap = [
     component: () => import("@/views/errorPage/404"),
     hidden: true
   },
+
   { path: "*", redirect: "/404", hidden: true }
 ];
 
 const IS_DEV = process.env.NODE_ENV === "development";
 let index = new Router({
-  mode: IS_DEV ? "history" : "hash",
+  mode: IS_DEV ? "history" : "history",
   base: process.env.BASE_URL,
   routes: constantRouterMap
 });

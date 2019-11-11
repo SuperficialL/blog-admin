@@ -2,16 +2,22 @@
   <div>
     <div>
       <h1>{{id? '编辑':'新建'}}文章</h1>
-      <el-form :model="model" :rules="rules" label-width="100px" @submit.native.prevent="save">
-        <el-form-item label="标题">
+      <el-form
+        ref="form"
+        label-width="100px"
+        :model="model"
+        :rules="rules"
+        @submit.native.prevent="save('form')"
+      >
+        <el-form-item label="标题" prop="title">
           <el-input v-model="model.title"></el-input>
         </el-form-item>
 
-        <el-form-item label="创建时间">
+        <!-- <el-form-item label="创建时间">
           <el-date-picker v-model="model.created_time" type="datetime" placeholder="选择日期时间"></el-date-picker>
-        </el-form-item>
+        </el-form-item>-->
 
-        <el-form-item label="最近修改时间">
+        <!-- <el-form-item label="最近修改时间">
           <el-date-picker
             v-model="model.updated_time"
             type="datetime"
@@ -19,7 +25,7 @@
             align="left"
             :picker-options="pickerOptions"
           ></el-date-picker>
-        </el-form-item>
+        </el-form-item>-->
 
         <el-form-item label="作者:" class="postInfo-container-item">
           <el-select v-model="model.author" value-key="username" placeholder="搜索用户">
@@ -107,7 +113,15 @@ export default {
   data() {
     return {
       model: {},
-      rules: [],
+      rules: {
+        title: [
+          {
+            required: true,
+            message: "文章标题不可为空~",
+            trigger: "blur"
+          }
+        ]
+      },
       dialogVisible: false,
       loading: false,
       pickerOptions: {
@@ -141,16 +155,13 @@ export default {
       catListOptions: []
     };
   },
-  created() {
-    this.id && this.fetchArticle();
-    this.fetchCategories();
-    this.fetchAuthors();
-    this.fetchTags();
-  },
+
   methods: {
+    // 移除图片
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },
+    // 设置图片回调地址
     handlePictureCardPreview(file) {
       this.model.thumbnail = file.url;
       // this.$set(this.model, "thumbnail", file.url);
@@ -158,57 +169,68 @@ export default {
     },
     // 获取文章
     async fetchArticle() {
-      // 获取当前文章
       const res = await getArticle(this.id);
       if (res.code === 200) {
         this.model = res.data;
       }
     },
+    // 获取分类
     async fetchCategories() {
-      // 获取分类
       const res = await getCategories();
       if (res.code === 200) {
         this.catListOptions = res.data.categories;
       }
     },
+    // 获取作者
     async fetchAuthors() {
-      // 获取作者
       const res = await getUserList();
       if (res.code === 200) {
         this.userListOptions = res.data.users;
       }
     },
+    // 获取标签
     async fetchTags() {
-      // 获取标签
       const res = await getTags();
       if (res.code === 200) {
         this.tagListOptions = res.data.tags;
       }
     },
-    async save() {
+    // 保存，更新数据
+    save(formName) {
       this.loading = true;
-      let res;
-      if (this.id) {
-        // id 存在,修改数据
-        res = await updateArticle(this.id, this.model);
-      } else {
-        // id不存在,创建数据
-        res = await createArticle(this.model);
-      }
-      if (res.code === 200) {
-        this.loading = false;
-        this.$router.push("/post/list?refresh=1");
-        this.$message({
-          type: "success",
-          message: "保存成功~"
-        });
-      }
+      this.$refs[formName].validate(async valid => {
+        if (valid) {
+          let res;
+          if (this.id) {
+            // id 存在,修改数据
+            res = await updateArticle(this.id, this.model);
+          } else {
+            // id不存在,创建数据
+            res = await createArticle(this.model);
+          }
+          if (res.code === 200) {
+            this.loading = false;
+            this.$router.push("/post/list?refresh=1");
+            this.$message({
+              type: "success",
+              message: "保存成功~"
+            });
+          }
+        } else {
+          this.$message.error("验证失败~");
+        }
+      });
     },
     UploadSuccess(res) {
-      console.log(res);
       this.$set(this.model, "img", res.url);
       // this.model.img = res
     }
+  },
+  created() {
+    this.id && this.fetchArticle();
+    this.fetchCategories();
+    this.fetchAuthors();
+    this.fetchTags();
   }
 };
 </script>
