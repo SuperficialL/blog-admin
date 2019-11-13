@@ -3,6 +3,7 @@
     <tool-bar />
     <div class="content">
       <el-table
+        :default-sort="{prop:created_time,order:descending}"
         :data="categories"
         row-key="_id"
         border
@@ -18,14 +19,14 @@
             <span>{{(listQuery.page - 1) * listQuery.per_page + scope.$index + 1}}</span>
           </template>
         </el-table-column>-->
-        <el-table-column prop="name" label="分类名称" align="center"></el-table-column>
-        <el-table-column prop="path" label="路径" align="center"></el-table-column>
+        <el-table-column prop="name" label="分类名称" sortable align="center"></el-table-column>
+        <el-table-column prop="path" label="路径" sortable align="center"></el-table-column>
         <el-table-column prop="icon" label="图标" align="center"></el-table-column>
-        <el-table-column label="创建时间" align="center">
+        <el-table-column label="创建时间" align="center" sortable prop="created_time">
           <template slot-scope="scope">{{scope.row.created_time | dateFormat}}</template>
         </el-table-column>
-        <el-table-column label="修改时间" align="center">
-          <template slot-scope="scope">{{scope.row.created_time | dateFormat}}</template>
+        <el-table-column label="修改时间" align="center" sortable prop="updated_time">
+          <template slot-scope="scope">{{scope.row.updated_time | dateFormat}}</template>
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -124,12 +125,4 @@ export default {
 
 
 <style lang="scss" scoped>
-.app-container {
-  overflow: hidden;
-  height: calc(100vh - 84px);
-  .content {
-    height: calc(100% - 60px);
-    padding-bottom: 64px;
-  }
-}
 </style>

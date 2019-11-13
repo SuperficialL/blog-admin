@@ -5,7 +5,7 @@ import { getToken } from "@/utils/auth";
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_API_URL || "/admin/",
+  baseURL: process.env.VUE_APP_API_URL || "/api/admin/",
   timeout: 5000 // request timeout
 });
 

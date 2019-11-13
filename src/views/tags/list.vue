@@ -3,6 +3,7 @@
     <tool-bar />
     <div class="content">
       <el-table
+        :default-sort="{order:'descending',prop:'created_time'}"
         v-loading="loading"
         :data="list"
         border
@@ -16,13 +17,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="title" width="180px" align="center" label="标签名称"></el-table-column>
+        <el-table-column prop="title" width="180px" sortable align="center" label="标签名称"></el-table-column>
 
-        <el-table-column width="180px" align="center" label="创建时间">
+        <el-table-column width="180px" align="center" sortable prop="created_time" label="创建时间">
           <template slot-scope="scope">{{ scope.row.created_time | dateFormat }}</template>
         </el-table-column>
 
-        <el-table-column width="180px" align="center" label="最后修改时间">
+        <el-table-column width="180px" align="center" sortable prop="updated_time" label="最后修改时间">
           <template slot-scope="scope">{{ scope.row.updated_time | dateFormat }}</template>
         </el-table-column>
 

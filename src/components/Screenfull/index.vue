@@ -19,8 +19,6 @@ export default {
   },
   methods: {
     click() {
-      console.log(screenfull);
-
       if (!screenfull.isEnabled) {
         this.$message({
           message: "you browser can not work",

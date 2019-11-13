@@ -120,15 +120,12 @@ export default {
       }
     };
   },
-  created() {
-    this.id && this.fetch();
-    this.fetchArticles();
-  },
   methods: {
     // 获取评论数据
     async fetch() {
       const res = await getComment(this.id);
       if (res.code === 200) {
+        console.log(res, "res");
         this.model = res.data.comment;
       }
     },
@@ -162,6 +159,10 @@ export default {
         }
       });
     }
+  },
+  created() {
+    this.id && this.fetch();
+    this.fetchArticles();
   }
 };
 </script>

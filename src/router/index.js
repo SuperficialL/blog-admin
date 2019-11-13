@@ -21,6 +21,7 @@ export const constantRouterMap = [
     ]
   },
 
+  /** 登录 */
   {
     name: "login",
     path: "/login",
@@ -28,6 +29,7 @@ export const constantRouterMap = [
     hidden: true
   },
 
+  /** 首页 */
   {
     path: "/",
     component: Layout,
@@ -46,6 +48,7 @@ export const constantRouterMap = [
     ]
   },
 
+  /** 分类 */
   {
     path: "/category",
     component: Layout,
@@ -88,6 +91,7 @@ export const constantRouterMap = [
     ]
   },
 
+  /** 标签 */
   {
     path: "/tags",
     component: Layout,
@@ -130,6 +134,7 @@ export const constantRouterMap = [
     ]
   },
 
+  /** 文章 */
   {
     path: "/post",
     component: Layout,
@@ -172,6 +177,7 @@ export const constantRouterMap = [
     ]
   },
 
+  /** 用户 */
   {
     path: "/user",
     component: Layout,
@@ -214,6 +220,7 @@ export const constantRouterMap = [
     ]
   },
 
+  /** 评论 */
   {
     path: "/comment",
     component: Layout,
@@ -256,6 +263,7 @@ export const constantRouterMap = [
     ]
   },
 
+  /** 个人中心 */
   {
     path: "/profile",
     component: Layout,
@@ -283,6 +291,7 @@ export const constantRouterMap = [
       }
     ]
   },
+
   {
     path: "/404",
     component: () => import("@/views/errorPage/404"),
@@ -299,7 +308,7 @@ let index = new Router({
   routes: constantRouterMap
 });
 
-index.beforeEach((to, from, next) => {
+index.beforeEach((to, _from, next) => {
   if (getToken()) {
     /* has token*/
     if (to.path === "/login") {
@@ -318,7 +327,8 @@ index.beforeEach((to, from, next) => {
       // 在免登录白名单，直接进入
       next();
     } else {
-      next(`/login?redirect=${to.path}`); // 否则全部重定向到登录页
+      next(`/login?redirect=${to.path}`);
+      // 否则全部重定向到登录页
     }
   }
 });

@@ -1,8 +1,5 @@
 <template>
-  <div
-    :class="{'hidden':hidden}"
-    class="pagination-container"
-  >
+  <div :class="{'hidden':hidden}" class="pagination-container">
     <el-pagination
       :background="background"
       :current-page.sync="currentPage"
@@ -93,14 +90,14 @@ export default {
 };
 </script>
 
-<style scoped>
-  .pagination-container {
-    margin-top: -64px;
-    background: #fff;
-    padding: 0 16px;
-    text-align: right;
-  }
-  .pagination-container.hidden {
+<style lang="scss" scoped>
+.pagination-container {
+  margin-top: 10px;
+  background: #fff;
+  padding: 0 16px;
+  text-align: right;
+  &.hidden {
     display: none;
   }
+}
 </style>

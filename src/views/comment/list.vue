@@ -4,11 +4,11 @@
     <tool-bar />
 
     <el-table
+      :default-sort="{prop:'created_time',order:'descending'}"
       v-loading="loading"
       ref="multipleTable"
       :data="list"
       border
-      fit
       highlight-current-row
       style="width:100%;"
     >
@@ -18,7 +18,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="140" align="center" label="昵称">
+      <el-table-column width="180" align="center" sortable prop="username" label="昵称">
         <template slot-scope="scope">
           <span>{{ scope.row.username }}</span>
         </template>
@@ -36,13 +36,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="评论时间">
+      <el-table-column align="center" sortable prop="created_time" label="评论时间">
         <template slot-scope="scope">
           <span>{{ scope.row.created_time | dateFormat }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="修改时间">
+      <el-table-column align="center" sortable prop="updated_time" label="修改时间">
         <template slot-scope="scope">
           <span>{{ scope.row.updated_time | dateFormat }}</span>
         </template>
@@ -55,7 +55,7 @@
               type="primary"
               size="small"
               icon="el-icon-edit"
-              @click="$router.push(`/user/edit/${scope.row._id}`)"
+              @click="$router.push(`/comment/edit/${scope.row._id}`)"
             />
           </el-tooltip>
           <el-tooltip effect="dark" content="删除" placement="top">
@@ -76,8 +76,8 @@
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.per_page"
-      @pagination="getCommentsList"
-    />
+      @pagination="getList"
+    ></pagination>
   </div>
 </template>
 
@@ -103,7 +103,7 @@ export default {
 
   methods: {
     // 获取评论
-    async getCommentsList() {
+    async getList() {
       // 获取用户列表数据
       this.loading = true;
       const res = await getComments(this.listQuery);
@@ -145,7 +145,7 @@ export default {
   },
 
   created() {
-    this.getCommentsList();
+    this.getList();
   }
 };
 </script>

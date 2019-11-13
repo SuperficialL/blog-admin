@@ -131,18 +131,21 @@ code {
   }
 }
 
-//main-container全局样式
+// main-container全局样式
 .app-container {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  overflow: hidden;
+  .content {
+    flex-grow: 1;
+  }
 }
 
 .components-container {
   margin: 30px 50px;
   position: relative;
-}
-
-.pagination-container {
-  margin-top: 30px;
 }
 
 .text-center {

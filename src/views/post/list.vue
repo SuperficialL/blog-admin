@@ -3,10 +3,11 @@
     <tool-bar />
     <div class="content">
       <el-table
+        :default-sort="{order:'descending',prop:'created_time'}"
         v-loading="loading"
+        ref="multipleTable"
         :data="list"
         border
-        fit
         highlight-current-row
         style="width: 100%"
       >
@@ -16,19 +17,19 @@
           </template>
         </el-table-column>
 
-        <el-table-column width="300px" align="center" label="标题">
+        <el-table-column width="300px" align="center" sortable prop="title" label="标题">
           <template slot-scope="scope">
             <span>{{ scope.row.title }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="100px" align="center" label="作者">
+        <el-table-column width="100px" align="center" sortable prop="username" label="作者">
           <template slot-scope="scope">
             <span>{{ scope.row.author.username }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="100px" align="center" label="分类">
+        <el-table-column width="100px" align="center" sortable prop="name" label="分类">
           <template slot-scope="scope">
             <span>{{ scope.row.category.name }}</span>
           </template>
@@ -40,13 +41,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column width="80px" align="center" label="访问量">
+        <el-table-column width="100px" align="center" sortable prop="views" label="访问量">
           <template slot-scope="scope">
             <span>{{ scope.row.views }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="80px" align="center" label="评论数">
+        <el-table-column width="100px" align="center" sortable prop="likes" label="评论数">
           <template slot-scope="scope">
             <span>{{ scope.row.likes }}</span>
           </template>
@@ -163,12 +164,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.app-container {
-  overflow: hidden;
-  height: calc(100vh - 84px);
-  .content {
-    height: calc(100% - 60px);
-    padding-bottom: 64px;
-  }
-}
+// .app-container {
+//   overflow: hidden;
+//   height: calc(100vh - 84px);
+//   .content {
+//     height: calc(100% - 60px);
+//     padding-bottom: 64px;
+//   }
+// }
 </style>

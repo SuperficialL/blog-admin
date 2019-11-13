@@ -7,7 +7,7 @@ function resolve(dir) {
 module.exports = {
   publicPath: process.env.NODE_ENV === "production" ? "/admin/" : "/",
   // 静态资源目录
-  assetsDir: "./static",
+  // assetsDir: "./static",
   // 输出位置
   outputDir: __dirname + "/../koa-server/public/admin",
   lintOnSave: true,
