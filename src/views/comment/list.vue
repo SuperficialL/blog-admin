@@ -4,7 +4,7 @@
     <tool-bar />
 
     <el-table
-      :default-sort="{prop:'created_time',order:'descending'}"
+      :default-sort="{ prop: 'created_time', order: 'descending' }"
       v-loading="loading"
       ref="multipleTable"
       :data="list"
@@ -14,11 +14,19 @@
     >
       <el-table-column align="center" label="序号" type="index" width="80">
         <template slot-scope="scope">
-          <span>{{(listQuery.page - 1) * listQuery.per_page + scope.$index + 1}}</span>
+          <span>{{
+            (listQuery.page - 1) * listQuery.per_page + scope.$index + 1
+          }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="180" align="center" sortable prop="username" label="昵称">
+      <el-table-column
+        width="180"
+        align="center"
+        sortable
+        prop="username"
+        label="昵称"
+      >
         <template slot-scope="scope">
           <span>{{ scope.row.username }}</span>
         </template>
@@ -36,15 +44,28 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" sortable prop="created_time" label="评论时间">
-        <template slot-scope="scope">
-          <span>{{ scope.row.created_time | dateFormat }}</span>
+      <el-table-column
+        width="100px"
+        align="center"
+        sortable
+        prop="status"
+        label="状态"
+      >
+        <template slot-scope="{ row }">
+          <el-tag effect="dark" :type="row.status ? 'success' : 'danger'">
+            {{ row.status | statusFilter }}
+          </el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" sortable prop="updated_time" label="修改时间">
+      <el-table-column
+        align="center"
+        sortable
+        prop="created_time"
+        label="评论时间"
+      >
         <template slot-scope="scope">
-          <span>{{ scope.row.updated_time | dateFormat }}</span>
+          <span>{{ scope.row.created_time | dateFormat }}</span>
         </template>
       </el-table-column>
 
@@ -72,7 +93,7 @@
     </el-table>
 
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.per_page"

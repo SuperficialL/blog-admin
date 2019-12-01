@@ -1,8 +1,13 @@
 /*
  * @Author: Superficial
  * @Date: 2019-10-08 14:24:18
- * @LastEditTime: 2019-10-09 21:40:17
+ * @LastEditTime: 2019-11-15 23:21:00
  * @Description: 全局过滤器
+ */
+/**
+ * @description:
+ * @param {time} 时间日期字符串
+ * @return: 格式化后的时间字符串
  */
 let dateFormat = time => {
   const date = new Date(time);
@@ -12,7 +17,7 @@ let dateFormat = time => {
     DD: date.getDate(),
     hh: date.getHours(),
     mm: date.getMinutes(),
-    ss: date.getSeconds(),
+    ss: date.getSeconds()
   };
 
   for (let key in Time) {
@@ -21,4 +26,8 @@ let dateFormat = time => {
   return `${Time.YY}-${Time.MM}-${Time.DD} ${Time.hh}:${Time.mm}:${Time.ss}`;
 };
 
-export { dateFormat };
+let statusFilter = status => {
+  return status ? "发表" : "草稿";
+};
+
+export { dateFormat, statusFilter };

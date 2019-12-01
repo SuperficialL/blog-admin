@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <h1>{{id? '编辑':'新建'}}文章</h1>
+      <h1>{{ id ? "编辑" : "新建" }}文章</h1>
       <el-form
         ref="form"
         label-width="100px"
@@ -13,9 +13,21 @@
           <el-input v-model="model.title"></el-input>
         </el-form-item>
 
-        <!-- <el-form-item label="创建时间">
-          <el-date-picker v-model="model.created_time" type="datetime" placeholder="选择日期时间"></el-date-picker>
-        </el-form-item>-->
+        <el-form-item label="文章状态">
+          <el-tooltip :content="model.status | statusFilter" placement="top">
+            <el-switch
+              v-model="model.status"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-text="发表"
+              inactive-text="草稿"
+              :active-value="1"
+              :inactive-value="0"
+              size="middle"
+            >
+            </el-switch>
+          </el-tooltip>
+        </el-form-item>
 
         <!-- <el-form-item label="最近修改时间">
           <el-date-picker
@@ -28,9 +40,13 @@
         </el-form-item>-->
 
         <el-form-item label="作者:" class="postInfo-container-item">
-          <el-select v-model="model.author" value-key="username" placeholder="搜索用户">
+          <el-select
+            v-model="model.author"
+            value-key="username"
+            placeholder="搜索用户"
+          >
             <el-option
-              v-for="(item,index) in userListOptions"
+              v-for="(item, index) in userListOptions"
               :key="index"
               :label="item.username"
               :value="item"
@@ -49,7 +65,7 @@
             placeholder="搜索标签"
           >
             <el-option
-              v-for="(item,index) in tagListOptions"
+              v-for="(item, index) in tagListOptions"
               :key="index"
               :label="item.title"
               :value="item"
@@ -67,7 +83,7 @@
             placeholder="搜索分类"
           >
             <el-option
-              v-for="(item,index) in catListOptions"
+              v-for="(item, index) in catListOptions"
               :key="index"
               :label="item.name"
               :value="item"

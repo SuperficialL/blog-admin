@@ -36,7 +36,8 @@
         type="primary"
         style="width:100%;margin-bottom:30px;"
         @click.native.prevent="handleLogin"
-      >登录</el-button>
+        >登录</el-button
+      >
     </el-form>
   </div>
 </template>
@@ -45,22 +46,18 @@
 export default {
   name: "login",
   data() {
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error("密码长度少于6位"));
-      } else {
-        callback();
-      }
-    };
     return {
       loginForm: {
-        username: "SuperficialL",
-        password: "123456"
+        username: "",
+        password: ""
       },
       loginRules: {
-        username: [{ required: true, trigger: "blur" }],
+        username: [
+          { required: true, message: "用户名不可为空~", trigger: "blur" }
+        ],
         password: [
-          { required: true, trigger: "blur", validator: validatePassword }
+          { required: true, message: "密码不可为空~", trigger: "blur" },
+          { min: 6, message: "密码长度少于6位~", trigger: "blur" }
         ]
       },
       passwordType: "password",

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{id? '编辑':'新建'}}评论</h1>
+    <h1>{{ id ? "编辑" : "新建" }}评论</h1>
     <el-form
       :model="model"
       :rules="rules"
@@ -21,15 +21,32 @@
             :label="article.title"
           ></el-option>
         </el-select>
-        <!-- <el-input v-model="model.article_id"></el-input> -->
       </el-form-item>
 
       <el-form-item label="邮箱" prop="email">
         <el-input v-model="model.email"></el-input>
       </el-form-item>
 
+      <el-form-item label="评论状态">
+        <el-tooltip :content="model.status | statusFilter" placement="top">
+          <el-switch
+            v-model="model.status"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-text="发表"
+            inactive-text="草稿"
+            size="middle"
+          >
+          </el-switch>
+        </el-tooltip>
+      </el-form-item>
+
       <el-form-item label="评论内容" prop="content">
-        <el-input type="textarea" :autosize="{ minRows: 2}" v-model="model.content"></el-input>
+        <el-input
+          type="textarea"
+          :autosize="{ minRows: 2 }"
+          v-model="model.content"
+        ></el-input>
       </el-form-item>
 
       <!-- <el-form-item label="创建时间">
@@ -125,7 +142,6 @@ export default {
     async fetch() {
       const res = await getComment(this.id);
       if (res.code === 200) {
-        console.log(res, "res");
         this.model = res.data.comment;
       }
     },
@@ -141,7 +157,6 @@ export default {
     // 更新 or 创建评论
     save(formName) {
       this.$refs[formName].validate(async valid => {
-        console.log(valid);
         if (valid) {
           let res;
           if (this.id) {

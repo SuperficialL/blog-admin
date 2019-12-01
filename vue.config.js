@@ -11,7 +11,7 @@ module.exports = {
   // 输出位置
   outputDir: __dirname + "/../koa-server/public/admin",
   lintOnSave: true,
-  // 生产环境禁用, 主要用于运行时报错时的错误追踪
+  // 生产环境禁用, 主要用于运行时报错时的错误追踪,修改为false,可以减少体积
   productionSourceMap: false,
   devServer: {
     proxy: {

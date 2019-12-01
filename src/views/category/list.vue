@@ -3,11 +3,10 @@
     <tool-bar />
     <div class="content">
       <el-table
-        :default-sort="{prop:created_time,order:descending}"
         :data="categories"
         row-key="_id"
         border
-        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
         <!-- <el-table-column
           align="center"
@@ -19,14 +18,40 @@
             <span>{{(listQuery.page - 1) * listQuery.per_page + scope.$index + 1}}</span>
           </template>
         </el-table-column>-->
-        <el-table-column prop="name" label="分类名称" sortable align="center"></el-table-column>
-        <el-table-column prop="path" label="路径" sortable align="center"></el-table-column>
-        <el-table-column prop="icon" label="图标" align="center"></el-table-column>
-        <el-table-column label="创建时间" align="center" sortable prop="created_time">
-          <template slot-scope="scope">{{scope.row.created_time | dateFormat}}</template>
+        <el-table-column prop="name" label="分类名称" sortable align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.name }}</span>
+          </template>
         </el-table-column>
-        <el-table-column label="修改时间" align="center" sortable prop="updated_time">
-          <template slot-scope="scope">{{scope.row.updated_time | dateFormat}}</template>
+        <el-table-column prop="path" label="路径" sortable align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.path }}</span>
+          </template></el-table-column
+        >
+        <el-table-column prop="icon" label="图标" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.icon }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="创建时间"
+          align="center"
+          sortable
+          prop="created_time"
+        >
+          <template slot-scope="scope">
+            {{ scope.row.created_time | dateFormat }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="修改时间"
+          align="center"
+          sortable
+          prop="updated_time"
+        >
+          <template slot-scope="scope">{{
+            scope.row.updated_time | dateFormat
+          }}</template>
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
@@ -53,7 +78,7 @@
     </div>
 
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.per_page"
@@ -123,6 +148,4 @@ export default {
 };
 </script>
 
-
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

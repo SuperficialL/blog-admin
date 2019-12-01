@@ -3,7 +3,7 @@
     <tool-bar />
     <div class="content">
       <el-table
-        :default-sort="{order:'descending',prop:'created_time'}"
+        :default-sort="{ order: 'descending', prop: 'created_time' }"
         v-loading="loading"
         ref="multipleTable"
         :data="list"
@@ -13,23 +13,43 @@
       >
         <el-table-column align="center" label="序号" width="60">
           <template slot-scope="scope">
-            <span>{{(listQuery.page - 1) * listQuery.per_page + scope.$index + 1}}</span>
+            <span>{{
+              (listQuery.page - 1) * listQuery.per_page + scope.$index + 1
+            }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="300px" align="center" sortable prop="title" label="标题">
+        <el-table-column
+          width="300px"
+          align="center"
+          sortable
+          prop="title"
+          label="标题"
+        >
           <template slot-scope="scope">
             <span>{{ scope.row.title }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="100px" align="center" sortable prop="username" label="作者">
+        <el-table-column
+          width="100px"
+          align="center"
+          sortable
+          prop="username"
+          label="作者"
+        >
           <template slot-scope="scope">
             <span>{{ scope.row.author.username }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="100px" align="center" sortable prop="name" label="分类">
+        <el-table-column
+          width="100px"
+          align="center"
+          sortable
+          prop="name"
+          label="分类"
+        >
           <template slot-scope="scope">
             <span>{{ scope.row.category.name }}</span>
           </template>
@@ -37,17 +57,45 @@
 
         <el-table-column width="160px" align="center" label="标签">
           <template slot-scope="scope">
-            <el-tag v-for="(tag,index) in scope.row.tags" :key="index">{{ tag.title }}</el-tag>
+            <el-tag v-for="(tag, index) in scope.row.tags" :key="index">{{
+              tag.title
+            }}</el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column width="100px" align="center" sortable prop="views" label="访问量">
+        <el-table-column
+          width="100px"
+          align="center"
+          sortable
+          prop="status"
+          label="状态"
+        >
+          <template slot-scope="{ row }">
+            <el-tag effect="dark" :type="row.status ? 'success' : 'danger'">
+              {{ row.status | statusFilter }}
+            </el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          width="100px"
+          align="center"
+          sortable
+          prop="views"
+          label="访问量"
+        >
           <template slot-scope="scope">
             <span>{{ scope.row.views }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="100px" align="center" sortable prop="likes" label="评论数">
+        <el-table-column
+          width="100px"
+          align="center"
+          sortable
+          prop="likes"
+          label="评论数"
+        >
           <template slot-scope="scope">
             <span>{{ scope.row.likes }}</span>
           </template>
@@ -90,7 +138,7 @@
     </div>
 
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.per_page"
@@ -128,11 +176,12 @@ export default {
       const res = await getArticles(this.listQuery);
       this.loading = false;
       if (res.code === 200) {
-        this.loading = false;
         this.list = res.data.articles;
         this.total = res.data.total;
+        this.loading = false;
       }
     },
+
     async handleDel(index, row) {
       this.$confirm(`此操作将永久删除 ${row.title} 这篇文章?`, "提示", {
         confirmButtonText: "确定",
@@ -162,14 +211,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-// .app-container {
-//   overflow: hidden;
-//   height: calc(100vh - 84px);
-//   .content {
-//     height: calc(100% - 60px);
-//     padding-bottom: 64px;
-//   }
-// }
-</style>

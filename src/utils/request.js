@@ -29,7 +29,6 @@ service.interceptors.request.use(
 // response interceptor 响应拦截
 service.interceptors.response.use(
   response => {
-    // return response
     const res = response.data;
     const errorCode = res.errorCode;
     if (errorCode === 40003) {
@@ -49,8 +48,6 @@ service.interceptors.response.use(
     return res;
   },
   error => {
-    window.console.log("err" + error);
-    // for debug
     Message({
       message: error.message,
       type: "error",
