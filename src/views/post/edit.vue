@@ -101,6 +101,7 @@
             :on-success="UploadSuccess"
             :on-remove="handleRemove"
           >
+            <img v-if="model.thumbnail" :src="model.thumbnail" class="avatar" />
             <i class="el-icon-plus"></i>
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
@@ -108,7 +109,7 @@
           </el-dialog>
         </el-form-item>
 
-        <mavon-editor v-model="model.content" />
+        <mavon-editor v-model="model.content" @change="saveMavon" />
 
         <el-form-item>
           <el-button type="primary" native-type="submit">保存</el-button>
@@ -217,6 +218,7 @@ export default {
       this.$refs[formName].validate(async valid => {
         if (valid) {
           let res;
+          console.log(this.model);
           if (this.id) {
             // id 存在,修改数据
             res = await updateArticle(this.id, this.model);
@@ -237,8 +239,13 @@ export default {
         }
       });
     },
+    // 获取文本消息
+    saveMavon(value, html) {
+      this.model.renderContent = html;
+    },
     UploadSuccess(res) {
-      this.$set(this.model, "img", res.url);
+      // 设置图片上传后的地址
+      this.$set(this.model, "thumbnail", res.url);
       // this.model.img = res
     }
   },
@@ -253,11 +260,27 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import "~@/styles/mixin.scss";
-
-.createPost-container {
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
   position: relative;
-  .createPost-main-container {
-    padding: 40px 45px 20px 50px;
-  }
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 </style>

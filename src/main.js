@@ -30,7 +30,7 @@ Vue.mixin({
     uploadUrl() {
       // return process.env.VUE_APP_UPLOAD_URL || '/admin/uploads'
       // return '/admin/uploads'
-      return "http://127.0.0.1:3000/admin/uploads";
+      return "http://127.0.0.1:3000/api/admin/uploads";
     }
   },
   methods: {

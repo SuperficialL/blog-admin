@@ -5,7 +5,8 @@ function resolve(dir) {
 }
 
 module.exports = {
-  publicPath: process.env.NODE_ENV === "production" ? "/admin/" : "/",
+  // publicPath: process.env.NODE_ENV === "production" ? "/admin/" : "/",
+  publicPath: "/",
   // 静态资源目录
   // assetsDir: "./static",
   // 输出位置
