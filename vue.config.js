@@ -1,19 +1,26 @@
 const path = require("path");
+const CompressionPlugin = require("compression-webpack-plugin");
 
 function resolve(dir) {
   return path.join(__dirname, "./", dir);
 }
 
 module.exports = {
-  // publicPath: process.env.NODE_ENV === "production" ? "/admin/" : "/",
-  publicPath: "/",
   // 静态资源目录
   // assetsDir: "./static",
   // 输出位置
-  outputDir: __dirname + "/../koa-server/public/admin",
+  outputDir: "../koa-server/public/admin",
+
   lintOnSave: true,
-  // 生产环境禁用, 主要用于运行时报错时的错误追踪,修改为false,可以减少体积
+
+  // 生产环境是否生成 sourceMap 文件
   productionSourceMap: false,
+
+  // css相关配置
+  css: {
+    loaderOptions: {}
+  },
+
   devServer: {
     proxy: {
       "/api": {
@@ -34,11 +41,8 @@ module.exports = {
       }
     }
   },
+
   configureWebpack: {
-    // 显示各个包的体积
-    // plugins: [
-    //   new BundleAnalyzerPlugin()
-    // ],
     resolve: {
       alias: {
         "@": resolve("src")
@@ -47,6 +51,30 @@ module.exports = {
   },
 
   chainWebpack: config => {
+    /* 添加分析工具 */
+    if (process.env.NODE_ENV === "production") {
+      config.mode = "production";
+      config
+        .plugin("webpack-bundle-analyzer")
+        .use(require("webpack-bundle-analyzer").BundleAnalyzerPlugin)
+        .end();
+
+      config.plugins.delete("preload");
+      config.plugins.delete("prefetch");
+
+      return {
+        plugins: [
+          new CompressionPlugin({
+            test: /\.js$|\.html$|\.css/,
+            // 匹配文件名
+            threshold: 1024,
+            // 对超过1k的数据进行压缩
+            deleteOriginalAssets: false
+            // 是否删除原文件
+          })
+        ]
+      };
+    }
     // webpack链接API，用于生成和修改webpack配置
     config.module
       .rule("svg")
