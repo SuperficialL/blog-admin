@@ -29,7 +29,7 @@ Object.keys(filters).forEach(key => {
 Vue.mixin({
   computed: {
     uploadUrl() {
-      return process.env.VUE_APP_UPLOAD_URL || "/admin/uploads";
+      return process.env.VUE_APP_UPLOAD_URL || "/api/admin/uploads";
       // return "http://127.0.0.1:3000/api/admin/uploads";
     }
   },
