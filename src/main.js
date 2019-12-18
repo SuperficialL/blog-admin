@@ -14,6 +14,7 @@ Vue.use(mavonEditor);
 
 import "@/styles/index.scss";
 // global css
+
 import { getToken } from "@/utils/auth";
 
 // icon

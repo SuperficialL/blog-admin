@@ -44,7 +44,7 @@ export default {
         $scrollWrapper.scrollLeft = 0;
       } else if (lastTag === currentTag) {
         $scrollWrapper.scrollLeft =
-            $scrollWrapper.scrollWidth - $containerWidth;
+          $scrollWrapper.scrollWidth - $containerWidth;
       } else {
         // find preTag and nextTag
         const currentIndex = tagList.findIndex(item => item === currentTag);
@@ -52,15 +52,15 @@ export default {
         const nextTag = tagList[currentIndex + 1];
         // the tag's offsetLeft after of nextTag
         const afterNextTagOffsetLeft =
-            nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagAndTagSpacing;
+          nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagAndTagSpacing;
 
         // the tag's offsetLeft before of prevTag
         const beforePrevTagOffsetLeft =
-            prevTag.$el.offsetLeft - tagAndTagSpacing;
+          prevTag.$el.offsetLeft - tagAndTagSpacing;
 
         if (
           afterNextTagOffsetLeft >
-            $scrollWrapper.scrollLeft + $containerWidth
+          $scrollWrapper.scrollLeft + $containerWidth
         ) {
           $scrollWrapper.scrollLeft = afterNextTagOffsetLeft - $containerWidth;
         } else if (beforePrevTagOffsetLeft < $scrollWrapper.scrollLeft) {
@@ -72,19 +72,11 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-  .scroll-container {
-    white-space: nowrap;
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    /deep/ {
-      .el-scrollbar__bar {
-        bottom: 0px;
-      }
-      .el-scrollbar__wrap {
-        height: 49px;
-      }
-    }
-  }
+<style lang="scss" scoped>
+.scroll-container {
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
 </style>

@@ -112,7 +112,7 @@ import Pagination from "@/components/Pagination";
 import { getUserList, deleteUser } from "@/api/users";
 
 export default {
-  name: "site",
+  name: "UserList",
   components: { ToolBar, Pagination },
   data() {
     return {
@@ -169,4 +169,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped></style>
