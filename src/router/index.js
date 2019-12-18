@@ -17,7 +17,7 @@ export const constantRouterMap = [
     children: [
       {
         path: "/redirect/:path*",
-        component: () => import("@/views/redirect")
+        component: () => import("@/pages/redirect")
       }
     ]
   },
@@ -26,7 +26,7 @@ export const constantRouterMap = [
   {
     name: "login",
     path: "/login",
-    component: () => import("@/views/login"),
+    component: () => import("@/pages/login"),
     hidden: true
   },
 
@@ -38,7 +38,7 @@ export const constantRouterMap = [
     children: [
       {
         path: "home",
-        component: () => import("@/views/dashboard"),
+        component: () => import("@/pages/dashboard"),
         name: "Home",
         meta: {
           title: "首页",
@@ -62,7 +62,7 @@ export const constantRouterMap = [
     children: [
       {
         path: "create",
-        component: () => import("@/views/category/edit"),
+        component: () => import("@/pages/category/edit"),
         name: "CreateCategory",
         meta: {
           title: "创建分类",
@@ -72,7 +72,7 @@ export const constantRouterMap = [
       {
         path: "edit/:id",
         name: "EditCategory",
-        component: () => import("@/views/category/edit"),
+        component: () => import("@/pages/category/edit"),
         props: true,
         hidden: true,
         meta: {
@@ -82,7 +82,7 @@ export const constantRouterMap = [
       },
       {
         path: "list",
-        component: () => import("@/views/category/list"),
+        component: () => import("@/pages/category/list"),
         name: "CateogoryList",
         meta: {
           title: "分类列表",
@@ -105,7 +105,7 @@ export const constantRouterMap = [
     children: [
       {
         path: "create",
-        component: () => import("@/views/tags/edit"),
+        component: () => import("@/pages/tags/edit"),
         name: "CreateTag",
         meta: {
           title: "创建标签",
@@ -115,7 +115,7 @@ export const constantRouterMap = [
       {
         path: "edit/:id",
         name: "EditTag",
-        component: () => import("@/views/tags/edit"),
+        component: () => import("@/pages/tags/edit"),
         props: true,
         hidden: true,
         meta: {
@@ -125,7 +125,7 @@ export const constantRouterMap = [
       },
       {
         path: "list",
-        component: () => import("@/views/tags/list"),
+        component: () => import("@/pages/tags/list"),
         name: "TagList",
         meta: {
           title: "标签列表",
@@ -148,7 +148,7 @@ export const constantRouterMap = [
     children: [
       {
         path: "create",
-        component: () => import("@/views/post/edit"),
+        component: () => import("@/pages/post/edit"),
         name: "CreatePost",
         meta: {
           title: "创建文章",
@@ -158,7 +158,7 @@ export const constantRouterMap = [
       {
         path: "edit/:id",
         name: "EditPost",
-        component: () => import("@/views/post/edit"),
+        component: () => import("@/pages/post/edit"),
         props: true,
         hidden: true,
         meta: {
@@ -168,7 +168,7 @@ export const constantRouterMap = [
       },
       {
         path: "list",
-        component: () => import("@/views/post/list"),
+        component: () => import("@/pages/post/list"),
         name: "PostList",
         meta: {
           title: "文章列表",
@@ -191,7 +191,7 @@ export const constantRouterMap = [
     children: [
       {
         path: "create",
-        component: () => import("@/views/user/edit"),
+        component: () => import("@/pages/user/edit"),
         name: "CreateUser",
         meta: {
           title: "创建用户",
@@ -200,7 +200,7 @@ export const constantRouterMap = [
       },
       {
         path: "edit/:id",
-        component: () => import("@/views/user/edit"),
+        component: () => import("@/pages/user/edit"),
         name: "EditUser",
         meta: {
           title: "编辑用户",
@@ -211,7 +211,7 @@ export const constantRouterMap = [
       },
       {
         path: "list",
-        component: () => import("@/views/user/list"),
+        component: () => import("@/pages/user/list"),
         name: "UserList",
         meta: {
           title: "用户列表",
@@ -234,7 +234,7 @@ export const constantRouterMap = [
     children: [
       {
         path: "create",
-        component: () => import("@/views/comment/edit"),
+        component: () => import("@/pages/comment/edit"),
         name: "CreateComment",
         meta: {
           title: "创建评论",
@@ -243,7 +243,7 @@ export const constantRouterMap = [
       },
       {
         path: "edit/:id",
-        component: () => import("@/views/comment/edit"),
+        component: () => import("@/pages/comment/edit"),
         name: "EditComment",
         meta: {
           title: "编辑评论",
@@ -254,7 +254,7 @@ export const constantRouterMap = [
       },
       {
         path: "list",
-        component: () => import("@/views/comment/list"),
+        component: () => import("@/pages/comment/list"),
         name: "CommentList",
         meta: {
           title: "评论列表",
@@ -277,7 +277,7 @@ export const constantRouterMap = [
     children: [
       {
         path: "list",
-        component: () => import("@/views/site/list"),
+        component: () => import("@/pages/site/list"),
         name: "SiteSettings",
         meta: {
           title: "站点设置",
@@ -287,7 +287,7 @@ export const constantRouterMap = [
 
       {
         path: "timeline",
-        component: () => import("@/views/site/list"),
+        component: () => import("@/pages/site/list"),
         name: "TimeLine",
         meta: {
           title: "时间轴",
@@ -298,7 +298,7 @@ export const constantRouterMap = [
       // {
       //   path: "timeline",
       //   component: () =>
-      //     import(/* webpackChunkName: 'sitesetting' */ "@/views/site/list"),
+      //     import(/* webpackChunkName: 'sitesetting' */ "@/pages/site/list"),
       //   name: "TimeLine",
       //   meta: {
       //     title: "时间轴",
@@ -308,7 +308,7 @@ export const constantRouterMap = [
 
       {
         path: "banner",
-        component: () => import("@/views/site/list"),
+        component: () => import("@/pages/site/list"),
         name: "BannerList",
         meta: {
           title: "轮播设置",
@@ -327,7 +327,7 @@ export const constantRouterMap = [
     children: [
       {
         path: "index",
-        component: () => import("@/views/profile"),
+        component: () => import("@/pages/profile"),
         name: "Profile",
         meta: {
           title: "个人中心",
@@ -336,7 +336,7 @@ export const constantRouterMap = [
       },
       {
         path: "settings",
-        component: () => import("@/views/profile/settings"),
+        component: () => import("@/pages/profile/settings"),
         name: "Settings",
         meta: {
           title: "个人设置",
@@ -348,7 +348,7 @@ export const constantRouterMap = [
 
   {
     path: "/404",
-    component: () => import("@/views/errorPage/404"),
+    component: () => import("@/pages/errorPage/404"),
     hidden: true
   },
 
