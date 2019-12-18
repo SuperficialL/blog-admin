@@ -109,7 +109,12 @@
           </el-dialog>
         </el-form-item>
 
-        <mavon-editor v-model="model.content" @change="saveMavon" />
+        <mavon-editor
+          v-model="model.content"
+          @change="saveMavon"
+          @imgAdd="imgAdd"
+          @imgDel="imgDel"
+        />
 
         <el-form-item>
           <el-button type="primary" native-type="submit">保存</el-button>
@@ -124,12 +129,15 @@ import { getArticle, updateArticle, createArticle } from "@/api/articles";
 import { getCategories } from "@/api/category";
 import { getTags } from "@/api/tags";
 import { getUserList } from "@/api/users";
+import { uploadImg } from "@/api/upload";
 export default {
   name: "PostDetail",
   props: ["id"],
   data() {
     return {
       model: {},
+      // 富文本中的图片
+      imgs: {},
       rules: {
         title: [
           {
@@ -174,11 +182,11 @@ export default {
   },
 
   methods: {
-    // 移除图片
+    // 移除封面图片
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      window.console.log(file, fileList);
     },
-    // 设置图片回调地址
+    // 设置封面图片回调地址
     handlePictureCardPreview(file) {
       this.model.thumbnail = file.url;
       // this.$set(this.model, "thumbnail", file.url);
@@ -205,6 +213,7 @@ export default {
         this.userListOptions = res.data.users;
       }
     },
+
     // 获取标签
     async fetchTags() {
       const res = await getTags();
@@ -212,13 +221,13 @@ export default {
         this.tagListOptions = res.data.tags;
       }
     },
+
     // 保存，更新数据
     save(formName) {
       this.loading = true;
       this.$refs[formName].validate(async valid => {
         if (valid) {
           let res;
-          console.log(this.model);
           if (this.id) {
             // id 存在,修改数据
             res = await updateArticle(this.id, this.model);
@@ -239,10 +248,36 @@ export default {
         }
       });
     },
-    // 获取文本消息
+
+    // 获取文章详情文本
     saveMavon(value, html) {
       this.model.renderContent = html;
     },
+
+    // 文章内容图片上传
+    imgAdd(pos, file) {
+      // pos:图片位置 file: 文件
+      this.imgs[pos] = file;
+    },
+
+    // 文章内容图片删除
+    imgDel(pos) {
+      delete this.imgs[pos];
+    },
+
+    // 上传富文本编辑器中的图片
+    async uploadRichTextImg() {
+      let formData = new FormData();
+      for (let key in this.imgs) {
+        formData.append(key, this.imgs[key]);
+      }
+      const res = await uploadImg();
+      console.log(res, "res");
+      // if (res.code === 200) {
+
+      // }
+    },
+
     UploadSuccess(res) {
       // 设置图片上传后的地址
       this.$set(this.model, "thumbnail", res.url);

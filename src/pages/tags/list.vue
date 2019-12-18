@@ -13,9 +13,9 @@
       >
         <el-table-column align="center" label="序号" type="index" width="80">
           <template slot-scope="scope">
-            <span>{{
-              (listQuery.page - 1) * listQuery.per_page + scope.$index + 1
-            }}</span>
+            <span>
+              {{ (listQuery.page - 1) * listQuery.per_page + scope.$index + 1 }}
+            </span>
           </template>
         </el-table-column>
 
@@ -34,9 +34,9 @@
           prop="created_time"
           label="创建时间"
         >
-          <template slot-scope="scope">{{
-            scope.row.created_time | dateFormat
-          }}</template>
+          <template slot-scope="scope">
+            {{ scope.row.created_time | dateFormat }}
+          </template>
         </el-table-column>
 
         <el-table-column
@@ -46,9 +46,9 @@
           prop="updated_time"
           label="最后修改时间"
         >
-          <template slot-scope="scope">{{
-            scope.row.updated_time | dateFormat
-          }}</template>
+          <template slot-scope="scope">
+            {{ scope.row.updated_time | dateFormat }}
+          </template>
         </el-table-column>
 
         <el-table-column label="操作" align="center">

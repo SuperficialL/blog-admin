@@ -32,7 +32,7 @@ module.exports = {
         }
       },
       "/uploads": {
-        target: "http://127.0.0.1:3000/admin/uploads",
+        target: "http://127.0.0.1:3000",
         changeOrigin: true,
         ws: true
         // pathRewrite: {
@@ -53,7 +53,6 @@ module.exports = {
   chainWebpack: config => {
     /* 添加分析工具 */
     if (process.env.NODE_ENV === "production") {
-      config.mode = "production";
       config
         .plugin("webpack-bundle-analyzer")
         .use(require("webpack-bundle-analyzer").BundleAnalyzerPlugin)
