@@ -3,7 +3,6 @@
     <tool-bar />
     <div class="content">
       <el-table
-        :default-sort="{ order: 'descending', prop: 'created_time' }"
         v-loading="loading"
         :data="list"
         border

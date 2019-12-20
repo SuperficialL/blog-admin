@@ -4,7 +4,6 @@
     <tool-bar />
     <div class="content">
       <el-table
-        :default-sort="{ prop: 'created_time', order: 'descending' }"
         :data="list"
         v-loading="loading"
         ref="multipleTable"
