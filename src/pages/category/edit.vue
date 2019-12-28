@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h1>{{id? '编辑':'新建'}}分类</h1>
+    <h1>{{ id ? "编辑" : "新建" }}分类</h1>
     <el-form
       :model="model"
       :rules="rules"
@@ -10,11 +10,16 @@
     >
       <el-form-item label="父级分类">
         <el-select v-model="model.parent">
-          <el-option v-for="item in parents" :key="item._id" :label="item.name" :value="item._id"></el-option>
+          <el-option
+            v-for="item in parents"
+            :key="item._id"
+            :label="item.name"
+            :value="item._id"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="名称" prop="name">
-        <el-input v-model="model.name"></el-input>
+        <el-input v-model.trim="model.name"></el-input>
       </el-form-item>
       <el-form-item label="路径">
         <el-input v-model="model.path"></el-input>
@@ -22,6 +27,9 @@
       <el-form-item label="图标">
         <el-input v-model="model.icon"></el-input>
         <Icon @icon="getIcon" />
+      </el-form-item>
+      <el-form-item label="排序">
+        <el-input v-model.number="model.ordering"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">保存</el-button>

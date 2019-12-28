@@ -11,64 +11,40 @@
         style="width: 100%"
       >
         <el-table-column align="center" label="序号" width="60">
-          <template slot-scope="scope">
+          <template slot-scope="{ row, $index }">
             <span>{{
-              (listQuery.page - 1) * listQuery.per_page + scope.$index + 1
+              (listQuery.page - 1) * listQuery.per_page + $index + 1
             }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column
-          width="300px"
-          align="center"
-          sortable
-          prop="title"
-          label="标题"
-        >
-          <template slot-scope="scope">
-            <span>{{ scope.row.title }}</span>
+        <el-table-column width="300px" align="center" sortable label="标题">
+          <template slot-scope="{ row }">
+            <span>{{ row.title }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column
-          width="100px"
-          align="center"
-          sortable
-          prop="username"
-          label="作者"
-        >
-          <template slot-scope="scope">
-            <span>{{ scope.row.author.username }}</span>
+        <el-table-column width="100px" align="center" sortable label="作者">
+          <template slot-scope="{ row }">
+            <span>{{ row.author.username }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column
-          width="100px"
-          align="center"
-          sortable
-          prop="name"
-          label="分类"
-        >
-          <template slot-scope="scope">
-            <span>{{ scope.row.category.name }}</span>
+        <el-table-column width="100px" align="center" sortable label="分类">
+          <template slot-scope="{ row }">
+            <span>{{ row.category.name }}</span>
           </template>
         </el-table-column>
 
         <el-table-column width="160px" align="center" label="标签">
-          <template slot-scope="scope">
-            <el-tag v-for="(tag, index) in scope.row.tags" :key="index">{{
-              tag.title
-            }}</el-tag>
+          <template slot-scope="{ row }">
+            <el-tag v-for="(tag, index) in row.tags" :key="index">
+              {{ tag.title }}
+            </el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column
-          width="100px"
-          align="center"
-          sortable
-          prop="status"
-          label="状态"
-        >
+        <el-table-column width="100px" align="center" sortable label="状态">
           <template slot-scope="{ row }">
             <el-tag effect="dark" :type="row.status ? 'success' : 'danger'">
               {{ row.status | statusFilter }}
@@ -76,27 +52,21 @@
           </template>
         </el-table-column>
 
-        <el-table-column
-          width="100px"
-          align="center"
-          sortable
-          prop="views"
-          label="访问量"
-        >
-          <template slot-scope="scope">
-            <span>{{ scope.row.views }}</span>
+        <el-table-column width="100px" align="center" sortable label="访问量">
+          <template slot-scope="{ row }">
+            <span>{{ row.views }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column
-          width="100px"
-          align="center"
-          sortable
-          prop="likes"
-          label="评论数"
-        >
-          <template slot-scope="scope">
-            <span>{{ scope.row.likes }}</span>
+        <el-table-column width="100px" align="center" sortable label="点赞数">
+          <template slot-scope="{ row }">
+            <span>{{ row.likes }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column width="100px" align="center" sortable label="评论数">
+          <template slot-scope="{ row }">
+            <span>{{ row.comments }}</span>
           </template>
         </el-table-column>
 

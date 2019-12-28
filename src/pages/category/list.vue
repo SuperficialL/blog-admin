@@ -8,58 +8,43 @@
         border
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
-        <!-- <el-table-column
-          align="center"
-          label="序号"
-          type="index"
-          width="80"
-        >
-          <template slot-scope="scope">
-            <span>{{(listQuery.page - 1) * listQuery.per_page + scope.$index + 1}}</span>
-          </template>
-        </el-table-column>-->
-        <el-table-column prop="name" label="分类名称" sortable align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.name }}</span>
+        <el-table-column label="分类名称" sortable align="center">
+          <template slot-scope="{ row }">
+            <span>{{ row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="path" label="路径" sortable align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.path }}</span>
+        <el-table-column label="路径" sortable align="center">
+          <template slot-scope="{ row }">
+            <span>{{ row.path }}</span>
           </template></el-table-column
         >
-        <el-table-column prop="icon" label="图标" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.icon }}</span>
+        <el-table-column label="图标" align="center">
+          <template slot-scope="{ row }">
+            <span>{{ row.icon }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          label="创建时间"
-          align="center"
-          sortable
-          prop="created_time"
-        >
-          <template slot-scope="scope">
-            {{ scope.row.created_time | dateFormat }}
+        <el-table-column align="center" label="排序" width="80">
+          <template slot-scope="{ row }">
+            <span>{{ row.ordering }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          label="修改时间"
-          align="center"
-          sortable
-          prop="updated_time"
-        >
+        <el-table-column label="创建时间" align="center" sortable>
+          <template slot-scope="{ row }">
+            {{ row.created_time | dateFormat }}
+          </template>
+        </el-table-column>
+        <el-table-column label="修改时间" align="center" sortable>
           <template slot-scope="scope">{{
             scope.row.updated_time | dateFormat
           }}</template>
         </el-table-column>
         <el-table-column label="操作" align="center">
-          <template slot-scope="scope">
+          <template slot-scope="{ row }">
             <el-tooltip effect="dark" content="编辑" placement="top">
               <el-button
                 type="primary"
                 size="small"
-                @click="$router.push(`/category/edit/${scope.row._id}`)"
+                @click="$router.push(`/category/edit/${row._id}`)"
                 icon="el-icon-edit"
               />
             </el-tooltip>
@@ -69,7 +54,7 @@
                 type="danger"
                 size="small"
                 icon="el-icon-delete"
-                @click="remove(scope.row)"
+                @click="remove(row)"
               />
             </el-tooltip>
           </template>
