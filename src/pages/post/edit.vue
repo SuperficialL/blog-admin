@@ -110,6 +110,7 @@
         </el-form-item>
 
         <mavon-editor
+          ref="md"
           v-model="model.content"
           @change="saveMavon"
           @imgAdd="imgAdd"
@@ -254,28 +255,27 @@ export default {
       this.model.renderContent = html;
     },
 
-    // 文章内容图片上传
+    // 文章详情中图片上传
     imgAdd(pos, file) {
       // pos:图片位置 file: 文件
       this.imgs[pos] = file;
+      this.uploadRichTextImg(pos, file);
     },
 
-    // 文章内容图片删除
+    // 文章详情中图片删除
     imgDel(pos) {
+      // pos 图片索引
       delete this.imgs[pos];
     },
 
     // 上传富文本编辑器中的图片
-    async uploadRichTextImg() {
+    async uploadRichTextImg(pos, file) {
       let formData = new FormData();
-      for (let key in this.imgs) {
-        formData.append(key, this.imgs[key]);
+      formData.append("file", file);
+      const res = await uploadImg(formData);
+      if (res.code === 200) {
+        this.$refs.md.$img2Url(pos, res.url);
       }
-      const res = await uploadImg();
-      console.log(res, "res");
-      // if (res.code === 200) {
-
-      // }
     },
 
     UploadSuccess(res) {

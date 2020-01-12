@@ -264,6 +264,49 @@ export const constantRouterMap = [
     ]
   },
 
+  /** 任务 */
+  {
+    path: "/tasks",
+    component: Layout,
+    redirect: "/tasks/list",
+    name: "Task",
+    meta: {
+      title: "任务管理",
+      icon: "documentation"
+    },
+    children: [
+      {
+        path: "create",
+        component: () => import("@/pages/tasks/edit"),
+        name: "CreateTask",
+        meta: {
+          title: "创建任务",
+          icon: "edit"
+        }
+      },
+      {
+        path: "edit/:id",
+        name: "EditTask",
+        component: () => import("@/pages/tasks/edit"),
+        props: true,
+        hidden: true,
+        meta: {
+          title: "编辑任务",
+          noCache: true
+        }
+      },
+      {
+        path: "list",
+        component: () => import("@/pages/tasks/list"),
+        name: "TaskList",
+        meta: {
+          title: "任务列表",
+          icon: "list"
+        }
+      }
+    ]
+  },
+
   /** 设置 */
   {
     path: "/site",
