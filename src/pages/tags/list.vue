@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <tool-bar />
+    <table-header />
     <div class="content">
       <el-table
         v-loading="loading"
@@ -83,12 +83,12 @@
 </template>
 
 <script>
-import ToolBar from "@/components/ToolBar";
+import TableHeader from "@/components/TableHeader";
 import Pagination from "@/components/Pagination";
 import { getTags, deleteTag } from "@/api/tags";
 
 export default {
-  components: { ToolBar, Pagination },
+  components: { TableHeader, Pagination },
   data() {
     return {
       list: [],

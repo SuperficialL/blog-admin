@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <!--工具条-->
-    <tool-bar />
+    <table-header />
     <div class="content">
       <el-table
         :data="list"
@@ -106,13 +106,13 @@
 </template>
 
 <script>
-import ToolBar from "@/components/ToolBar";
+import TableHeader from "@/components/TableHeader";
 import Pagination from "@/components/Pagination";
 import { getUserList, deleteUser } from "@/api/users";
 
 export default {
   name: "site",
-  components: { ToolBar, Pagination },
+  components: { TableHeader, Pagination },
   data() {
     return {
       listQuery: {

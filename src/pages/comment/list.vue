@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <!--工具条-->
-    <tool-bar />
+    <table-header />
 
     <el-table
       v-loading="loading"
@@ -102,13 +102,13 @@
 </template>
 
 <script>
+import TableHeader from "@/components/TableHeader";
 import Pagination from "@/components/Pagination";
-import ToolBar from "@/components/ToolBar";
 import { getComments, deleteComment } from "@/api/comments";
 
 export default {
   name: "CommentList",
-  components: { ToolBar, Pagination },
+  components: { TableHeader, Pagination },
   data() {
     return {
       listQuery: {

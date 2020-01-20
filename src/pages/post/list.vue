@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <tool-bar />
+    <table-header />
     <div class="content">
       <el-table
         v-loading="loading"
@@ -119,11 +119,11 @@
 <script>
 import { getArticles, deleteArticle } from "@/api/articles";
 import Pagination from "@/components/Pagination";
-import ToolBar from "@/components/ToolBar";
+import TableHeader from "@/components/TableHeader";
 
 export default {
   name: "PostList",
-  components: { ToolBar, Pagination },
+  components: { TableHeader, Pagination },
   data() {
     return {
       list: null,

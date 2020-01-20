@@ -5,8 +5,8 @@
       :model="loginForm"
       :rules="loginRules"
       class="login-form"
-      auto-complete="on"
       label-position="left"
+      autocomplete="off"
     >
       <div class="title-container">
         <h3 class="title">后台管理系统</h3>
@@ -16,9 +16,12 @@
         <el-input
           v-model="loginForm.username"
           placeholder="请输入用户名"
-          name="username"
           autocomplete="off"
-        ></el-input>
+        >
+          <template slot="prepend">
+            <el-icon name="user"></el-icon>
+          </template>
+        </el-input>
       </el-form-item>
 
       <el-form-item prop="password">
@@ -26,10 +29,13 @@
           v-model="loginForm.password"
           show-password
           placeholder="请输入密码"
-          name="password"
           autocomplete="off"
           @keyup.enter.native="handleLogin"
-        />
+        >
+          <template slot="prepend">
+            <el-icon name="lock"></el-icon>
+          </template>
+        </el-input>
       </el-form-item>
       <el-button
         :loading="loading"
@@ -60,9 +66,7 @@ export default {
           { min: 6, message: "密码长度少于6位~", trigger: "blur" }
         ]
       },
-      passwordType: "password",
       loading: false,
-      showDialog: false,
       redirect: undefined
     };
   },
@@ -75,13 +79,6 @@ export default {
     }
   },
   methods: {
-    showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
-      } else {
-        this.passwordType = "password";
-      }
-    },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -116,31 +113,23 @@ export default {
 $bg: #283443;
 $light_gray: #eee;
 $cursor: #fff;
-
-@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
-    color: $cursor;
-    &::first-line {
-      color: $light_gray;
-    }
-  }
-}
-
-/* reset element-ui css */
 .login-container {
   .el-input {
-    display: inline-block;
-    height: 47px;
-    width: 100%;
     input {
-      height: 47px;
-      padding: 12px 5px 12px 15px;
       background: transparent;
       border: 0px;
       -webkit-appearance: none;
       border-radius: 0px;
       color: $light_gray;
       caret-color: $cursor;
+      outline: none;
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus,
+      &:-webkit-autofill:active {
+        transition-delay: 99999s;
+        transition: color 99999s ease-out, background-color 99999s ease-out;
+      }
     }
   }
   .el-form-item {
@@ -148,6 +137,11 @@ $cursor: #fff;
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #454545;
+  }
+  .el-input-group__append,
+  .el-input-group__prepend {
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
   }
 }
 </style>
@@ -170,13 +164,6 @@ $light_gray: #eee;
     margin: 50px;
     overflow: hidden;
   }
-  .svg-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
-  }
   .title-container {
     position: relative;
     .title {
@@ -186,34 +173,6 @@ $light_gray: #eee;
       text-align: center;
       font-weight: bold;
     }
-  }
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
-    cursor: pointer;
-    user-select: none;
-  }
-  &::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-    background: #e4e4e4;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: #9466ff;
-    background-image: -webkit-linear-gradient(
-      45deg,
-      hsla(0, 0%, 100%, 0.2) 25%,
-      transparent 0,
-      transparent 50%,
-      hsla(0, 0%, 100%, 0.2) 0,
-      hsla(0, 0%, 100%, 0.2) 75%,
-      transparent 0,
-      transparent
-    );
   }
 }
 </style>

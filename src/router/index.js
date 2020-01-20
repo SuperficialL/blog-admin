@@ -389,6 +389,25 @@ export const constantRouterMap = [
     ]
   },
 
+  /** 系统设置 */
+  {
+    path: "/system",
+    component: Layout,
+    redirect: "/system/menu",
+    hidden: true,
+    children: [
+      {
+        path: "menu",
+        component: () => import("@/pages/system/menu"),
+        name: "Menu",
+        meta: {
+          title: "菜单管理",
+          icon: "menu"
+        }
+      }
+    ]
+  },
+
   {
     path: "/404",
     component: () => import("@/pages/errorPage/404"),

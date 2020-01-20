@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <tool-bar />
+    <table-header />
     <div class="content">
       <el-table :data="tasks" border>
         <el-table-column label="任务名称" sortable align="center">
@@ -74,12 +74,12 @@
 </template>
 
 <script>
-import ToolBar from "@/components/ToolBar";
+import TableHeader from "@/components/TableHeader";
 import Pagination from "@/components/Pagination";
 import { getTasks, deleteTask } from "@/api/tasks";
 export default {
   components: {
-    ToolBar,
+    TableHeader,
     Pagination
   },
   data() {

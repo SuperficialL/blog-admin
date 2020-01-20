@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <tool-bar />
+    <table-header />
     <div class="content">
       <el-table
         :data="categories"
@@ -34,9 +34,9 @@
           </template>
         </el-table-column>
         <el-table-column label="修改时间" align="center" sortable>
-          <template slot-scope="scope">{{
-            scope.row.updated_time | dateFormat
-          }}</template>
+          <template slot-scope="{ row }">
+            {{ row.updated_time | dateFormat }}
+          </template>
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="{ row }">
@@ -73,13 +73,13 @@
 </template>
 
 <script>
-import ToolBar from "@/components/ToolBar";
+import TableHeader from "@/components/TableHeader";
 import Pagination from "@/components/Pagination";
 import { getCategories, deleteCategory } from "@/api/category";
 import translateToTree from "@/utils/dataToTree";
 export default {
   components: {
-    ToolBar,
+    TableHeader,
     Pagination
   },
   data() {
