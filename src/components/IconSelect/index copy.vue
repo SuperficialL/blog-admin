@@ -12,28 +12,21 @@
         <ul class="icon-content">
           <li
             class="icon-item"
-            v-for="(icon,index) in icons"
+            v-for="(icon, index) in icons"
             :key="index"
             @click="setIcon(icon)"
           >
-            <i
-              class="icon"
-              :class="icon"
-            ></i>
-            <span class="icon-name">{{icon}}</span>
+            <i class="icon" :class="icon"></i>
+            <span class="icon-name">{{ icon }}</span>
           </li>
         </ul>
       </div>
 
-      <span
-        slot="footer"
-        class="dialog-footer"
-      >
+      <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button
-          type="primary"
-          @click="dialogVisible = false"
-        >确 定</el-button>
+        <el-button type="primary" @click="dialogVisible = false"
+          >确 定</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -41,7 +34,7 @@
 
 <script>
 export default {
-  name: "Icon",
+  name: "IconSelect",
   data() {
     return {
       dialogVisible: false,
@@ -347,96 +340,96 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .icon-wrap {
-    height: inherit;
-    overflow-x: scroll;
-    &::-webkit-scrollbar {
-      width: 5px;
-      height: 6px;
-      border-radius: 6px;
-      background-color: transparent;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: transparent;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .icon-content {
-      margin: 0 20px;
+.icon-wrap {
+  height: inherit;
+  overflow-x: scroll;
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 6px;
+    border-radius: 6px;
+    background-color: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .icon-content {
+    margin: 0 20px;
+    list-style: none;
+    .icon-item {
+      position: relative;
+      float: left;
+      width: 16.66%;
+      height: 100px;
+      margin: 3px 0;
+      padding: 10px 0 0;
+      overflow: hidden;
+      color: #555;
+      text-align: center;
       list-style: none;
-      .icon-item {
-        position: relative;
-        float: left;
-        width: 16.66%;
-        height: 100px;
-        margin: 3px 0;
-        padding: 10px 0 0;
-        overflow: hidden;
-        color: #555;
+      background-color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      -webkit-transition: color 0.3s ease-in-out,
+        background-color 0.3s ease-in-out;
+      transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+      .icon {
+        margin: 12px 0 8px;
+        font-size: 36px;
+        -webkit-transition: -webkit-transform 0.3s ease-in-out;
+        transition: -webkit-transform 0.3s ease-in-out;
+        transition: transform 0.3s ease-in-out;
+        transition: transform 0.3s ease-in-out,
+          -webkit-transform 0.3s ease-in-out;
+        will-change: transform;
+      }
+      .icon-name {
+        display: block;
+        font-family: "Lucida Console", Consolas, Monaco, "Andale Mono",
+          "Ubuntu Mono", monospace;
+        white-space: wrap;
         text-align: center;
-        list-style: none;
-        background-color: #fff;
-        border-radius: 4px;
-        cursor: pointer;
-        -webkit-transition: color 0.3s ease-in-out,
-          background-color 0.3s ease-in-out;
-        transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+      }
+      &:hover {
+        color: #fff;
+        background-color: #1890ff;
         .icon {
-          margin: 12px 0 8px;
-          font-size: 36px;
-          -webkit-transition: -webkit-transform 0.3s ease-in-out;
-          transition: -webkit-transform 0.3s ease-in-out;
-          transition: transform 0.3s ease-in-out;
-          transition: transform 0.3s ease-in-out,
-            -webkit-transform 0.3s ease-in-out;
-          will-change: transform;
-        }
-        .icon-name {
-          display: block;
-          font-family: "Lucida Console", Consolas, Monaco, "Andale Mono",
-            "Ubuntu Mono", monospace;
-          white-space: wrap;
-          text-align: center;
-        }
-        &:hover {
-          color: #fff;
-          background-color: #1890ff;
-          .icon {
-            -webkit-transform: scale(1.4);
-            -ms-transform: scale(1.4);
-            transform: scale(1.4);
-          }
+          -webkit-transform: scale(1.4);
+          -ms-transform: scale(1.4);
+          transform: scale(1.4);
         }
       }
     }
   }
+}
 </style>
 
 <style lang="scss">
-  .el-dialog__wrapper {
+.el-dialog__wrapper {
+  overflow: hidden;
+  .icon-wrap:hover::-webkit-scrollbar-thumb {
+    background-color: #666;
+  }
+  .el-dialog {
     overflow: hidden;
-    .icon-wrap:hover::-webkit-scrollbar-thumb {
-      background-color: #666;
-    }
-    .el-dialog {
-      overflow: hidden;
-    }
-    .el-dialog__body {
-      height: 500px;
-      padding: 0;
-      box-sizing: border-box;
-      overflow: hidden;
+  }
+  .el-dialog__body {
+    height: 500px;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
 
-      .el-scrollbar {
-        height: 100%;
-      }
-      .el-scrollbar__wrap {
-        height: 100%;
-        overflow-x: scroll !important;
-      }
+    .el-scrollbar {
+      height: 100%;
     }
-    .el-dialog__footer {
-      border-top: 1px solid #eee;
+    .el-scrollbar__wrap {
+      height: 100%;
+      overflow-x: scroll !important;
     }
   }
+  .el-dialog__footer {
+    border-top: 1px solid #eee;
+  }
+}
 </style>

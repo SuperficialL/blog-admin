@@ -10,9 +10,7 @@ module.exports = {
   // assetsDir: "./static",
   // 输出位置
   outputDir: "../koa-server/public/admin",
-
   lintOnSave: true,
-
   // 生产环境是否生成 sourceMap 文件
   productionSourceMap: false,
 
@@ -55,18 +53,18 @@ module.exports = {
       config.plugins.delete("preload");
       config.plugins.delete("prefetch");
 
-      return {
-        plugins: [
-          new CompressionPlugin({
-            test: /\.js$|\.html$|\.css/,
-            // 匹配文件名
-            threshold: 1024,
-            // 对超过1k的数据进行压缩
-            deleteOriginalAssets: false
-            // 是否删除原文件
-          })
-        ]
-      };
+      // return {
+      //   plugins: [
+      //     new CompressionPlugin({
+      //       test: /\.js$|\.html$|\.css/,
+      //       // 匹配文件名
+      //       threshold: 1024,
+      //       // 对超过1k的数据进行压缩
+      //       deleteOriginalAssets: false
+      //       // 是否删除原文件
+      //     })
+      //   ]
+      // };
     }
     // webpack链接API，用于生成和修改webpack配置
     config.module
@@ -83,6 +81,17 @@ module.exports = {
       .loader("svg-sprite-loader")
       .options({
         symbolId: "icon-[name]"
-      });
+      })
+      .end()
+
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .loader('vue-loader')
+      .tap(options => {
+        options.compilerOptions.preserveWhitespace = true
+        return options
+      })
+      .end()
   }
 };

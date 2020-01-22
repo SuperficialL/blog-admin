@@ -30,33 +30,60 @@
           show-password
           placeholder="请输入密码"
           autocomplete="off"
-          @keyup.enter.native="handleLogin"
         >
           <template slot="prepend">
             <el-icon name="lock"></el-icon>
           </template>
         </el-input>
       </el-form-item>
+
+      <el-form-item prop="captcha">
+        <el-input
+          v-model="loginForm.captcha"
+          placeholder="请输入验证码"
+          autocomplete="off"
+          @keyup.enter.native="handleLogin"
+        >
+          <template slot="append">
+            <div class="captcha" v-html="captcha" @click="refresh"></div>
+          </template>
+        </el-input>
+      </el-form-item>
+
       <el-button
         :loading="loading"
         type="primary"
         style="width:100%;margin-bottom:30px;"
         @click.native.prevent="handleLogin"
-        >登录</el-button
       >
+        登录
+      </el-button>
     </el-form>
   </div>
 </template>
 
 <script>
+import { getCaptcha } from "@/api/captcha";
 export default {
   name: "login",
   data() {
+    var validateCaptcha = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入验证码~"));
+      } else if (value !== this.text) {
+        callback(new Error("验证码不正确~"));
+      } else {
+        callback();
+      }
+    };
     return {
+      captcha: "",
       loginForm: {
         username: "",
-        password: ""
+        password: "",
+        captcha: ""
       },
+      text: "",
       loginRules: {
         username: [
           { required: true, message: "用户名不可为空~", trigger: "blur" }
@@ -64,7 +91,8 @@ export default {
         password: [
           { required: true, message: "密码不可为空~", trigger: "blur" },
           { min: 6, message: "密码长度少于6位~", trigger: "blur" }
-        ]
+        ],
+        captcha: [{ validator: validateCaptcha, trigger: "blur" }]
       },
       loading: false,
       redirect: undefined
@@ -79,6 +107,16 @@ export default {
     }
   },
   methods: {
+    refresh() {
+      this.fetchCaptcha();
+    },
+    async fetchCaptcha() {
+      const res = await getCaptcha();
+      if (res.code === 200) {
+        this.captcha = res.captcha;
+        this.text = res.text;
+      }
+    },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -97,14 +135,13 @@ export default {
               this.loading = false;
             });
         } else {
-          this.$message({
-            type: "error",
-            message: "错误提交~"
-          });
           return false;
         }
       });
     }
+  },
+  created() {
+    this.fetchCaptcha();
   }
 };
 </script>
@@ -173,6 +210,10 @@ $light_gray: #eee;
       text-align: center;
       font-weight: bold;
     }
+  }
+  .captcha {
+    height: 36px;
+    line-height: 36px;
   }
 }
 </style>

@@ -16,11 +16,11 @@
         <el-table-column label="路径" sortable align="center">
           <template slot-scope="{ row }">
             <span>{{ row.path }}</span>
-          </template></el-table-column
-        >
+          </template>
+        </el-table-column>
         <el-table-column label="图标" align="center">
           <template slot-scope="{ row }">
-            <span>{{ row.icon }}</span>
+            <i class="icon" :class="row.icon"></i>
           </template>
         </el-table-column>
         <el-table-column align="center" label="排序" width="80">
@@ -132,3 +132,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.content .icon {
+  font-size: 23px;
+}
+</style>

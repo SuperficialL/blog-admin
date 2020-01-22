@@ -30,7 +30,7 @@ export const constantRouterMap = [
     hidden: true
   },
 
-  /** 首页 */
+  /** 仪表盘 */
   {
     path: "/",
     component: Layout,
@@ -338,17 +338,6 @@ export const constantRouterMap = [
         }
       },
 
-      // {
-      //   path: "timeline",
-      //   component: () =>
-      //     import(/* webpackChunkName: 'sitesetting' */ "@/pages/site/list"),
-      //   name: "TimeLine",
-      //   meta: {
-      //     title: "时间轴",
-      //     icon: "list"
-      //   }
-      // },
-
       {
         path: "banner",
         component: () => import("@/pages/site/list"),
@@ -394,7 +383,11 @@ export const constantRouterMap = [
     path: "/system",
     component: Layout,
     redirect: "/system/menu",
-    hidden: true,
+    name: "System",
+    meta: {
+      title: "系统设置",
+      icon: "documentation"
+    },
     children: [
       {
         path: "menu",
@@ -403,6 +396,15 @@ export const constantRouterMap = [
         meta: {
           title: "菜单管理",
           icon: "menu"
+        }
+      },
+      {
+        path: "user",
+        component: () => import("@/pages/system/user"),
+        name: "User",
+        meta: {
+          title: "用户管理",
+          icon: "user"
         }
       }
     ]

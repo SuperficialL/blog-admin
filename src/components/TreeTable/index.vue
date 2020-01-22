@@ -51,6 +51,7 @@
         </template>
       </template>
     </el-table-column>
+    <slot />
   </el-table>
 </template>
 
@@ -67,8 +68,6 @@ export default {
       type: Array,
       default: () => []
     },
-    evalFunc: Function,
-    evalArgs: Array,
     expandAll: {
       type: Boolean,
       default: false
@@ -95,12 +94,18 @@ export default {
     rowStyle({ row, rowIndex }) {
       const show = row.parent ? row.parent._expanded && row.parent._show : true;
       row._show = show;
-      return show
-        ? {
-            animation: "treeTableShow 1s",
-            "-webkit-animation": "treeTableShow 1s"
-          }
-        : { display: "none" };
+      let style;
+      if (show) {
+        style = {
+          animation: "treeTableShow 1s",
+          "-webkit-animation": "treeTableShow 1s"
+        };
+      } else {
+        style = {
+          display: "none"
+        };
+      }
+      return style;
     },
     // 切换下级是否展开
     toggleExpanded: function(trIndex) {
@@ -133,7 +138,7 @@ export default {
 }
 </style>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style lang="scss" scoped>
 $color-blue: #2196f3;
 $space-width: 18px;
 .ms-tree-space {

@@ -25,8 +25,23 @@
         <el-input v-model="model.path"></el-input>
       </el-form-item>
       <el-form-item label="图标">
-        <el-input v-model="model.icon"></el-input>
-        <Icon @icon="getIcon" />
+        <el-popover placement="bottom-start" width="650" trigger="click">
+          <icon-select ref="iconSelect" @selected="selected" />
+          <el-input
+            slot="reference"
+            v-model="model.icon"
+            placeholder="点击选择图标"
+            readonly
+          >
+            <i
+              v-if="model.icon"
+              slot="prefix"
+              :class="model.icon"
+              class="el-input__icon"
+            />
+            <i v-else slot="prefix" class="el-icon-search el-input__icon" />
+          </el-input>
+        </el-popover>
       </el-form-item>
       <el-form-item label="排序">
         <el-input v-model.number="model.ordering"></el-input>
@@ -39,7 +54,7 @@
 </template>
 
 <script>
-import Icon from "@/components/Icons";
+import IconSelect from "@/components/IconSelect";
 import {
   getCategory,
   getCategories,
@@ -48,7 +63,8 @@ import {
 } from "@/api/category";
 
 export default {
-  components: { Icon },
+  name: "Edit",
+  components: { IconSelect },
   props: {
     id: {}
   },
@@ -71,7 +87,7 @@ export default {
   },
   methods: {
     // 获取Icon
-    getIcon(icon) {
+    selected(icon) {
       this.model.icon = icon;
     },
     // 保存数据

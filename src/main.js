@@ -3,6 +3,8 @@ import App from "./App";
 import store from "./store";
 import router from "./router";
 
+import "@/icons";
+
 // 按需导入elementUI
 import "./plugins/element.js";
 
@@ -18,7 +20,6 @@ import "@/styles/index.scss";
 import { getToken } from "@/utils/auth";
 
 // icon
-import "@/icons";
 import * as filters from "@/utils/filters";
 // global filters
 
