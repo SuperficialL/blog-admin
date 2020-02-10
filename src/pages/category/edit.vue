@@ -9,12 +9,12 @@
       @submit.native.prevent="save('categoryForm')"
     >
       <el-form-item label="父级分类">
-        <el-select v-model="model.parent">
+        <el-select v-model="model.parent" value-key="name">
           <el-option
             v-for="item in parents"
             :key="item._id"
             :label="item.name"
-            :value="item._id"
+            :value="item"
           ></el-option>
         </el-select>
       </el-form-item>
@@ -37,7 +37,7 @@
               v-if="model.icon"
               slot="prefix"
               :class="model.icon"
-              class="el-input__icon"
+              class="el-input__icon iconfont"
             />
             <i v-else slot="prefix" class="el-icon-search el-input__icon" />
           </el-input>

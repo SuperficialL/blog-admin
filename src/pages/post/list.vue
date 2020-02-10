@@ -2,69 +2,71 @@
   <div class="app-container">
     <table-header />
     <div class="content">
-      <el-table
-        v-loading="loading"
-        ref="multipleTable"
-        :data="list"
-        border
-        highlight-current-row
-        style="width: 100%"
-      >
+      <el-table v-loading="loading" ref="multipleTable" :data="list" border>
         <el-table-column align="center" label="序号" width="60">
           <template slot-scope="{ row, $index }">
-            <span>{{
-              (listQuery.page - 1) * listQuery.per_page + $index + 1
-            }}</span>
+            <span>
+              {{ (listQuery.page - 1) * listQuery.per_page + $index + 1 }}
+            </span>
           </template>
         </el-table-column>
 
-        <el-table-column width="300px" align="center" sortable label="标题">
+        <el-table-column
+          width="200px"
+          show-overflow-tooltip
+          align="center"
+          label="标题"
+        >
           <template slot-scope="{ row }">
             <span>{{ row.title }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="100px" align="center" sortable label="作者">
+        <el-table-column width="100px" align="center" label="作者">
           <template slot-scope="{ row }">
             <span>{{ row.author.username }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="100px" align="center" sortable label="分类">
+        <el-table-column width="100px" align="center" label="分类">
           <template slot-scope="{ row }">
             <span>{{ row.category.name }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="160px" align="center" label="标签">
+        <el-table-column width="120px" align="center" label="标签">
           <template slot-scope="{ row }">
-            <el-tag v-for="(tag, index) in row.tags" :key="index">
+            <el-tag size="small" v-for="(tag, index) in row.tags" :key="index">
               {{ tag.title }}
             </el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column width="100px" align="center" sortable label="状态">
+        <el-table-column width="80px" align="center" label="状态">
           <template slot-scope="{ row }">
-            <el-tag effect="dark" :type="row.status ? 'success' : 'danger'">
+            <el-tag
+              size="small"
+              effect="dark"
+              :type="row.status ? 'success' : 'danger'"
+            >
               {{ row.status | statusFilter }}
             </el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column width="100px" align="center" sortable label="访问量">
+        <el-table-column width="80px" align="center" label="访问量">
           <template slot-scope="{ row }">
             <span>{{ row.views }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="100px" align="center" sortable label="点赞数">
+        <el-table-column width="80px" align="center" label="点赞数">
           <template slot-scope="{ row }">
             <span>{{ row.likes }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="100px" align="center" sortable label="评论数">
+        <el-table-column width="80px" align="center" label="评论数">
           <template slot-scope="{ row }">
             <span>{{ row.comments }}</span>
           </template>
@@ -82,12 +84,12 @@
           </template>
         </el-table-column>-->
 
-        <el-table-column align="center" label="操作">
+        <el-table-column width="150px" align="center" label="操作">
           <template slot-scope="scope">
             <el-tooltip effect="dark" content="编辑" placement="top">
               <el-button
                 type="primary"
-                size="small"
+                size="mini"
                 icon="el-icon-edit"
                 @click="$router.push(`/post/edit/${scope.row._id}`)"
               />
@@ -95,7 +97,7 @@
             <el-tooltip effect="dark" content="删除" placement="top">
               <el-button
                 type="danger"
-                size="small"
+                size="mini"
                 icon="el-icon-delete"
                 class="del-btn"
                 @click="handleDel(scope.$index, scope.row)"

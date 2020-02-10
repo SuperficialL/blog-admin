@@ -46,6 +46,9 @@
             />
           </el-tooltip>
         </template>
+        <template v-else-if="'icon' === column.value">
+          <i class="iconfont" :class="scope.row[column.value]"></i>
+        </template>
         <template v-else>
           {{ scope.row[column.value] }}
         </template>

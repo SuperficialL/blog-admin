@@ -17,7 +17,7 @@
         :key="index"
         @click="selectedIcon(icon)"
       >
-        <i class="icon" :class="icon"></i>
+        <i class="iconfont" :class="icon"></i>
         <span class="icon-name">{{ icon }}</span>
       </div>
     </div>
@@ -25,7 +25,8 @@
 </template>
 
 <script>
-import icons from "./icons";
+// import icons from "./icons";
+import icons from "./blog_icons";
 export default {
   name: "IconSelect",
   data() {
@@ -64,7 +65,8 @@ export default {
       margin-bottom: -5px;
       line-height: 30px;
       cursor: pointer;
-      .icon {
+      .icon,
+      .iconfont {
         vertical-align: middle;
         margin-right: 3px;
       }

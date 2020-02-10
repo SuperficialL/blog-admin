@@ -31,7 +31,7 @@
         >新建</el-button
       >
       <el-dropdown trigger="click">
-        <el-button size="small">
+        <el-button :size="size">
           更多
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
@@ -48,7 +48,7 @@ export default {
   name: "TableHeader",
   props: {
     placeholder: { type: String, default: "请输入查找内容" },
-    size: { type: String, default: "small" }
+    size: { type: String, default: "mini" }
   },
   data() {
     return {

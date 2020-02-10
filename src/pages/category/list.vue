@@ -20,7 +20,7 @@
         </el-table-column>
         <el-table-column label="图标" align="center">
           <template slot-scope="{ row }">
-            <i class="icon" :class="row.icon"></i>
+            <i class="icon iconfont" :class="row.icon"></i>
           </template>
         </el-table-column>
         <el-table-column align="center" label="排序" width="80">
