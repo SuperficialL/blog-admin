@@ -1,19 +1,11 @@
 /*
  * @Author: Superficial
  * @Date: 2020-03-27 17:08:08
- * @LastEditTime: 2020-03-27 17:09:17
+ * @LastEditTime: 2020-04-05 17:25:03
  * @Description: 菜单接口
  */
 
 import request from "@/utils/request";
-
-export function getMenu(id) {
-  // 请求单条菜单数据
-  return request({
-    url: `menus/${id}`,
-    method: "get"
-  });
-}
 
 export function getMenus(params) {
   // 请求所有菜单数据
@@ -21,6 +13,14 @@ export function getMenus(params) {
     url: "menus",
     method: "get",
     params
+  });
+}
+
+export function getMenu(id) {
+  // 请求单条菜单数据
+  return request({
+    url: `menus/${id}`,
+    method: "get"
   });
 }
 

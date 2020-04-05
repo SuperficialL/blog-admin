@@ -1,13 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
-
-import store from "@/store";
 import Layout from "@/layout";
-import { getToken } from "@/utils/auth";
 
 Vue.use(Router);
-
-const whiteList = ["/login"];
 
 export const constantRouterMap = [
   {
@@ -264,35 +259,9 @@ export const constantRouterMap = [
 
 const IS_DEV = process.env.NODE_ENV === "development";
 
-let index = new Router({
+export default new Router({
   mode: IS_DEV ? "hash" : "history",
   base: process.env.BASE_URL,
+  scrollBehavior: () => { y: 0 },
   routes: constantRouterMap
 });
-
-index.beforeEach((to, _from, next) => {
-  if (getToken()) {
-    /* has token*/
-    if (to.path === "/login") {
-      next({ path: "/" });
-    } else {
-      if (!store.getters.username) {
-        store.dispatch("GetUserInfo").then(() => {
-          next({ ...to, replace: true });
-        });
-      }
-      next();
-    }
-  } else {
-    /* has no token */
-    if (whiteList.indexOf(to.path) !== -1) {
-      // 在免登录白名单，直接进入
-      next();
-    } else {
-      next(`/login?redirect=${to.path}`);
-      // 否则全部重定向到登录页
-    }
-  }
-});
-
-export default index;

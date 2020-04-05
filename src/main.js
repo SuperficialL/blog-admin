@@ -19,6 +19,8 @@ import "@/styles/index.scss";
 
 import { getToken } from "@/utils/auth";
 
+import './permission';
+
 // icon
 import * as filters from "@/utils/filters";
 // global filters

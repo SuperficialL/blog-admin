@@ -37,7 +37,7 @@
         </el-input>
       </el-form-item>
 
-      <el-form-item prop="captcha">
+      <!-- <el-form-item prop="captcha">
         <el-input
           v-model="loginForm.captcha"
           placeholder="请输入验证码"
@@ -48,12 +48,12 @@
             <div class="captcha" v-html="captcha" @click="refresh"></div>
           </template>
         </el-input>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-button
         :loading="loading"
         type="primary"
-        style="width:100%;margin-bottom:30px;"
+        style="width: 100%; margin-bottom: 30px;"
         @click.native.prevent="handleLogin"
       >
         登录
@@ -81,30 +81,30 @@ export default {
       loginForm: {
         username: "",
         password: "",
-        captcha: ""
+        captcha: "",
       },
       text: "",
       loginRules: {
         username: [
-          { required: true, message: "用户名不可为空~", trigger: "blur" }
+          { required: true, message: "用户名不可为空~", trigger: "blur" },
         ],
         password: [
           { required: true, message: "密码不可为空~", trigger: "blur" },
-          { min: 6, message: "密码长度少于6位~", trigger: "blur" }
+          { min: 6, message: "密码长度少于6位~", trigger: "blur" },
         ],
-        captcha: [{ validator: validateCaptcha, trigger: "blur" }]
+        captcha: [{ validator: validateCaptcha, trigger: "blur" }],
       },
       loading: false,
-      redirect: undefined
+      redirect: undefined,
     };
   },
   watch: {
     $route: {
-      handler: function(route) {
+      handler: function (route) {
         this.redirect = route.query && route.query.redirect;
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   methods: {
     refresh() {
@@ -118,32 +118,32 @@ export default {
       }
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
           this.$store
             .dispatch("LoginByUsername", this.loginForm)
-            .then(res => {
+            .then((res) => {
               this.loading = false;
               this.$router.push({ path: this.redirect || "/" });
               this.$message({
                 type: "success",
                 message: res.message,
-                offset: 0
+                offset: 0,
               });
             })
-            .catch(err => {
+            .catch((err) => {
               this.loading = false;
             });
         } else {
           return false;
         }
       });
-    }
+    },
   },
   created() {
     this.fetchCaptcha();
-  }
+  },
 };
 </script>
 
