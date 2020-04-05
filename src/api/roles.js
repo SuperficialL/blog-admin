@@ -1,50 +1,51 @@
 /*
- * @author: SuperficialL
- * @Date: 2019-08-24 12:35:32
- * @LastEditTime: 2020-03-13 20:13:26
- * @Description: 标签接口
+ * @Author: Superficial
+ * @Date: 2020-03-25 15:46:38
+ * @LastEditTime: 2020-03-25 15:47:50
+ * @Description: 角色接口
  */
+
 import request from "@/utils/request";
 
-export function getTags(params) {
-  // 请求标签数据
+export function getRoles(params) {
+  // 请求角色数据
   return request({
-    url: "tags",
+    url: "roles",
     method: "get",
     params,
   });
 }
 
-export function getTag(id) {
+export function getRole(id) {
   // 请求标签详情数据
   return request({
-    url: `tags/${id}`,
+    url: `roles/${id}`,
     method: "get",
   });
 }
 
-export function createTag(data) {
+export function createRole(data) {
   // 请求标签详情数据
   return request({
-    url: "tags",
+    url: "roles",
     method: "post",
     data,
   });
 }
 
-export function updateTag(id, data) {
+export function updateRole(id, data) {
   // 更新标签数据
   return request({
-    url: `tags/${id}`,
+    url: `roles/${id}`,
     method: "patch",
     data,
   });
 }
 
-export function deleteTag(id) {
+export function deleteRole(id) {
   // 删除标签数据
   return request({
-    url: `tags/${id}`,
+    url: `roles/${id}`,
     method: "delete",
   });
 }

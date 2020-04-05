@@ -1,19 +1,16 @@
 <template>
   <div class="app-container">
     <!--工具条-->
-    <table-header ref="tHeader" :roles="roles" />
+    <table-header />
     <div class="content">
       <el-table
-        :data="users"
+        :data="list"
         v-loading="loading"
         ref="multipleTable"
         border
         highlight-current-row
         style="width: 100%"
-        @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" align="center" width="55">
-        </el-table-column>
         <el-table-column align="center" label="序号" type="index" width="80">
           <template slot-scope="scope">
             <span>{{
@@ -34,39 +31,21 @@
           </template>
         </el-table-column>
 
-        <el-table-column width="80" align="center" label="头像">
+        <el-table-column width="140" align="center" label="头像">
           <template slot-scope="scope">
             <img :src="scope.row.avatar" width="45" height="45" />
           </template>
         </el-table-column>
 
-        <el-table-column width="180" align="center" sortable label="角色">
-          <template slot-scope="scope">
-            <template v-for="(role, index) in roles">
-              <el-tag v-if="scope.row.roles.includes(role._id)" :key="index">
-                {{ role.name }}
-              </el-tag>
-            </template>
-          </template>
-        </el-table-column>
-
-        <el-table-column width="180" align="center" sortable label="邮箱">
-          <template slot-scope="scope">
-            <span>{{ scope.row.email }}</span>
-          </template>
-        </el-table-column>
-
         <el-table-column
-          width="130"
+          width="180"
           align="center"
           sortable
           prop="email"
-          label="是否激活"
+          label="邮箱"
         >
           <template slot-scope="scope">
-            <el-tag :type="scope.row.active ? 'success' : 'danger'">
-              {{ scope.row.active ? "激活" : "锁定" }}
-            </el-tag>
+            <span>{{ scope.row.email }}</span>
           </template>
         </el-table-column>
 
@@ -92,55 +71,47 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" align="center" width="140">
+        <el-table-column label="操作" align="center" width="230">
           <template slot-scope="scope">
-            <el-tooltip effect="dark" content="编辑" placement="top">
+            <el-tooltip effect="dark" content="删除" placement="top">
               <el-button
-                circle
-                plain
+                type="primary"
                 size="small"
                 icon="el-icon-edit"
-                @click="$refs.tHeader.updateForm(false, scope.row)"
+                @click="$router.push(`/user/edit/${scope.row._id}`)"
               />
-              <!-- :disabled="scope.row.email === '347106739@qq.com'" -->
             </el-tooltip>
             <el-tooltip effect="dark" content="删除" placement="top">
               <el-button
-                circle
-                plain
                 type="danger"
                 size="small"
                 icon="el-icon-delete"
                 class="del-btn"
                 @click="handleDel(scope.$index, scope.row)"
               />
-              <!-- :disabled="scope.row.email === '347106739@qq.com'" -->
             </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <div style="margin-top: 20px">
-      <el-button size="small" @click="deleteUsers">删除</el-button>
-    </div>
+
     <pagination
       v-show="total > 0"
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.per_page"
-      @pagination="getUserList"
+      @pagination="getUsers"
     />
   </div>
 </template>
 
 <script>
-import TableHeader from "./components/TableHeader";
+import TableHeader from "@/components/TableHeader";
 import Pagination from "@/components/Pagination";
 import { getUsers, deleteUser } from "@/api/users";
-import { getRoles } from "@/api/roles";
 
 export default {
-  name: "UserList",
+  name: "site",
   components: { TableHeader, Pagination },
   data() {
     return {
@@ -148,47 +119,23 @@ export default {
         page: 1,
         per_page: 10
       },
-      users: [],
-      roles: [],
+      list: [],
       total: 0,
-      loading: false,
-      multipleSelection: []
+      loading: false
     };
   },
   methods: {
-    deleteUsers() {
-      const arr = [];
-      this.multipleSelection.forEach(item => {
-        const { _id } = item;
-        arr.push(_id);
-      });
-      console.log(arr, "arr");
-    },
-    handleSelectionChange(arr) {
-      this.multipleSelection = arr;
-    },
     async getUserList() {
       // 获取用户列表数据
       this.loading = true;
       const res = await getUsers(this.listQuery);
       if (res.code === 200) {
         this.loading = false;
-        this.users = res.data.users;
+        this.list = res.data.users;
         this.total = res.data.total;
-        console.log(res, "resss");
       }
     },
-    async getRoleList() {
-      // 获取用户列表数据
-      this.loading = true;
-      const res = await getRoles(this.listQuery);
-      if (res.code === 200) {
-        this.roles = res.data.roles;
-      }
-    },
-    searchUser(arr) {
-      console.log(arr);
-    },
+    searchUser() {},
     // 删除
     async handleDel(index, row) {
       this.$confirm(`确认删除用户 ${row.username} 吗?`, "提示", {
@@ -218,7 +165,6 @@ export default {
   },
   created() {
     this.getUserList();
-    this.getRoleList();
   }
 };
 </script>

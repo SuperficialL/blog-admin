@@ -49,334 +49,141 @@ export const constantRouterMap = [
     ]
   },
 
-  /** 分类 */
-  {
-    path: "/category",
-    component: Layout,
-    redirect: "/category/list",
-    name: "Category",
-    meta: {
-      title: "分类管理",
-      icon: "documentation"
-    },
-    children: [
-      {
-        path: "create",
-        component: () => import("@/pages/category/edit"),
-        name: "CreateCategory",
-        meta: {
-          title: "创建分类",
-          icon: "edit"
-        }
-      },
-      {
-        path: "edit/:id",
-        name: "EditCategory",
-        component: () => import("@/pages/category/edit"),
-        props: true,
-        hidden: true,
-        meta: {
-          title: "编辑分类",
-          noCache: true
-        }
-      },
-      {
-        path: "list",
-        component: () => import("@/pages/category/list"),
-        name: "CateogoryList",
-        meta: {
-          title: "分类列表",
-          icon: "list"
-        }
-      }
-    ]
-  },
+  // {
+  //   path: "/blog",
+  //   component: Layout,
+  //   meta: {
+  //     title: "博客管理",
+  //     icon: "list"
+  //   },
+  //   children: [
+  //     /** 分类 */
+  //     {
+  //       path: "category",
+  //       component: () => import("@/pages/blog/category"),
+  //       name: "Category",
+  //       meta: {
+  //         title: "分类管理",
+  //         // icon: "documentation"
+  //       }
+  //     },
 
-  /** 标签 */
-  {
-    path: "/tags",
-    component: Layout,
-    redirect: "/tags/list",
-    name: "Tag",
-    meta: {
-      title: "标签管理",
-      icon: "documentation"
-    },
-    children: [
-      {
-        path: "create",
-        component: () => import("@/pages/tags/edit"),
-        name: "CreateTag",
-        meta: {
-          title: "创建标签",
-          icon: "edit"
-        }
-      },
-      {
-        path: "edit/:id",
-        name: "EditTag",
-        component: () => import("@/pages/tags/edit"),
-        props: true,
-        hidden: true,
-        meta: {
-          title: "编辑标签",
-          noCache: true
-        }
-      },
-      {
-        path: "list",
-        component: () => import("@/pages/tags/list"),
-        name: "TagList",
-        meta: {
-          title: "标签列表",
-          icon: "list"
-        }
-      }
-    ]
-  },
+  //     /** 标签 */
+  //     {
+  //       path: "tags",
+  //       component: () => import("@/pages/blog/tags"),
+  //       name: "Tag",
+  //       meta: {
+  //         title: "标签管理",
+  //         // icon: "documentation"
+  //       }
+  //     },
 
-  /** 文章 */
-  {
-    path: "/post",
-    component: Layout,
-    redirect: "/post/list",
-    name: "Post",
-    meta: {
-      title: "博文管理",
-      icon: "documentation"
-    },
-    children: [
-      {
-        path: "create",
-        component: () => import("@/pages/post/edit"),
-        name: "CreatePost",
-        meta: {
-          title: "创建文章",
-          icon: "edit"
-        }
-      },
-      {
-        path: "edit/:id",
-        name: "EditPost",
-        component: () => import("@/pages/post/edit"),
-        props: true,
-        hidden: true,
-        meta: {
-          title: "编辑文章",
-          noCache: true
-        }
-      },
-      {
-        path: "list",
-        component: () => import("@/pages/post/list"),
-        name: "PostList",
-        meta: {
-          title: "文章列表",
-          icon: "list"
-        }
-      }
-    ]
-  },
+  //     /** 文章 */
+  //     {
+  //       path: "post",
+  //       component: () => import("@/pages/blog/post"),
+  //       name: "Post",
+  //       meta: {
+  //         title: "博文管理",
+  //         // icon: "documentation"
+  //       }
+  //     },
+  //     {
+  //       path: "post/create",
+  //       component: () => import("@/pages/blog/post/edit"),
+  //       name: "CreatePost",
+  //       hidden: true,
+  //       meta: {
+  //         title: "创建文章",
+  //         // icon: "documentation"
+  //       }
+  //     },
+  //     {
+  //       path: "post/edit/:id",
+  //       name: "editPost",
+  //       component: () => import("@/pages/blog/post/edit"),
+  //       props: true,
+  //       hidden: true,
+  //       meta: {
+  //         title: "编辑文章",
+  //         noCache: true
+  //       }
+  //     },
 
-  /** 用户 */
-  {
-    path: "/user",
-    component: Layout,
-    redirect: "/user/list",
-    name: "User",
-    meta: {
-      title: "用户管理",
-      icon: "user"
-    },
-    children: [
-      {
-        path: "create",
-        component: () => import("@/pages/user/edit"),
-        name: "CreateUser",
-        meta: {
-          title: "创建用户",
-          icon: "edit"
-        }
-      },
-      {
-        path: "edit/:id",
-        component: () => import("@/pages/user/edit"),
-        name: "EditUser",
-        meta: {
-          title: "编辑用户",
-          noCache: true
-        },
-        hidden: true,
-        props: true
-      },
-      {
-        path: "list",
-        component: () => import("@/pages/user/list"),
-        name: "UserList",
-        meta: {
-          title: "用户列表",
-          icon: "list"
-        }
-      }
-    ]
-  },
+  //     /** 评论 */
+  //     {
+  //       path: "comment",
+  //       component: () => import("@/pages/blog/comment"),
+  //       name: "Comment",
+  //       meta: {
+  //         title: "评论管理",
+  //         // icon: "documentation"
+  //       }
+  //     },
+  //   ]
+  // },
 
-  /** 评论 */
-  {
-    path: "/comment",
-    component: Layout,
-    redirect: "/comment/list",
-    name: "Comment",
-    meta: {
-      title: "评论管理",
-      icon: "comment"
-    },
-    children: [
-      {
-        path: "create",
-        component: () => import("@/pages/comment/edit"),
-        name: "CreateComment",
-        meta: {
-          title: "创建评论",
-          icon: "edit"
-        }
-      },
-      {
-        path: "edit/:id",
-        component: () => import("@/pages/comment/edit"),
-        name: "EditComment",
-        meta: {
-          title: "编辑评论",
-          noCache: true
-        },
-        hidden: true,
-        props: true
-      },
-      {
-        path: "list",
-        component: () => import("@/pages/comment/list"),
-        name: "CommentList",
-        meta: {
-          title: "评论列表",
-          icon: "list"
-        }
-      }
-    ]
-  },
+  // /** 设置 */
+  // {
+  //   path: "/site",
+  //   component: Layout,
+  //   redirect: "/site/list",
+  //   name: "Site",
+  //   meta: {
+  //     title: "网站管理",
+  //     icon: "list"
+  //   },
+  //   children: [
+  //     {
+  //       path: "list",
+  //       component: () => import("@/pages/site/timeline"),
+  //       name: "SiteSettings",
+  //       meta: {
+  //         title: "站点设置",
+  //         // icon: "list"
+  //       }
+  //     },
 
-  /** 任务 */
-  {
-    path: "/tasks",
-    component: Layout,
-    redirect: "/tasks/list",
-    name: "Task",
-    meta: {
-      title: "任务管理",
-      icon: "documentation"
-    },
-    children: [
-      {
-        path: "create",
-        component: () => import("@/pages/tasks/edit"),
-        name: "CreateTask",
-        meta: {
-          title: "创建任务",
-          icon: "edit"
-        }
-      },
-      {
-        path: "edit/:id",
-        name: "EditTask",
-        component: () => import("@/pages/tasks/edit"),
-        props: true,
-        hidden: true,
-        meta: {
-          title: "编辑任务",
-          noCache: true
-        }
-      },
-      {
-        path: "list",
-        component: () => import("@/pages/tasks/list"),
-        name: "TaskList",
-        meta: {
-          title: "任务列表",
-          icon: "list"
-        }
-      }
-    ]
-  },
+  //     {
+  //       path: "timeline",
+  //       component: () => import("@/pages/site/timeline"),
+  //       name: "TimeLine",
+  //       meta: {
+  //         title: "时间轴",
+  //         // icon: "list"
+  //       }
+  //     }
+  //   ]
+  // },
 
-  /** 设置 */
-  {
-    path: "/site",
-    component: Layout,
-    redirect: "/site/list",
-    name: "Site",
-    meta: {
-      title: "网站管理",
-      icon: "setting"
-    },
-    children: [
-      {
-        path: "list",
-        component: () => import("@/pages/site/list"),
-        name: "SiteSettings",
-        meta: {
-          title: "站点设置",
-          icon: "list"
-        }
-      },
-
-      {
-        path: "timeline",
-        component: () => import("@/pages/site/list"),
-        name: "TimeLine",
-        meta: {
-          title: "时间轴",
-          icon: "list"
-        }
-      },
-
-      {
-        path: "banner",
-        component: () => import("@/pages/site/list"),
-        name: "BannerList",
-        meta: {
-          title: "轮播设置",
-          icon: "list"
-        }
-      }
-    ]
-  },
-
-  /** 个人中心 */
-  {
-    path: "/profile",
-    component: Layout,
-    redirect: "/profile/index",
-    hidden: true,
-    children: [
-      {
-        path: "index",
-        component: () => import("@/pages/profile"),
-        name: "Profile",
-        meta: {
-          title: "个人中心",
-          icon: "user"
-        }
-      },
-      {
-        path: "settings",
-        component: () => import("@/pages/profile/settings"),
-        name: "Settings",
-        meta: {
-          title: "个人设置",
-          icon: "user"
-        }
-      }
-    ]
-  },
+  // /** 个人中心 */
+  // {
+  //   path: "/profile",
+  //   component: Layout,
+  //   redirect: "/profile/index",
+  //   hidden: true,
+  //   children: [
+  //     {
+  //       path: "index",
+  //       component: () => import("@/pages/profile"),
+  //       name: "Profile",
+  //       meta: {
+  //         title: "个人中心",
+  //         icon: "user"
+  //       }
+  //     },
+  //     {
+  //       path: "settings",
+  //       component: () => import("@/pages/profile/settings"),
+  //       name: "Settings",
+  //       meta: {
+  //         title: "个人设置",
+  //         icon: "user"
+  //       }
+  //     }
+  //   ]
+  // },
 
   /** 系统设置 */
   {
@@ -386,25 +193,61 @@ export const constantRouterMap = [
     name: "System",
     meta: {
       title: "系统设置",
-      icon: "documentation"
+      icon: "list"
     },
     children: [
       {
-        path: "menu",
+        path: "menus",
         component: () => import("@/pages/system/menu"),
         name: "Menu",
         meta: {
           title: "菜单管理",
-          icon: "menu"
+          // icon: "list"
         }
       },
       {
-        path: "user",
+        path: "album",
+        component: () => import("@/pages/system/album"),
+        name: "Album",
+        meta: {
+          title: "相册管理",
+          // icon: "list"
+        }
+      },
+      {
+        path: "media",
+        component: () => import("@/pages/system/media"),
+        name: "Media",
+        meta: {
+          title: "媒体管理",
+          // icon: "list"
+        }
+      },
+      {
+        path: "users",
         component: () => import("@/pages/system/user"),
-        name: "User",
+        name: "UserList",
         meta: {
           title: "用户管理",
-          icon: "user"
+          // icon: "list"
+        }
+      },
+      {
+        path: "roles",
+        component: () => import("@/pages/system/roles"),
+        name: "list",
+        meta: {
+          title: "角色管理",
+          // icon: "list"
+        }
+      },
+      {
+        path: "permissions",
+        component: () => import("@/pages/system/permission"),
+        name: "PermissionList",
+        meta: {
+          title: "权限管理",
+          // icon: "list"
         }
       }
     ]

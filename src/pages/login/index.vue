@@ -128,7 +128,8 @@ export default {
               this.$router.push({ path: this.redirect || "/" });
               this.$message({
                 type: "success",
-                message: res.message
+                message: res.message,
+                offset: 0
               });
             })
             .catch(err => {

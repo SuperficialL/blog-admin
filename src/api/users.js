@@ -1,7 +1,7 @@
 /*
  * @author: SuperficialL
  * @Date: 2019-08-24 12:35:32
- * @LastEditTime: 2019-10-09 22:38:50
+ * @LastEditTime: 2020-03-25 19:01:06
  * @Description: 用户接口
  */
 
@@ -32,7 +32,7 @@ export function getUser(id) {
   });
 }
 
-export function getUserList(params) {
+export function getUsers(params) {
   // 请求所有分类数据
   return request({
     url: "users",

@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
-    <table-header ref="tHeader" :menus="menus" />
+    <table-header ref="tHeader" :permissions="permissions" />
     <tree-table
-      :data="menus"
+      :data="permissions"
       :expand-all="false"
       :columns="columns"
       border
@@ -45,79 +45,69 @@
 
 <script>
 import TableHeader from "./components/TableHeader";
-import treeTable from "@/components/TreeTable";
+import TreeTable from "@/components/TreeTable";
 import Pagination from "@/components/Pagination";
 import translateToTree from "@/utils/dataToTree";
-import { getMenus, deleteMenu } from "@/api/menu";
+import { getPermissions, deletePermission } from "@/api/permissions";
+
 export default {
-  components: { TableHeader, treeTable, Pagination },
+  name: "Permission",
+  components: { TableHeader, TreeTable, Pagination },
   data() {
     return {
-      columns: [
-        {
-          text: "名称",
-          value: "name",
-          align: "center"
-        },
-        {
-          text: "图标",
-          value: "icon",
-          align: "center"
-        },
-        {
-          text: "路径",
-          value: "path",
-          align: "center"
-        },
-        {
-          text: "内部菜单",
-          value: "isMenu",
-          align: "center"
-        },
-        {
-          text: "是否显示",
-          value: "isShow",
-          align: "center"
-        }
-      ],
-      delLoading: false,
-      menus: [],
+      permissions: [],
       total: 0,
+      loading: false,
       listQuery: {
         page: 1,
         per_page: 10
-      }
+      },
+      columns: [
+        {
+          text: "权限名称",
+          value: "name"
+          // align: "center"
+        },
+        {
+          text: "权限方法",
+          value: "method",
+          align: "center"
+        }
+      ]
     };
   },
   methods: {
     async fetch() {
-      const res = await getMenus();
+      // 获取所有标签数据
+      const res = await getPermissions(this.listQuery);
       if (res.code === 200) {
-        const data = res.data.menus;
         this.total = res.data.total;
-        if (!data.length) return;
-        this.menus = translateToTree(data);
-        console.log(this.menus, "menus");
+        const data = res.data.permissions;
+        this.permissions = translateToTree(data);
       }
     },
-    // 删除
-    async handleDel(index, row) {
-      this.$confirm(`确认删除菜单 ${row.name} 吗?`, "提示", {
+    remove(index, row) {
+      this.$confirm(`是否确定要删除标签 ${row.title} 吗?`, "提示", {
         confirmButtonText: "确认",
         cancleButtonText: "取消",
         type: "warning"
-      }).then(async () => {
-        this.loading = true;
-        const res = await deleteMenu(row._id);
-        if (res.code) {
-          this.loading = false;
+      })
+        .then(async () => {
+          const res = await deletePermission(row._id);
+          if (res.code === 200) {
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+            this.list.splice(index, 1);
+          }
+        })
+        .catch(() => {
           this.$message({
-            type: "success",
-            message: "删除成功!"
+            type: "info",
+            message: "已取消删除!"
           });
-          this.list.splice(index, 1);
-        }
-      });
+        });
     }
   },
   created() {

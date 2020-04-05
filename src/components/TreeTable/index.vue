@@ -28,28 +28,14 @@
         <span v-if="['created_time', 'updated_time'].includes(column.value)">
           {{ scope.row[column.value] | dateFormat }}
         </span>
-        <template v-else-if="'action' === column.value">
-          <el-tooltip effect="dark" content="编辑" placement="top">
-            <el-button
-              type="primary"
-              :size="size"
-              @click="$router.push(`/category/edit/${row._id}`)"
-              icon="el-icon-edit"
-            />
-          </el-tooltip>
-          <el-tooltip effect="dark" content="删除" placement="top">
-            <el-button
-              type="danger"
-              :size="size"
-              icon="el-icon-delete"
-              @click="remove(row)"
-            />
-          </el-tooltip>
-        </template>
+
         <template v-else-if="'icon' === column.value">
           <i class="iconfont" :class="scope.row[column.value]"></i>
         </template>
-        <template v-else>
+        <template v-else-if="['isMenu','isShow'].includes(column.value)">
+          {{ scope.row[column.value]?'是':'否' }}
+        </template>
+         <template v-else>
           {{ scope.row[column.value] }}
         </template>
       </template>
@@ -90,6 +76,7 @@ export default {
         tmp = this.data;
       }
       let arr = treeToArray(tmp, this.expandAll);
+      console.log(arr,'arr');
       return arr;
     }
   },
@@ -157,18 +144,17 @@ $space-width: 18px;
     content: "";
   }
 }
+.tree-ctrl {
+  position: relative;
+  cursor: pointer;
+  color: $color-blue;
+  margin-left: -$space-width;
+}
 .processContainer {
   width: 100%;
   height: 100%;
 }
 table td {
   line-height: 26px;
-}
-
-.tree-ctrl {
-  position: relative;
-  cursor: pointer;
-  color: $color-blue;
-  margin-left: -$space-width;
 }
 </style>

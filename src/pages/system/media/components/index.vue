@@ -58,7 +58,7 @@
           </el-upload>
         </el-form-item>
 
-        <!-- <el-form-item label="歌曲文件">
+        <el-form-item label="歌曲文件">
           <el-upload
             class="upload-demo"
             action="https://upload.qiniup.com"
@@ -70,7 +70,7 @@
               只能上传audio/mp3文件，且不超过8M
             </div>
           </el-upload>
-        </el-form-item> -->
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -99,13 +99,7 @@ export default {
       uploadData: {
         token: ""
       },
-      fileList: [
-        {
-          name: "food.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        }
-      ],
+      fileList: [],
       rules: {
         title: [
           {
