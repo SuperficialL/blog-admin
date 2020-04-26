@@ -3,121 +3,117 @@
     <el-form
       ref="form"
       label-width="100px"
-      :model="model"
+      :model="article"
       :rules="rules"
       @submit.native.prevent="save('form')"
     >
-      <el-form-item label="标题" prop="title">
-        <el-input v-model="model.title"></el-input>
-      </el-form-item>
+      <el-row>
+        <el-col :span="24"> 
+          <el-form-item label="标题" prop="title">
+            <el-input v-model="article.title"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12"> 
+          <el-form-item label="分类:" class="postInfo-container-item">
+            <el-select
+              v-model="article.category"
+              value-key="name"
+              filterable
+              allow-create
+              default-first-option
+              placeholder="搜索分类"
+            >
+              <el-option
+                v-for="(item, index) in catListOptions"
+                :key="index"
+                :label="item.name"
+                :value="item._id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12"> 
+          <el-form-item label="标签:" class="postInfo-container-item">
+            <el-select
+              v-model="article.tags"
+              value-key="_id"
+              multiple
+              filterable
+              allow-create
+              default-first-option
+              placeholder="搜索标签"
+            >
+              <el-option
+                v-for="(item, index) in tagListOptions"
+                :key="index"
+                :label="item.title"
+                :value="item._id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24"> 
+          <el-form-item label="文章状态">
+            <el-tooltip :content="article.status | statusFilter" placement="top">
+              <el-switch
+                v-model="article.status"
+                active-color="#13ce66"
+                inactive-color="#ff4949"
+                active-text="发表"
+                inactive-text="草稿"
+                :active-value="1"
+                :inactive-value="0"
+                size="middle"
+              >
+              </el-switch>
+            </el-tooltip>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24"> 
+          <el-form-item label="缩略图:">
+            <el-upload
+              list-type="picture-card"
+              accept="image/*"
+              :headers="getAuthHeaders()"
+              :action="uploadUrl"
+              :on-preview="handlePictureCardPreview"
+              :on-success="UploadSuccess"
+              :on-remove="handleRemove"
+            >
+              <img v-if="article.thumbnail" :src="article.thumbnail" class="avatar" />
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible">
+              <img width="100%" :src="article.thumbnail" />
+            </el-dialog>
+          </el-form-item>
+        </el-col>
+      </el-row>
 
-      <el-form-item label="文章状态">
-        <el-tooltip :content="model.status | statusFilter" placement="top">
-          <el-switch
-            v-model="model.status"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-text="发表"
-            inactive-text="草稿"
-            :active-value="1"
-            :inactive-value="0"
-            size="middle"
-          >
-          </el-switch>
-        </el-tooltip>
-      </el-form-item>
-
-      <!-- <el-form-item label="最近修改时间">
-          <el-date-picker
-            v-model="model.updated_time"
-            type="datetime"
-            placeholder="选择日期时间"
-            align="left"
-            :picker-options="pickerOptions"
-          ></el-date-picker>
-        </el-form-item>-->
-
-      <el-form-item label="作者:" class="postInfo-container-item">
-        <el-select
-          v-model="model.author"
-          value-key="username"
-          placeholder="搜索用户"
-        >
-          <el-option
-            v-for="(item, index) in userListOptions"
-            :key="index"
-            :label="item.username"
-            :value="item"
+      <el-row>
+        <el-col :span="24"> 
+          <mavon-editor
+            ref="md"
+            v-model="article.content"
+            @change="saveMavon"
+            @imgAdd="imgAdd"
+            @imgDel="imgDel"
           />
-        </el-select>
-      </el-form-item>
-
-      <el-form-item label="标签:" class="postInfo-container-item">
-        <el-select
-          v-model="model.tags"
-          value-key="_id"
-          multiple
-          filterable
-          allow-create
-          default-first-option
-          placeholder="搜索标签"
-        >
-          <el-option
-            v-for="(item, index) in tagListOptions"
-            :key="index"
-            :label="item.title"
-            :value="item"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item label="分类:" class="postInfo-container-item">
-        <el-select
-          v-model="model.category"
-          value-key="name"
-          filterable
-          allow-create
-          default-first-option
-          placeholder="搜索分类"
-        >
-          <el-option
-            v-for="(item, index) in catListOptions"
-            :key="index"
-            :label="item.name"
-            :value="item"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item label="缩略图:">
-        <el-upload
-          list-type="picture-card"
-          accept="image/*"
-          :headers="getAuthHeaders()"
-          :action="uploadUrl"
-          :on-preview="handlePictureCardPreview"
-          :on-success="UploadSuccess"
-          :on-remove="handleRemove"
-        >
-          <img v-if="model.thumbnail" :src="model.thumbnail" class="avatar" />
-          <i class="el-icon-plus"></i>
-        </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-          <img width="100%" :src="model.thumbnail" />
-        </el-dialog>
-      </el-form-item>
-
-      <mavon-editor
-        ref="md"
-        v-model="model.content"
-        @change="saveMavon"
-        @imgAdd="imgAdd"
-        @imgDel="imgDel"
-      />
-
-      <el-form-item>
-        <el-button type="primary" native-type="submit">保存</el-button>
-      </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24">
+          <el-form-item>
+            <el-button type="primary" native-type="submit">保存</el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
   </div>
 </template>
@@ -126,14 +122,13 @@
 import { getArticle, updateArticle, createArticle } from "@/api/articles";
 import { getCategories } from "@/api/category";
 import { getTags } from "@/api/tags";
-import { getUsers } from "@/api/users";
 import { uploadImg } from "@/api/upload";
 export default {
   name: "PostDetail",
   props: ["id"],
   data() {
     return {
-      model: {},
+      article: {},
       // 富文本中的图片
       imgs: {},
       rules: {
@@ -147,33 +142,6 @@ export default {
       },
       dialogVisible: false,
       loading: false,
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "今天",
-            onClick(picker) {
-              picker.$emit("pick", new Date());
-            }
-          },
-          {
-            text: "昨天",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24);
-              picker.$emit("pick", date);
-            }
-          },
-          {
-            text: "一周前",
-            onClick(picker) {
-              const date = new Date();
-              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", date);
-            }
-          }
-        ]
-      },
-      userListOptions: [],
       tagListOptions: [],
       catListOptions: []
     };
@@ -182,42 +150,33 @@ export default {
   methods: {
     // 移除封面图片
     handleRemove(file, fileList) {
-      window.console.log(file, fileList);
     },
     // 设置封面图片回调地址
     handlePictureCardPreview(file) {
-      this.model.thumbnail = file.url;
-      // this.$set(this.model, "thumbnail", file.url);
+      this.article.thumbnail = file.url;
+      // this.$set(this.article, "thumbnail", file.url);
       this.dialogVisible = true;
     },
     // 获取文章
     async fetchArticle() {
       const res = await getArticle(this.id);
-      if (res.code === 200) {
-        this.model = res.data;
-        console.log(res.data, "data");
+      if (res.code) {
+        this.article = res.result;
       }
     },
     // 获取分类
     async fetchCategories() {
       const res = await getCategories();
-      if (res.code === 200) {
-        this.catListOptions = res.data.categories;
-      }
-    },
-    // 获取作者
-    async fetchAuthors() {
-      const res = await getUsers();
-      if (res.code === 200) {
-        this.userListOptions = res.data.users;
+      if (res.code) {
+        this.catListOptions = res.result.data;
       }
     },
 
     // 获取标签
     async fetchTags() {
       const res = await getTags();
-      if (res.code === 200) {
-        this.tagListOptions = res.data.tags;
+      if (res.code) {
+        this.tagListOptions = res.result.data;
       }
     },
 
@@ -229,14 +188,14 @@ export default {
           let res;
           if (this.id) {
             // id 存在,修改数据
-            res = await updateArticle(this.id, this.model);
+            res = await updateArticle(this.id, { article: this.article });
           } else {
             // id不存在,创建数据
-            res = await createArticle(this.model);
+            res = await createArticle({ article: this.article });
           }
-          if (res.code === 200) {
+          if (res.code) {
             this.loading = false;
-            this.$router.push("/blog/post");
+            this.$router.push("/blog/posts");
             this.$message({
               type: "success",
               message: "保存成功~"
@@ -250,7 +209,7 @@ export default {
 
     // 获取文章详情文本
     saveMavon(value, html) {
-      this.model.renderContent = html;
+      this.article.renderContent = html;
     },
 
     // 文章详情中图片上传
@@ -278,14 +237,14 @@ export default {
 
     UploadSuccess(res) {
       // 设置图片上传后的地址
-      this.$set(this.model, "thumbnail", res.url);
-      // this.model.img = res
+      this.$set(this.article, "thumbnail", res.url);
+      // this.article.img = res
     }
   },
   created() {
+    console.log(this.id);
     this.id && this.fetchArticle();
     this.fetchCategories();
-    this.fetchAuthors();
     this.fetchTags();
   }
 };

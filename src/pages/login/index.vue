@@ -37,9 +37,9 @@
         </el-input>
       </el-form-item>
 
-      <!-- <el-form-item prop="captcha">
+      <!-- <el-form-item prop="code">
         <el-input
-          v-model="loginForm.captcha"
+          v-model="loginForm.code"
           placeholder="请输入验证码"
           autocomplete="off"
           @keyup.enter.native="handleLogin"
@@ -67,23 +67,13 @@ import { getCaptcha } from "@/api/captcha";
 export default {
   name: "login",
   data() {
-    var validateCaptcha = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入验证码~"));
-      } else if (value !== this.text) {
-        callback(new Error("验证码不正确~"));
-      } else {
-        callback();
-      }
-    };
     return {
       captcha: "",
       loginForm: {
         username: "",
         password: "",
-        captcha: "",
+        code: "",
       },
-      text: "",
       loginRules: {
         username: [
           { required: true, message: "用户名不可为空~", trigger: "blur" },
@@ -92,7 +82,7 @@ export default {
           { required: true, message: "密码不可为空~", trigger: "blur" },
           { min: 6, message: "密码长度少于6位~", trigger: "blur" },
         ],
-        captcha: [{ validator: validateCaptcha, trigger: "blur" }],
+        captcha: [{ required: true, message: "验证码不可为空~", trigger: "blur" }],
       },
       loading: false,
       redirect: undefined,
@@ -112,9 +102,8 @@ export default {
     },
     async fetchCaptcha() {
       const res = await getCaptcha();
-      if (res.code === 200) {
-        this.captcha = res.captcha;
-        this.text = res.text;
+      if (res.code) {
+        this.captcha = res.result;
       }
     },
     handleLogin() {

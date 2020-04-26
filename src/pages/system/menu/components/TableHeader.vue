@@ -184,7 +184,6 @@ export default {
             res = await updateMenu(this.model._id, this.model);
           } else {
             // id不存在,创建数据
-            console.log(this.model, "model");
             res = await createMenu(this.model);
             this.$parent.fetch();
           }

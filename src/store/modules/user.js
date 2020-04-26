@@ -7,8 +7,7 @@ const user = {
     token: getToken(),
     username: "",
     avatar: "",
-    email: "",
-    roles: []
+    email: ""
   },
 
   mutations: {
@@ -28,7 +27,7 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo)
           .then(res => {
-            const token = res.data.token;
+            const token = res.result.token;
             commit("SET_TOKEN", token);
             setToken(token);
             resolve();
@@ -44,8 +43,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getUserInfo()
           .then(res => {
-            const userInfo = res.data.user;
-            console.log(res, 'res');
+            const userInfo = res.result;
             commit("SET_USER_INFO", userInfo);
             resolve(userInfo);
           })

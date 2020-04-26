@@ -76,7 +76,6 @@ export default {
         tmp = this.data;
       }
       let arr = treeToArray(tmp, this.expandAll);
-      console.log(arr,'arr');
       return arr;
     }
   },

@@ -5,7 +5,7 @@
  * @Description: 源数据处理
  */
 import Vue from "vue";
-export default function treeToArray(data, expandAll, parent = null, level = null) {
+export default function treeToArray(data, expandAll, parentId = "0", level = null) {
   let tmp = [];
   Array.from(data).forEach((record) => {
     if (record._expanded === undefined) {
@@ -18,8 +18,8 @@ export default function treeToArray(data, expandAll, parent = null, level = null
     }
     Vue.set(record, "_level", _level);
     // 如果有父元素
-    if (parent) {
-      Vue.set(record, "parent", parent);
+    if (parentId) {
+      Vue.set(record, "parentId", parentId);
     }
     tmp.push(record);
     if (record.children && record.children.length > 0) {

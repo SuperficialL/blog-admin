@@ -25,7 +25,7 @@
     >
       <template slot="title">
         <item
-          v-if="item.meta"
+          v-if="item"
           :icon="item.meta.icon"
           :title="item.meta.title"
         />
@@ -41,7 +41,6 @@
             :base-path="resolvePath(child.path)"
             class="nest-menu"
           />
-
           <app-link
             v-else
             :to="resolvePath(child.path)"
@@ -49,7 +48,7 @@
           >
             <el-menu-item :index="resolvePath(child.path)">
               <item
-                v-if="child.meta"
+                v-if="child"
                 :icon="child.meta.icon"
                 :title="child.meta.title"
               />

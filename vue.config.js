@@ -1,5 +1,4 @@
 const path = require("path");
-const CompressionPlugin = require("compression-webpack-plugin");
 
 function resolve(dir) {
   return path.join(__dirname, "./", dir);
@@ -24,7 +23,7 @@ module.exports = {
       "/api": {
         target: "http://127.0.0.1:3000",
         changeOrigin: true,
-        ws: true,
+        ws: true
       },
       "/uploads": {
         target: "http://127.0.0.1:3000",
@@ -52,19 +51,6 @@ module.exports = {
 
       config.plugins.delete("preload");
       config.plugins.delete("prefetch");
-
-      // return {
-      //   plugins: [
-      //     new CompressionPlugin({
-      //       test: /\.js$|\.html$|\.css/,
-      //       // 匹配文件名
-      //       threshold: 1024,
-      //       // 对超过1k的数据进行压缩
-      //       deleteOriginalAssets: false
-      //       // 是否删除原文件
-      //     })
-      //   ]
-      // };
     }
     // webpack链接API，用于生成和修改webpack配置
     config.module
@@ -82,16 +68,16 @@ module.exports = {
       .options({
         symbolId: "icon-[name]"
       })
-      .end()
+      .end();
 
     config.module
-      .rule('vue')
-      .use('vue-loader')
-      .loader('vue-loader')
+      .rule("vue")
+      .use("vue-loader")
+      .loader("vue-loader")
       .tap(options => {
-        options.compilerOptions.preserveWhitespace = true
-        return options
+        options.compilerOptions.preserveWhitespace = true;
+        return options;
       })
-      .end()
+      .end();
   }
 };

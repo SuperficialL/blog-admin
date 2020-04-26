@@ -5,7 +5,7 @@ import { getToken } from "@/utils/auth";
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_API_URL || "/api/admin/",
+  baseURL: process.env.VUE_APP_API_URL || "/api",
   timeout: 5000
   // request timeout
 });
@@ -21,7 +21,6 @@ service.interceptors.request.use(
   },
   error => {
     // Do something with request error
-    window.console.log(error);
     // for debug
     return Promise.reject(error);
   }
@@ -31,19 +30,28 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data;
-    const errorCode = res.errorCode;
-    if (errorCode === 40003) {
+    const { code } = res;
+    if (code === 422) {
       // 用户不存在
       Message({
         message: res.message,
         type: "error",
-        duration: 3 * 1000
+        duration: 3 * 1000,
+        size: "mini"
       });
-    } else if (errorCode === 20003) {
+    } else if (code === 20003) {
       Message({
         message: res.message,
         type: "error",
-        duration: 3 * 1000
+        duration: 3 * 1000,
+        size: "mini"
+      });
+    } else if (code === 404) {
+      Message({
+        message: res.message,
+        type: "error",
+        duration: 3 * 1000,
+        size: "mini"
       });
     }
     return res;

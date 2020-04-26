@@ -1,21 +1,16 @@
 <template>
   <div class="app-container">
-    <table-header ref="tHeader" @dd-category="addCategory" />
+    <table-header ref="tHeader" :categories="categories" />
     <div class="content">
-      <el-table
-        :data="categories"
-        row-key="_id"
-        border
-        :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
-      >
-        <el-table-column label="分类名称" sortable align="center">
+      <el-table :data="categories" border>
+        <el-table-column label="分类名" sortable align="center">
           <template slot-scope="{ row }">
             <span>{{ row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="路径" sortable align="center">
+        <el-table-column label="别名" sortable align="center">
           <template slot-scope="{ row }">
-            <span>{{ row.path }}</span>
+            <span>{{ row.slug }}</span>
           </template>
         </el-table-column>
         <el-table-column label="图标" align="center">
@@ -40,27 +35,15 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="{ row }">
-            <el-tooltip effect="dark" content="编辑" placement="top">
-              <el-button
-                circle
-                plain
-                type="primary"
-                size="small"
-                @click="$refs.tHeader.updateForm(false, row)"
-                icon="el-icon-edit"
-              />
-            </el-tooltip>
-
-            <el-tooltip effect="dark" content="删除" placement="top">
-              <el-button
-                circle
-                plain
-                type="danger"
-                size="small"
-                icon="el-icon-delete"
-                @click="remove(row)"
-              />
-            </el-tooltip>
+            <edit :categories="categories" :sup_this="sup_this" :item="row" />
+            <el-button
+              circle
+              plain
+              type="danger"
+              size="small"
+              icon="el-icon-delete"
+              @click="remove(row)"
+            />
           </template>
         </el-table-column>
       </el-table>
@@ -69,7 +52,7 @@
     <pagination
       v-show="total > 0"
       :total="total"
-      :page.sync="listQuery.page"
+      :page.sync="listQuery.current_page"
       :limit.sync="listQuery.per_page"
       @pagination="fetch"
     />
@@ -77,20 +60,22 @@
 </template>
 
 <script>
-import TableHeader from "./components/TableHeader";
+import TableHeader from "./components/header";
+import Edit from "./components/edit";
 import Pagination from "@/components/Pagination";
 import { getCategories, deleteCategory } from "@/api/category";
-import translateToTree from "@/utils/dataToTree";
 export default {
   components: {
     TableHeader,
+    Edit,
     Pagination
   },
   data() {
     return {
       loading: false,
-      total: 0,
       categories: [],
+      total: 0,
+      sup_this: this,
       listQuery: {
         page: 1,
         per_page: 10
@@ -98,16 +83,17 @@ export default {
     };
   },
   methods: {
-    addCategory() {
-      this.total++;
-    },
     async fetch() {
       // 获取所有分类数据
       const res = await getCategories(this.listQuery);
-      if (res.code === 200) {
-        const data = res.data.categories;
-        this.total = res.data.total;
-        this.categories = translateToTree(data);
+      if (res.code) {
+        const { data, pagination: { total, page, per_page } } = res.result;
+        this.total = total;
+        this.listQuery = {
+          page,
+          per_page
+        };
+        this.categories = data;
       }
     },
     async remove(row) {

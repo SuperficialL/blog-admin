@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { uploadQiNiu, getQiNiuToken } from "@/api/upload";
+// import { uploadQiNiu, getQiNiuToken } from "@/api/upload";
 export default {
   name: "TableHeader",
   props: {
@@ -144,38 +144,36 @@ export default {
       if (!isNew) {
         this.model = row;
       }
-      console.log(this.model, "model");
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
     async beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      console.log(file.type);
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      // if (!isJPG) {
-      //   this.$message.error('上传头像图片只能是 JPG 格式!');
-      // }
-      // if (!isLt2M) {
-      //   this.$message.error("上传头像图片大小不能超过 2MB!");
-      // }
-      const res = await getQiNiuToken();
-      if (res.code === 200) {
-        const token = res.token;
-        console.log(token);
-        let formData = new FormData();
-        formData.append("token", token);
-        formData.append("file", file);
-        const up = await uploadQiNiu(formData);
-        console.log(up, "up");
-      } else {
-        this.$message({
-          type: "error",
-          message: "token获取错误~"
-        });
-      }
-      console.log(a, "a");
+    //   const isJPG = file.type === "image/jpeg";
+    //   const isLt2M = file.size / 1024 / 1024 < 2;
+    //   if (!isJPG) {
+    //     this.$message.error("上传头像图片只能是 JPG 格式!");
+    //   }
+    //   if (!isLt2M) {
+    //     this.$message.error("上传头像图片大小不能超过 2MB!");
+    //   }
+    //   const res = await getQiNiuToken();
+    //   if (res.code === 200) {
+    //     const token = res.token;
+    //     let formData = new FormData();
+    //     formData.append("token", token);
+    //     formData.append("file", file);
+    //     const up = await uploadQiNiu(formData);
+    //     this.$message({
+    //       type:"success",
+    //       message: up.data
+    //     });
+    //   } else {
+    //     this.$message({
+    //       type: "error",
+    //       message: "token获取错误~"
+    //     });
+    //   }
     }
   }
 };

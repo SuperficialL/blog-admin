@@ -47,7 +47,7 @@
 import TableHeader from "./components/TableHeader";
 import treeTable from "@/components/TreeTable";
 import Pagination from "@/components/Pagination";
-import translateToTree from "@/utils/dataToTree";
+// import translateToTree from "@/utils/dataToTree";
 import { getMenus, deleteMenu } from "@/api/menu";
 export default {
   components: { TableHeader, treeTable, Pagination },
@@ -56,7 +56,7 @@ export default {
       columns: [
         {
           text: "名称",
-          value: "name",
+          value: "title",
           align: "center"
         },
         {
@@ -93,11 +93,10 @@ export default {
     async fetch() {
       const res = await getMenus();
       if (res.code === 200) {
-        const data = res.data.menus;
-        this.total = res.data.total;
-        if (!data.length) return;
-        this.menus = translateToTree(data);
-        console.log(this.menus, "menus");
+        const { menus,total } = res.data;
+        this.menus = menus;
+        this.total = total;
+        // this.menus = translateToTree(data);
       }
     },
     // 删除

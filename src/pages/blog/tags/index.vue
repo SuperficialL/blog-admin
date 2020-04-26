@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
-    <table-header ref="tHeader" @add-tag="appendTag" />
+    <table-header ref="tHeader" />
     <div class="content">
       <el-table
         v-loading="loading"
-        :data="list"
+        :data="tags"
         border
         fit
         highlight-current-row
@@ -20,55 +20,44 @@
 
         <el-table-column
           prop="title"
-          width="180px"
           sortable
           align="center"
           label="标签名称"
         ></el-table-column>
 
         <el-table-column
-          prop="desc"
-          width="180px"
+          prop="slug"
           sortable
           align="center"
-          label="描述"
+          label="别名"
         ></el-table-column>
 
         <el-table-column
-          width="180px"
           align="center"
           sortable
           prop="created_time"
           label="创建时间"
         >
-          <template slot-scope="scope">
-            {{ scope.row.created_time | dateFormat }}
+          <template slot-scope="{ row }">
+            {{ row.created_time | dateFormat }}
           </template>
         </el-table-column>
 
         <el-table-column
-          width="180px"
           align="center"
           sortable
           prop="updated_time"
           label="最后修改时间"
         >
-          <template slot-scope="scope">
-            {{ scope.row.updated_time | dateFormat }}
+          <template slot-scope="{ row }">
+            {{ row.updated_time | dateFormat }}
           </template>
         </el-table-column>
 
         <el-table-column label="操作" align="center">
-          <template slot-scope="scope">
+          <template slot-scope="{ row, index }">
             <el-tooltip effect="dark" content="编辑" placement="top">
-              <el-button
-                circle
-                plain
-                type="primary"
-                size="small"
-                icon="el-icon-edit"
-                @click="$refs.tHeader.updateForm(false, scope.row)"
-              />
+              <edit :item="row" :sup_this="sup_this" />
             </el-tooltip>
             <el-tooltip effect="dark" content="删除" placement="top">
               <el-button
@@ -77,7 +66,7 @@
                 type="danger"
                 size="small"
                 icon="el-icon-delete"
-                @click="remove(scope.$index, scope.row)"
+                @click="remove(index, row)"
               />
             </el-tooltip>
           </template>
@@ -95,17 +84,19 @@
 </template>
 
 <script>
-import TableHeader from "./components/TableHeader";
+import TableHeader from "./components/header";
+import Edit from "./components/edit";
 import Pagination from "@/components/Pagination";
 import { getTags, deleteTag } from "@/api/tags";
 
 export default {
-  components: { TableHeader, Pagination },
+  components: { TableHeader, Edit, Pagination },
   data() {
     return {
-      list: [],
-      total: 0,
+      tags: [],
       loading: false,
+      total: 0,
+      sup_this:this,
       listQuery: {
         page: 1,
         per_page: 10
@@ -119,9 +110,14 @@ export default {
     async fetch() {
       // 获取所有标签数据
       const res = await getTags(this.listQuery);
-      if (res.code === 200) {
-        this.total = res.data.total;
-        this.list = res.data.tags;
+      if (res.code) {
+        const { data, pagination: { total,page,per_page } } = res.result;
+        this.tags = data;
+        this.listQuery = {
+          page,
+          per_page
+        };
+        this.total = total;
       }
     },
     remove(index, row) {

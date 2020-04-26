@@ -10,7 +10,7 @@ import request from "@/utils/request";
 export function login(data) {
   // 通过用户名登录
   return request({
-    url: "login",
+    url: "auth",
     method: "post",
     data,
   });

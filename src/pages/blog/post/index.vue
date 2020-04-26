@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
-    <table-header ref="tHeader" />
+    <table-header ref="tHeader" :categories="categories" />
     <div class="content">
-      <el-table v-loading="loading" ref="multipleTable" :data="list" border>
+      <el-table v-loading="loading" ref="multipleTable" :data="articles" border>
         <el-table-column align="center" label="序号" width="60">
           <template slot-scope="{ row, $index }">
             <span>
@@ -22,19 +22,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column width="100px" align="center" label="作者">
+        <el-table-column align="center" label="分类">
           <template slot-scope="{ row }">
-            <span>{{ row.author.username }}</span>
+            <span>{{ row.category?row.category.name:"" }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="100px" align="center" label="分类">
-          <template slot-scope="{ row }">
-            <span>{{ row.category.name }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column width="120px" align="center" label="标签">
+        <el-table-column align="center" label="标签">
           <template slot-scope="{ row }">
             <el-tag size="small" v-for="(tag, index) in row.tags" :key="index">
               {{ tag.title }}
@@ -42,7 +36,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column width="80px" align="center" label="状态">
+        <el-table-column align="center" label="状态">
           <template slot-scope="{ row }">
             <el-tag
               size="small"
@@ -54,40 +48,43 @@
           </template>
         </el-table-column>
 
-        <el-table-column width="80px" align="center" label="访问量">
+        <el-table-column align="center" label="访问量">
           <template slot-scope="{ row }">
             <span>{{ row.views }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="80px" align="center" label="点赞数">
+        <el-table-column align="center" label="点赞数">
           <template slot-scope="{ row }">
             <span>{{ row.likes }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column width="80px" align="center" label="评论数">
+        <el-table-column align="center" label="评论数">
           <template slot-scope="{ row }">
             <span>{{ row.comments }}</span>
           </template>
         </el-table-column>
 
         <el-table-column align="center" label="操作">
-          <template slot-scope="scope">
+          <template slot-scope="{ row }">
             <el-tooltip effect="dark" content="编辑" placement="top">
               <el-button
                 circle
+                plain
                 type="primary"
-                size="mini"
+                size="small"
                 icon="el-icon-edit"
-                @click="$router.push(`/blog/post/edit/${scope.row._id}`)"
+                class="del-btn"
+                @click="$router.push(`posts/edit/${row._id}`)"
               />
             </el-tooltip>
             <el-tooltip effect="dark" content="删除" placement="top">
               <el-button
                 circle
+                plain
                 type="danger"
-                size="mini"
+                size="small"
                 icon="el-icon-delete"
                 class="del-btn"
                 @click="handleDel(scope.$index, scope.row)"
@@ -103,22 +100,24 @@
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.per_page"
-      @pagination="getList"
+      @pagination="fetch"
     />
   </div>
 </template>
 
 <script>
 import { getArticles, deleteArticle } from "@/api/articles";
+import { getCategories } from "@/api/category";
 import Pagination from "@/components/Pagination";
-import TableHeader from "./components/TableHeader";
+import TableHeader from "./components/header";
 
 export default {
   name: "PostList",
   components: { TableHeader, Pagination },
   data() {
     return {
-      list: null,
+      articles: [],
+      categories: [],
       total: 0,
       loading: false,
       listQuery: {
@@ -129,13 +128,27 @@ export default {
     };
   },
   methods: {
-    async getList() {
+    async fetch() {
       this.loading = true;
       const res = await getArticles(this.listQuery);
-      this.loading = false;
-      if (res.code === 200) {
-        this.list = res.data.articles;
-        this.total = res.data.total;
+      if (res.code) {
+        const { data, pagination: { total,page,per_page } } = res.result;
+        this.articles = data;
+        this.listQuery = {
+          page,
+          per_page
+        };
+        this.total = total;
+        this.loading = false;
+      }
+    },
+
+    async fetchCategories() {
+      this.loading = true;
+      const res = await getCategories();
+      if (res.code) {
+        const { data } = res.result;
+        this.categories = data;
         this.loading = false;
       }
     },
@@ -168,7 +181,7 @@ export default {
     }
   },
   created() {
-    this.getList();
+    this.fetch();
   }
 };
 </script>

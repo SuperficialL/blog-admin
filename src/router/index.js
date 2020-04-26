@@ -44,208 +44,119 @@ export const constantRouterMap = [
     ]
   },
 
-  // {
-  //   path: "/blog",
-  //   component: Layout,
-  //   meta: {
-  //     title: "博客管理",
-  //     icon: "list"
-  //   },
-  //   children: [
-  //     /** 分类 */
-  //     {
-  //       path: "category",
-  //       component: () => import("@/pages/blog/category"),
-  //       name: "Category",
-  //       meta: {
-  //         title: "分类管理",
-  //         // icon: "documentation"
-  //       }
-  //     },
+  {
+    path: "/blog",
+    component: Layout,
+    meta: {
+      title: "博客管理",
+      icon: "list"
+    },
+    children: [
+      /** 分类 */
+      {
+        path: "categories",
+        component: () => import("@/pages/blog/category"),
+        name: "Category",
+        meta: {
+          title: "分类管理",
+          // icon: "documentation"
+        }
+      },
 
-  //     /** 标签 */
-  //     {
-  //       path: "tags",
-  //       component: () => import("@/pages/blog/tags"),
-  //       name: "Tag",
-  //       meta: {
-  //         title: "标签管理",
-  //         // icon: "documentation"
-  //       }
-  //     },
+      /** 标签 */
+      {
+        path: "tags",
+        component: () => import("@/pages/blog/tags"),
+        name: "Tag",
+        meta: {
+          title: "标签管理",
+          // icon: "documentation"
+        }
+      },
 
-  //     /** 文章 */
-  //     {
-  //       path: "post",
-  //       component: () => import("@/pages/blog/post"),
-  //       name: "Post",
-  //       meta: {
-  //         title: "博文管理",
-  //         // icon: "documentation"
-  //       }
-  //     },
-  //     {
-  //       path: "post/create",
-  //       component: () => import("@/pages/blog/post/edit"),
-  //       name: "CreatePost",
-  //       hidden: true,
-  //       meta: {
-  //         title: "创建文章",
-  //         // icon: "documentation"
-  //       }
-  //     },
-  //     {
-  //       path: "post/edit/:id",
-  //       name: "editPost",
-  //       component: () => import("@/pages/blog/post/edit"),
-  //       props: true,
-  //       hidden: true,
-  //       meta: {
-  //         title: "编辑文章",
-  //         noCache: true
-  //       }
-  //     },
+      /** 文章 */
+      {
+        path: "posts",
+        component: () => import("@/pages/blog/post"),
+        name: "Post",
+        meta: {
+          title: "博文管理",
+          // icon: "documentation"
+        }
+      },
+      {
+        path: "posts/create",
+        component: () => import("@/pages/blog/post/edit"),
+        name: "CreatePost",
+        hidden: true,
+        meta: {
+          title: "创建文章",
+          // icon: "documentation"
+        }
+      },
+      {
+        path: "posts/edit/:id",
+        name: "editPost",
+        component: () => import("@/pages/blog/post/edit"),
+        props: true,
+        hidden: true,
+        meta: {
+          title: "编辑文章",
+          noCache: true
+        }
+      },
 
-  //     /** 评论 */
-  //     {
-  //       path: "comment",
-  //       component: () => import("@/pages/blog/comment"),
-  //       name: "Comment",
-  //       meta: {
-  //         title: "评论管理",
-  //         // icon: "documentation"
-  //       }
-  //     },
-  //   ]
-  // },
+      /** 评论 */
+      {
+        path: "comments",
+        component: () => import("@/pages/blog/comment"),
+        name: "Comment",
+        meta: {
+          title: "评论管理",
+          // icon: "documentation"
+        }
+      },
+    ]
+  },
 
-  // /** 设置 */
-  // {
-  //   path: "/site",
-  //   component: Layout,
-  //   redirect: "/site/list",
-  //   name: "Site",
-  //   meta: {
-  //     title: "网站管理",
-  //     icon: "list"
-  //   },
-  //   children: [
-  //     {
-  //       path: "list",
-  //       component: () => import("@/pages/site/timeline"),
-  //       name: "SiteSettings",
-  //       meta: {
-  //         title: "站点设置",
-  //         // icon: "list"
-  //       }
-  //     },
-
-  //     {
-  //       path: "timeline",
-  //       component: () => import("@/pages/site/timeline"),
-  //       name: "TimeLine",
-  //       meta: {
-  //         title: "时间轴",
-  //         // icon: "list"
-  //       }
-  //     }
-  //   ]
-  // },
-
-  // /** 个人中心 */
-  // {
-  //   path: "/profile",
-  //   component: Layout,
-  //   redirect: "/profile/index",
-  //   hidden: true,
-  //   children: [
-  //     {
-  //       path: "index",
-  //       component: () => import("@/pages/profile"),
-  //       name: "Profile",
-  //       meta: {
-  //         title: "个人中心",
-  //         icon: "user"
-  //       }
-  //     },
-  //     {
-  //       path: "settings",
-  //       component: () => import("@/pages/profile/settings"),
-  //       name: "Settings",
-  //       meta: {
-  //         title: "个人设置",
-  //         icon: "user"
-  //       }
-  //     }
-  //   ]
-  // },
+  /** 个人中心 */
+  {
+    path: "/profile",
+    component: Layout,
+    redirect: "/profile/index",
+    hidden: true,
+    children: [
+      {
+        path: "index",
+        component: () => import("@/pages/profile"),
+        name: "Profile",
+        meta: {
+          title: "个人中心",
+          icon: "user"
+        }
+      },
+      {
+        path: "settings",
+        component: () => import("@/pages/profile/settings"),
+        name: "Settings",
+        meta: {
+          title: "个人设置",
+          icon: "user"
+        }
+      }
+    ]
+  },
 
   /** 系统设置 */
   {
     path: "/system",
     component: Layout,
-    redirect: "/system/menu",
     name: "System",
     meta: {
       title: "系统设置",
       icon: "list"
     },
-    children: [
-      {
-        path: "menus",
-        component: () => import("@/pages/system/menu"),
-        name: "Menu",
-        meta: {
-          title: "菜单管理",
-          // icon: "list"
-        }
-      },
-      {
-        path: "album",
-        component: () => import("@/pages/system/album"),
-        name: "Album",
-        meta: {
-          title: "相册管理",
-          // icon: "list"
-        }
-      },
-      {
-        path: "media",
-        component: () => import("@/pages/system/media"),
-        name: "Media",
-        meta: {
-          title: "媒体管理",
-          // icon: "list"
-        }
-      },
-      {
-        path: "users",
-        component: () => import("@/pages/system/user"),
-        name: "UserList",
-        meta: {
-          title: "用户管理",
-          // icon: "list"
-        }
-      },
-      {
-        path: "roles",
-        component: () => import("@/pages/system/roles"),
-        name: "list",
-        meta: {
-          title: "角色管理",
-          // icon: "list"
-        }
-      },
-      {
-        path: "permissions",
-        component: () => import("@/pages/system/permission"),
-        name: "PermissionList",
-        meta: {
-          title: "权限管理",
-          // icon: "list"
-        }
-      }
-    ]
+    children: [ ]
   },
 
   {
@@ -262,6 +173,6 @@ const IS_DEV = process.env.NODE_ENV === "development";
 export default new Router({
   mode: IS_DEV ? "hash" : "history",
   base: process.env.BASE_URL,
-  scrollBehavior: () => { y: 0 },
+  // scrollBehavior: () => { y: 0 },
   routes: constantRouterMap
 });

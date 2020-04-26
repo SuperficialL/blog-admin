@@ -22,12 +22,11 @@
 <script>
 import { mapGetters } from "vuex";
 import SidebarItem from "./SidebarItem";
-import { constantRouterMap } from "@/router";
 import variables from "@/styles/variables.scss";
-
+import { constantRouterMap } from "@/router";
 export default {
   data() {
-    return {
+    return { 
       routes: constantRouterMap
     };
   },

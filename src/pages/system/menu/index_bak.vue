@@ -155,7 +155,6 @@ export default {
         .catch(err => {
           this.delLoading = false;
           this.$refs[id].doClose();
-          console.log(err);
         });
     },
     getMenus() {

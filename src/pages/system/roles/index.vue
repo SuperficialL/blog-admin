@@ -171,7 +171,6 @@ export default {
   },
   methods: {
     handleCurrentChange(item) {
-      console.log(item, "item");
       // if (item.id !== 1) {
       if (this.show) {
         // 清空选中状态

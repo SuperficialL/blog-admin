@@ -3,7 +3,6 @@ const getters = {
   avatar: state => state.user.avatar,
   username: state => state.user.username,
   email: state => state.user.email,
-  roles: state => state.user.roles,
   sidebar: state => state.app.sidebar,
   device: state => state.app.device,
   size: state => state.app.size,

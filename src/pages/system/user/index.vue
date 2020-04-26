@@ -162,7 +162,6 @@ export default {
         const { _id } = item;
         arr.push(_id);
       });
-      console.log(arr, "arr");
     },
     handleSelectionChange(arr) {
       this.multipleSelection = arr;
@@ -175,7 +174,6 @@ export default {
         this.loading = false;
         this.users = res.data.users;
         this.total = res.data.total;
-        console.log(res, "resss");
       }
     },
     async getRoleList() {
@@ -187,7 +185,6 @@ export default {
       }
     },
     searchUser(arr) {
-      console.log(arr);
     },
     // 删除
     async handleDel(index, row) {

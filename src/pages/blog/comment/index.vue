@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <!--工具条-->
-    <table-header ref="tHeader" @add-tag="appendComment" />
+    <table-header ref="tHeader" :comments="comments" :articles="articles" />
 
     <el-table
       v-loading="loading"
       ref="multipleTable"
-      :data="list"
+      :data="comments"
       border
       highlight-current-row
       style="width:100%;"
@@ -20,34 +20,28 @@
       </el-table-column>
 
       <el-table-column
-        width="180"
+        align="center"
+        label="头像"
+      >
+        <template slot-scope="{ row }">
+          <img :src="row.avatar" width="32" height="32">
+        </template>
+      </el-table-column>
+
+      <el-table-column
         align="center"
         sortable
         prop="username"
         label="昵称"
       >
-        <template slot-scope="scope">
-          <span>{{ scope.row.username }}</span>
-        </template>
       </el-table-column>
 
-      <!-- <el-table-column width="140" align="center" label="头像">
-        <template slot-scope="scope">
-          <img :src="scope.row.avatar" width="45" height="45" />
-        </template>
-      </el-table-column>-->
-
-      <el-table-column width="180" align="center" label="邮箱">
-        <template slot-scope="scope">
-          <span>{{ scope.row.email }}</span>
-        </template>
+      <el-table-column sortable prop="email" align="center" label="邮箱">
       </el-table-column>
 
       <el-table-column
-        width="100px"
         align="center"
         sortable
-        prop="status"
         label="状态"
       >
         <template slot-scope="{ row }">
@@ -63,22 +57,15 @@
         prop="created_time"
         label="评论时间"
       >
-        <template slot-scope="scope">
-          <span>{{ scope.row.created_time | dateFormat }}</span>
+        <template slot-scope="{ row }">
+          <span>{{ row.created_time | dateFormat }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="操作" align="center" width="230">
-        <template slot-scope="scope">
+        <template slot-scope="{ row }">
           <el-tooltip effect="dark" content="编辑" placement="top">
-            <el-button
-              type="primary"
-              size="small"
-              circle
-              plain
-              icon="el-icon-edit"
-              @click="$refs.tHeader.updateForm(false, scope.row)"
-            />
+            <edit :comments="comments" :articles="articles" :item="row" :sup_this="sup_this" />
           </el-tooltip>
           <el-tooltip effect="dark" content="删除" placement="top">
             <el-button
@@ -100,44 +87,60 @@
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.per_page"
-      @pagination="getList"
+      @pagination="fetch"
     ></pagination>
   </div>
 </template>
 
 <script>
-import TableHeader from "./components/TableHeader";
+import TableHeader from "./components/header";
+import Edit from "./components/edit";
 import Pagination from "@/components/Pagination";
 import { getComments, deleteComment } from "@/api/comments";
+import { getArticles } from "@/api/articles";
 
 export default {
   name: "CommentList",
-  components: { TableHeader, Pagination },
+  components: { TableHeader, Edit,Pagination },
   data() {
     return {
       listQuery: {
         page: 1,
         per_page: 10
       },
-      list: [],
+      sup_this: this,
+      comments: [],
+      articles: [],
       total: 0,
       loading: false
     };
   },
 
   methods: {
-    appendComment(comment) {
-      this.total++;
-    },
     // 获取评论
-    async getList() {
-      // 获取用户列表数据
+    async fetch() {
       this.loading = true;
       const res = await getComments(this.listQuery);
-      if (res.code === 200) {
+      if (res.code) {
+        const { data, pagination: { total,page,per_page } } = res.result;
+        this.comments = data;
+        this.listQuery = {
+          page,
+          per_page
+        };
+        this.total = total;
         this.loading = false;
-        this.list = res.data.comments;
-        this.total = res.data.total;
+      }
+    },
+
+    async fetchArticles() {
+      // 获取文章列表数据
+      this.loading = true;
+      const res = await getArticles();
+      if (res.code) {
+        const { data } = res.result;
+        this.articles = data;
+        this.loading = false;
       }
     },
 
@@ -171,7 +174,8 @@ export default {
   },
 
   created() {
-    this.getList();
+    this.fetch();
+    this.fetchArticles();
   }
 };
 </script>

@@ -68,7 +68,6 @@ export default {
         this.$parent.$parent.init()
       }).catch(err => {
         this.loading = false
-        console.log(err)
       })
     },
     doEdit() {
@@ -84,7 +83,6 @@ export default {
         this.sup_this.init()
       }).catch(err => {
         this.loading = false
-        console.log(err)
       })
     },
     resetForm() {
