@@ -1,6 +1,13 @@
 <template>
   <el-dialog :title="isAdd ? '编辑标签' : '新增标签'" :visible.sync="dialog" width="30%">
-    <el-form :model="form" :rules="rules" ref="form" style="text-align:left;" label-width="80px" size="mini">
+    <el-form
+      :model="form"
+      :rules="rules"
+      ref="form"
+      style="text-align:left;"
+      label-width="80px"
+      size="mini"
+    >
       <el-form-item label="名称" prop="title">
         <el-input v-model="form.title" placeholder="请输入名称"></el-input>
       </el-form-item>
@@ -16,10 +23,7 @@
 </template>
 
 <script>
-import {
-  createTag,
-  updateTag
-} from "@/api/tags";
+import { createTag, updateTag } from "@/api/tags";
 export default {
   props: {
     isAdd: {
@@ -48,13 +52,13 @@ export default {
           }
         ]
       }
-    }
+    };
   },
   methods: {
     // 重置表单
     resetForm() {
       this.dialog = false;
-      this.$refs['form'].resetFields();
+      this.$refs["form"].resetFields();
       this.form = {
         title: "",
         slug: ""
@@ -63,26 +67,26 @@ export default {
 
     // 提交表单
     submit() {
-      this.$refs['form'].validate((valid) => {
+      this.$refs["form"].validate(valid => {
         if (valid) {
-          this.loading = true
+          this.loading = true;
           if (this.isAdd) {
-            this.add()
-          } else this.update()
+            this.add();
+          } else this.update();
         } else {
-          return false
+          return false;
         }
-      })
+      });
     },
 
     // 添加数据
     async add() {
-      const res = await createTag({tag: this.form });
+      const res = await createTag({ tag: this.form });
       if (res.code) {
         this.resetForm();
         this.$message({
           showClose: true,
-          type: 'success',
+          type: "success",
           message: res.message,
           duration: 2500
         });
@@ -95,18 +99,18 @@ export default {
 
     // 修改数据
     async update() {
-      console.log(this.form,"ssssssss");
+      console.log(this.form, "ssssssss");
       const res = await updateTag(this.form._id, { tag: this.form });
-      console.log(res,'res');
+      console.log(res, "res");
       if (res.code) {
         this.resetForm();
-          this.$message({
+        this.$message({
           showClose: true,
-          type: 'success',
+          type: "success",
           message: res.message,
           duration: 2500
-        })
-        this.loading = false
+        });
+        this.loading = false;
         this.sup_this.fetch();
       } else {
         this.loading = false;
@@ -122,7 +126,7 @@ export default {
 </script>
 
 <style>
-  /deep/ .el-form-item__content {
-    text-align: left;
-  }
+.el-form-item__content {
+  text-align: left;
+}
 </style>

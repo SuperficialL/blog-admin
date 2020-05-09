@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { getTimeLines } from "@/api/timeline";
 export default {
   data() {
     return {
@@ -32,16 +31,10 @@ export default {
   },
 
   methods: {
-    async fetch() {
-      const res = await getTimeLines();
-      if (res.code === 200) {
-        this.timeLines = res.timelines;
-      }
-    }
+    
   },
 
   created() {
-    this.fetch();
   }
 };
 </script>

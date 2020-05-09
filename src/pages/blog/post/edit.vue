@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-top:20px;">
+  <div class="wrapper" style="margin-top:20px;" @scroll="scroll($event)">
     <el-form
       ref="form"
       label-width="100px"
@@ -96,10 +96,11 @@
         </el-col>
       </el-row>
 
-      <el-row>
+      <el-row :class="{sticky:active}">
         <el-col :span="24"> 
           <mavon-editor
             ref="md"
+            
             v-model="article.content"
             @change="saveMavon"
             @imgAdd="imgAdd"
@@ -128,6 +129,7 @@ export default {
   props: ["id"],
   data() {
     return {
+      active: false,
       article: {},
       // 富文本中的图片
       imgs: {},
@@ -230,7 +232,7 @@ export default {
       let formData = new FormData();
       formData.append("file", file);
       const res = await uploadImg(formData);
-      if (res.code === 200) {
+      if (res.code) {
         this.$refs.md.$img2Url(pos, res.url);
       }
     },
@@ -239,10 +241,15 @@ export default {
       // 设置图片上传后的地址
       this.$set(this.article, "thumbnail", res.url);
       // this.article.img = res
+    },
+
+    scroll(e) {
+      const top = e.srcElement.scrollTop || e.target.scrollTop;
+      const tools = document.getElementsByClassName("v-note-op");
+      tools.className = top > 344 ? true : false;
     }
   },
   created() {
-    console.log(this.id);
     this.id && this.fetchArticle();
     this.fetchCategories();
     this.fetchTags();
@@ -250,7 +257,17 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
+.wrapper {
+  height: 100%;
+  overflow-y: auto;
+}
+.sticky {
+  position: sticky;
+  // position: fixed;
+  left: 0;
+  // top: 344px;
+}
 @import "~@/styles/mixin.scss";
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;

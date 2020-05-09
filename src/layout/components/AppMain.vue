@@ -19,6 +19,11 @@ export default {
     key() {
       return this.$route.fullPath;
     }
+  },
+  methods: {
+    scroll() {
+      console.log(1,'1');
+    }
   }
 };
 </script>
@@ -29,8 +34,9 @@ export default {
   position: relative;
   width: 100%;
   height: calc(100vh - 84px);
-  overflow-y: auto;
-  overflow-x: hidden;
+  // overflow-y: auto;
+  overflow: hidden;
+  // overflow-x: hidden;
   &::-webkit-scrollbar {
     width: 5px;
     height: 5px;

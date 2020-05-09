@@ -148,6 +148,12 @@ code {
   }
 }
 
+// markdown编辑器工具栏吸顶
+.v-note-op {
+  position: sticky;
+  top: 344px;
+}
+
 .components-container {
   margin: 30px 50px;
   position: relative;

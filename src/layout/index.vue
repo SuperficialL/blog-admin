@@ -49,7 +49,7 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
 
 .app-wrapper {

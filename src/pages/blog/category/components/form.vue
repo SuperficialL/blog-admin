@@ -123,7 +123,7 @@ export default {
 
     // 添加数据
     async add() {
-      const res = await createCategory({category: this.form });
+      const res = await createCategory(this.form);
       if (res.code) {
         this.resetForm();
         this.$message({
@@ -141,7 +141,7 @@ export default {
 
     // 修改数据
     async update() {
-      const res = await updateCategory(this.form._id, { category: this.form });
+      const res = await updateCategory(this.form._id, this.form);
       if (res.code) {
         this.resetForm();
         this.$message({

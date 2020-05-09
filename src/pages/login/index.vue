@@ -30,6 +30,7 @@
           show-password
           placeholder="请输入密码"
           autocomplete="off"
+          @keyup.enter.native="handleLogin"
         >
           <template slot="prepend">
             <el-icon name="lock"></el-icon>
