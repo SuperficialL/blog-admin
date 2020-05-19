@@ -110,3 +110,8 @@
   height: 100px;
   display: block;
 }
+
+
+.el-row:last-child .el-col .el-form-item {
+  margin-bottom: 0;
+}

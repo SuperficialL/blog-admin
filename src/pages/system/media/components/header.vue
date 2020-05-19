@@ -2,8 +2,7 @@
   <div class="table-header">
     <div class="title">
       <i class="el-icon-menu"></i>
-      <span style="margin-left:5px;">文章列表</span>
-      <el-button type="danger" size="mini" @click="del">删除</el-button>
+      <span style="margin-left:5px;">分类列表</span>
     </div>
     <div class="operation">
       <el-input
@@ -15,31 +14,31 @@
       >
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
-      <el-button icon="el-icon-plus" size="mini" @click="$router.push('posts/create')">
-        添加文章
+      <el-button icon="el-icon-plus" size="mini" @click="$refs.form.dialog = true">
+        添加分类
       </el-button>
     </div>
+    <eForm ref="form" :categories="categories" :is-add="true"/>
   </div>
 </template>
 
 <script>
+import eForm from "./form";
 export default {
   name: "TableHeader",
+  components: {
+    eForm
+  },
+  props: {
+    categories: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
       searchVal: ""
     };
-  },
-  props: {
-    multipleSelection: {
-      type: Array,
-      require: true
-    }
-  },
-  methods: {
-    del() {
-      console.log(this.multipleSelection,'sss');
-    }
   }
 };
 </script>
