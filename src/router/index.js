@@ -153,10 +153,29 @@ export const constantRouterMap = [
     component: Layout,
     name: "System",
     meta: {
-      title: "系统设置",
+      title: "系统管理",
       icon: "list"
     },
-    children: [ ]
+    children: [
+      {
+        path: "site",
+        component: () => import("@/pages/profile/settings"),
+        name: "site",
+        meta: {
+          title: "站点设置",
+          icon: "user"
+        }
+      },
+      {
+        path: "total",
+        component: () => import("@/pages/profile/settings"),
+        name: "total",
+        meta: {
+          title: "统计",
+          icon: "user"
+        }
+      }
+    ]
   },
 
   {

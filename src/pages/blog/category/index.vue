@@ -24,14 +24,10 @@
           </template>
         </el-table-column>
         <el-table-column label="创建时间" align="center" sortable>
-          <template slot-scope="{ row }">
-            {{ row.created_time | dateFormat }}
-          </template>
+          <template slot-scope="{ row }">{{ row.created_time | dateFormat }}</template>
         </el-table-column>
         <el-table-column label="修改时间" align="center" sortable>
-          <template slot-scope="{ row }">
-            {{ row.updated_time | dateFormat }}
-          </template>
+          <template slot-scope="{ row }">{{ row.updated_time | dateFormat }}</template>
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="{ row }">
@@ -84,39 +80,43 @@ export default {
   },
   methods: {
     async fetch() {
+      this.loading = true;
       // 获取所有分类数据
       const res = await getCategories(this.listQuery);
       if (res.code) {
-        const { data, pagination: { total, page, per_page } } = res.result;
+        const {
+          data,
+          pagination: { total, page, per_page }
+        } = res.result;
         this.total = total;
         this.listQuery = {
           page,
           per_page
         };
         this.categories = data;
+        this.loading = false;
       }
     },
-    async remove(row) {
-      this.$confirm(`是否确定要删除分类?"${row.name}"`, "提示", {
+    remove(row) {
+      this.$confirm(`是否确定要删除分类 ${row.name}?`, "提示", {
         confirmButtonText: "确认",
         cancleButtonText: "取消",
         type: "warning"
       })
         .then(async () => {
+          this.loading = true;
           const res = await deleteCategory(row._id);
-          if (res.code === 200) {
+          if (res.code) {
             this.$message({
               type: "success",
-              message: "删除成功!"
+              message: res.message
             });
             this.fetch();
           }
+          this.loading = true;
         })
         .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除!"
-          });
+          this.loading = true;
         });
     }
   },

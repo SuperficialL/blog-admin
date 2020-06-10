@@ -8,7 +8,7 @@ module.exports = {
   // 静态资源目录
   // assetsDir: "./static",
   // 输出位置
-  outputDir: "../koa-server/public/admin",
+  outputDir: "../node-server/public/admin",
   lintOnSave: true,
   // 生产环境是否生成 sourceMap 文件
   productionSourceMap: false,

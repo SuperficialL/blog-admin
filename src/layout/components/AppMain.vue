@@ -19,11 +19,6 @@ export default {
     key() {
       return this.$route.fullPath;
     }
-  },
-  methods: {
-    scroll() {
-      console.log(1,'1');
-    }
   }
 };
 </script>

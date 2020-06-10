@@ -9,7 +9,7 @@ import request from "@/utils/request";
 
 export function getSiteInfo() {
   return request({
-    url: "siteinfo",
+    url: "statistic",
     method: "get"
   });
 }

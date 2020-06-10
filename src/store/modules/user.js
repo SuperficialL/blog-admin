@@ -30,7 +30,7 @@ const user = {
             const token = res.result.token;
             commit("SET_TOKEN", token);
             setToken(token);
-            resolve();
+            resolve(res);
           })
           .catch(error => {
             reject(error);

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="isAdd ? '编辑标签' : '新增标签'" :visible.sync="dialog" width="30%">
+  <el-dialog :title="isAdd ? '新增标签':'编辑标签'" :visible.sync="dialog" width="30%">
     <el-form
       :model="form"
       :rules="rules"
@@ -72,7 +72,9 @@ export default {
           this.loading = true;
           if (this.isAdd) {
             this.add();
-          } else this.update();
+          } else {
+            this.update();
+          }
         } else {
           return false;
         }
@@ -81,7 +83,8 @@ export default {
 
     // 添加数据
     async add() {
-      const res = await createTag({ tag: this.form });
+      const { ...tag } = this.form;
+      const res = await createTag(tag);
       if (res.code) {
         this.resetForm();
         this.$message({
@@ -90,18 +93,15 @@ export default {
           message: res.message,
           duration: 2500
         });
-        this.loading = false;
         this.$parent.$parent.fetch();
-      } else {
-        this.loading = false;
       }
+      this.loading = false;
     },
 
     // 修改数据
     async update() {
-      console.log(this.form, "ssssssss");
-      const res = await updateTag(this.form._id, { tag: this.form });
-      console.log(res, "res");
+      const { _id, ...tag } = this.form;
+      const res = await updateTag(_id, tag);
       if (res.code) {
         this.resetForm();
         this.$message({
@@ -110,11 +110,9 @@ export default {
           message: res.message,
           duration: 2500
         });
-        this.loading = false;
         this.sup_this.fetch();
-      } else {
-        this.loading = false;
       }
+      this.loading = false;
     },
 
     // 取消表单
@@ -124,9 +122,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.el-form-item__content {
-  text-align: left;
-}
-</style>

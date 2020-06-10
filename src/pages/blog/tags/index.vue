@@ -10,48 +10,22 @@
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column align="center" label="序号" type="index" width="80">
+        <el-table-column align="center" label="序号" width="80">
           <template slot-scope="scope">
-            <span>
-              {{ (listQuery.page - 1) * listQuery.per_page + scope.$index + 1 }}
-            </span>
+            <span>{{ (listQuery.page - 1) * listQuery.per_page + scope.$index + 1 }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column
-          prop="title"
-          sortable
-          align="center"
-          label="标签名称"
-        ></el-table-column>
+        <el-table-column prop="title" sortable align="center" label="标签名称"></el-table-column>
 
-        <el-table-column
-          prop="slug"
-          sortable
-          align="center"
-          label="别名"
-        ></el-table-column>
+        <el-table-column prop="slug" sortable align="center" label="别名"></el-table-column>
 
-        <el-table-column
-          align="center"
-          sortable
-          prop="created_time"
-          label="创建时间"
-        >
-          <template slot-scope="{ row }">
-            {{ row.created_time | dateFormat }}
-          </template>
+        <el-table-column align="center" sortable prop="created_time" label="创建时间">
+          <template slot-scope="{ row }">{{ row.created_time | dateFormat }}</template>
         </el-table-column>
 
-        <el-table-column
-          align="center"
-          sortable
-          prop="updated_time"
-          label="最后修改时间"
-        >
-          <template slot-scope="{ row }">
-            {{ row.updated_time | dateFormat }}
-          </template>
+        <el-table-column align="center" sortable prop="updated_time" label="最后修改时间">
+          <template slot-scope="{ row }">{{ row.updated_time | dateFormat }}</template>
         </el-table-column>
 
         <el-table-column label="操作" align="center">
@@ -96,7 +70,7 @@ export default {
       tags: [],
       loading: false,
       total: 0,
-      sup_this:this,
+      sup_this: this,
       listQuery: {
         page: 1,
         per_page: 10
@@ -104,20 +78,22 @@ export default {
     };
   },
   methods: {
-    appendTag(tag) {
-      this.total++;
-    },
     async fetch() {
+      this.loading = true;
       // 获取所有标签数据
       const res = await getTags(this.listQuery);
       if (res.code) {
-        const { data, pagination: { total,page,per_page } } = res.result;
+        const {
+          data,
+          pagination: { total, page, per_page }
+        } = res.result;
         this.tags = data;
         this.listQuery = {
           page,
           per_page
         };
         this.total = total;
+        this.loading = false;
       }
     },
     remove(index, row) {
@@ -127,21 +103,19 @@ export default {
         type: "warning"
       })
         .then(async () => {
+          this.loading = true;
           const res = await deleteTag(row._id);
-          if (res.code === 200) {
+          if (res.code) {
             this.$message({
               type: "success",
-              message: "删除成功!"
+              message: res.message
             });
-            this.list.splice(index, 1);
-            this.total--;
+            this.tags.splice(index, 1);
           }
+          this.loading = false;
         })
         .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除!"
-          });
+          this.loading = false;
         });
     }
   },

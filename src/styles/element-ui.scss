@@ -94,9 +94,11 @@
   position: relative;
   overflow: hidden;
 }
+
 .avatar-uploader .el-upload:hover {
   border-color: #409eff;
 }
+
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
@@ -105,8 +107,19 @@
   line-height: 100px;
   text-align: center;
 }
+
 .avatar {
   width: 100px;
   height: 100px;
   display: block;
 }
+
+.el-row:last-child .el-form-item {
+  margin-bottom: 0;
+}
+
+.el-form-item__content,
+.el-dialog__header {
+  text-align: left;
+}
+

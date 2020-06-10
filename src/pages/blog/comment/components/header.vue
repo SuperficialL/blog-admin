@@ -54,7 +54,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  padding: 10px;
   .title {
     color: #666;
   }

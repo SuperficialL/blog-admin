@@ -5,18 +5,11 @@
       <el-table v-loading="loading" ref="multipleTable" :data="articles" border>
         <el-table-column align="center" label="序号" width="60">
           <template slot-scope="{ row, $index }">
-            <span>
-              {{ (listQuery.page - 1) * listQuery.per_page + $index + 1 }}
-            </span>
+            <span>{{ (listQuery.page - 1) * listQuery.per_page + $index + 1 }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column
-          width="200px"
-          show-overflow-tooltip
-          align="center"
-          label="标题"
-        >
+        <el-table-column width="200px" show-overflow-tooltip align="center" label="标题">
           <template slot-scope="{ row }">
             <span>{{ row.title }}</span>
           </template>
@@ -30,9 +23,7 @@
 
         <el-table-column align="center" label="标签">
           <template slot-scope="{ row }">
-            <el-tag size="small" v-for="(tag, index) in row.tags" :key="index">
-              {{ tag.title }}
-            </el-tag>
+            <el-tag size="small" v-for="(tag, index) in row.tags" :key="index">{{ tag.title }}</el-tag>
           </template>
         </el-table-column>
 
@@ -42,9 +33,7 @@
               size="small"
               effect="dark"
               :type="row.status ? 'success' : 'danger'"
-            >
-              {{ row.status | statusFilter }}
-            </el-tag>
+            >{{ row.status | statusFilter }}</el-tag>
           </template>
         </el-table-column>
 
@@ -67,7 +56,7 @@
         </el-table-column>
 
         <el-table-column align="center" label="操作">
-          <template slot-scope="{ row }">
+          <template slot-scope="{ $index,row }">
             <el-tooltip effect="dark" content="编辑" placement="top">
               <el-button
                 circle
@@ -87,7 +76,7 @@
                 size="small"
                 icon="el-icon-delete"
                 class="del-btn"
-                @click="handleDel(scope.$index, scope.row)"
+                @click="handleDel($index, row)"
               />
             </el-tooltip>
           </template>
@@ -132,7 +121,10 @@ export default {
       this.loading = true;
       const res = await getArticles(this.listQuery);
       if (res.code) {
-        const { data, pagination: { total,page,per_page } } = res.result;
+        const {
+          data,
+          pagination: { total, page, per_page }
+        } = res.result;
         this.articles = data;
         this.listQuery = {
           page,
@@ -162,21 +154,17 @@ export default {
         .then(async () => {
           this.loading = true;
           const res = await deleteArticle(row._id);
-          if (res.code === 200) {
+          if (res.code) {
             this.loading = false;
             this.$message({
               type: "success",
               message: "删除成功!"
             });
-            this.list.splice(index, 1);
+            this.articles.splice(index, 1);
           }
         })
         .catch(() => {
           this.loading = false;
-          this.$message({
-            type: "info",
-            message: "已取消删除!"
-          });
         });
     }
   },
@@ -185,3 +173,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.app-container {
+  overflow-y: auto;
+}
+</style>

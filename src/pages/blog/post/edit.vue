@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" style="margin-top:20px;" @scroll="scroll($event)">
+  <div class="wrapper" @scroll="scroll($event)">
     <el-form
       ref="form"
       label-width="100px"
@@ -8,14 +8,14 @@
       @submit.native.prevent="save('form')"
     >
       <el-row>
-        <el-col :span="24"> 
+        <el-col :span="24">
           <el-form-item label="标题" prop="title">
             <el-input v-model="article.title"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12"> 
+        <el-col :span="12">
           <el-form-item label="分类:" class="postInfo-container-item">
             <el-select
               v-model="article.category"
@@ -34,7 +34,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="12"> 
+        <el-col :span="12">
           <el-form-item label="标签:" class="postInfo-container-item">
             <el-select
               v-model="article.tags"
@@ -56,7 +56,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="24"> 
+        <el-col :span="24">
           <el-form-item label="文章状态">
             <el-tooltip :content="article.status | statusFilter" placement="top">
               <el-switch
@@ -68,14 +68,13 @@
                 :active-value="1"
                 :inactive-value="0"
                 size="middle"
-              >
-              </el-switch>
+              ></el-switch>
             </el-tooltip>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="24"> 
+        <el-col :span="24">
           <el-form-item label="缩略图:">
             <el-upload
               list-type="picture-card"
@@ -97,10 +96,9 @@
       </el-row>
 
       <el-row :class="{sticky:active}">
-        <el-col :span="24"> 
+        <el-col :span="24">
           <mavon-editor
             ref="md"
-            
             v-model="article.content"
             @change="saveMavon"
             @imgAdd="imgAdd"
@@ -151,8 +149,7 @@ export default {
 
   methods: {
     // 移除封面图片
-    handleRemove(file, fileList) {
-    },
+    handleRemove(file, fileList) {},
     // 设置封面图片回调地址
     handlePictureCardPreview(file) {
       this.article.thumbnail = file.url;
@@ -190,10 +187,12 @@ export default {
           let res;
           if (this.id) {
             // id 存在,修改数据
-            res = await updateArticle(this.id, { article: this.article });
+            const { _id, ...article } = this.article;
+            res = await updateArticle(_id, article);
           } else {
             // id不存在,创建数据
-            res = await createArticle({ article: this.article });
+            const { ...article } = this.article;
+            res = await createArticle(article);
           }
           if (res.code) {
             this.loading = false;
@@ -258,17 +257,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/styles/mixin.scss";
+
 .wrapper {
   height: 100%;
+  padding: 10px 0;
   overflow-y: auto;
 }
-.sticky {
-  position: sticky;
-  // position: fixed;
-  left: 0;
-  // top: 344px;
-}
-@import "~@/styles/mixin.scss";
+
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;

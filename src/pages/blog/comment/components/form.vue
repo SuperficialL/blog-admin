@@ -1,28 +1,30 @@
 <template>
   <el-dialog :title="isAdd ? '编辑评论' : '新增评论'" :visible.sync="dialog" width="30%">
-    <el-form :model="form" :rules="rules" ref="form" style="text-align:left;" label-width="100px" size="mini">
+    <el-form
+      :model="form"
+      :rules="rules"
+      ref="form"
+      style="text-align:left;"
+      label-width="100px"
+      size="mini"
+    >
       <el-form-item label="评论人" prop="username">
-        <el-input v-model="form.username" placeholder="请输入评论人"></el-input>
+        <el-input v-model="form.author.name" placeholder="请输入评论人"></el-input>
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
-        <el-input v-model="form.email" placeholder="请输入邮箱"></el-input>
+        <el-input v-model="form.author.email" placeholder="请输入邮箱"></el-input>
       </el-form-item>
 
       <el-form-item label="网站">
-        <el-input v-model="form.site" placeholder="请输入评论人网站"></el-input>
+        <el-input v-model="form.author.site" placeholder="请输入评论人网站"></el-input>
       </el-form-item>
 
       <el-form-item label="所属文章">
         <el-select v-model="form.article_id">
-          <el-option
-            v-for="item in articles"
-            :key="item._id"
-            :label="item.title"
-            :value="item._id"
-          ></el-option>
+          <el-option v-for="item in articles" :key="item._id" :label="item.title" :value="item._id"></el-option>
         </el-select>
       </el-form-item>
-      
+
       <el-form-item label="内容">
         <el-input v-model="form.content" placeholder="请输入评论内容"></el-input>
       </el-form-item>
@@ -30,7 +32,6 @@
       <el-form-item label="点赞数">
         <el-input v-model="form.likes" placeholder="请输入评论点赞数"></el-input>
       </el-form-item>
-
     </el-form>
     <span slot="footer" class="dialog-footer">
       <el-button @click="cancel">取 消</el-button>
@@ -40,10 +41,7 @@
 </template>
 
 <script>
-import {
-  createComment,
-  updateComment
-} from "@/api/comments";
+import { createComment, updateComment } from "@/api/comments";
 export default {
   props: {
     isAdd: {
@@ -68,13 +66,15 @@ export default {
       loading: false,
       dialog: false,
       form: {
-        username: "",
-        email: "",
-        site: "",
+        author: {
+          name: "",
+          email: "",
+          site: ""
+        },
         content: "",
-        ua: "",
+        agent: "",
         likes: 0,
-        article_id: "",
+        article_id: ""
       },
       rules: {
         name: [
@@ -93,18 +93,20 @@ export default {
       this.dialog = false;
       this.$refs["form"].resetFields();
       this.form = {
-        username: "",
-        email: "",
-        site: "",
+        author: {
+          name: "",
+          email: "",
+          site: ""
+        },
         content: "",
         likes: 0,
-        article_id: "",
+        article_id: ""
       };
     },
 
     // 提交表单
     submit() {
-      this.$refs["form"].validate((valid) => {
+      this.$refs["form"].validate(valid => {
         if (valid) {
           this.loading = true;
           if (this.isAdd) {
@@ -118,7 +120,7 @@ export default {
 
     // 添加数据
     async add() {
-      this.form.ua = navigator.userAgent;
+      this.form.agent = navigator.userAgent;
       const res = await createComment(this.form);
       if (res.code) {
         this.resetForm();
@@ -160,9 +162,3 @@ export default {
   }
 };
 </script>
-
-<style>
-  .el-form-item__content {
-    text-align: left;
-  }
-</style>

@@ -132,7 +132,7 @@ export default {
     },
   },
   created() {
-    this.fetchCaptcha();
+    // this.fetchCaptcha();
   },
 };
 </script>

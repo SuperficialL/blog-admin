@@ -2,86 +2,71 @@
   <div class="app-container">
     <!--工具条-->
     <table-header ref="tHeader" :comments="comments" :articles="articles" />
-
-    <el-table
-      v-loading="loading"
-      ref="multipleTable"
-      :data="comments"
-      border
-      highlight-current-row
-      style="width:100%;"
-    >
-      <el-table-column align="center" label="序号" type="index" width="80">
-        <template slot-scope="scope">
-          <span>{{
-            (listQuery.page - 1) * listQuery.per_page + scope.$index + 1
-          }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        align="center"
-        label="头像"
+    <div class="content">
+      <el-table
+        v-loading="loading"
+        ref="multipleTable"
+        :data="comments"
+        border
+        highlight-current-row
+        style="width:100%;"
       >
-        <template slot-scope="{ row }">
-          <img :src="row.avatar" width="32" height="32">
-        </template>
-      </el-table-column>
+        <el-table-column align="center" type="selection" width="55"></el-table-column>
+        <el-table-column align="center" label="序号" type="index" width="80">
+          <template slot-scope="scope">
+            <span>{{ (listQuery.page - 1) * listQuery.per_page + scope.$index + 1 }}</span>
+          </template>
+        </el-table-column>
 
-      <el-table-column
-        align="center"
-        sortable
-        prop="username"
-        label="昵称"
-      >
-      </el-table-column>
+        <el-table-column align="center" label="头像">
+          <template slot-scope="{ row }">
+            <img :src="row.author.email | buildAvatar" width="32" height="32" />
+          </template>
+        </el-table-column>
 
-      <el-table-column sortable prop="email" align="center" label="邮箱">
-      </el-table-column>
+        <el-table-column align="center" sortable label="昵称">
+          <template slot-scope="{ row }">{{row.author.name}}</template>
+        </el-table-column>
 
-      <el-table-column
-        align="center"
-        sortable
-        label="状态"
-      >
-        <template slot-scope="{ row }">
-          <el-tag effect="dark" :type="row.status ? 'success' : 'danger'">
-            {{ row.status | statusFilter }}
-          </el-tag>
-        </template>
-      </el-table-column>
+        <el-table-column sortable align="center" label="邮箱">
+          <template slot-scope="{ row }">{{row.author.email}}</template>
+        </el-table-column>
 
-      <el-table-column
-        align="center"
-        sortable
-        prop="created_time"
-        label="评论时间"
-      >
-        <template slot-scope="{ row }">
-          <span>{{ row.created_time | dateFormat }}</span>
-        </template>
-      </el-table-column>
+        <el-table-column align="center" sortable label="状态">
+          <template slot-scope="{ row }">
+            <el-tag
+              effect="dark"
+              :type="row.status ? 'success' : 'danger'"
+            >{{ row.status | statusFilter }}</el-tag>
+          </template>
+        </el-table-column>
 
-      <el-table-column label="操作" align="center" width="230">
-        <template slot-scope="{ row }">
-          <el-tooltip effect="dark" content="编辑" placement="top">
-            <edit :comments="comments" :articles="articles" :item="row" :sup_this="sup_this" />
-          </el-tooltip>
-          <el-tooltip effect="dark" content="删除" placement="top">
-            <el-button
-              type="danger"
-              size="small"
-              circle
-              plain
-              icon="el-icon-delete"
-              class="del-btn"
-              @click="handleDel(scope.$index, scope.row)"
-            />
-          </el-tooltip>
-        </template>
-      </el-table-column>
-    </el-table>
+        <el-table-column align="center" sortable prop="created_time" label="评论时间">
+          <template slot-scope="{ row }">
+            <span>{{ row.created_time | dateFormat }}</span>
+          </template>
+        </el-table-column>
 
+        <el-table-column label="操作" align="center" width="230">
+          <template slot-scope="{ row }">
+            <el-tooltip effect="dark" content="编辑" placement="top">
+              <edit :comments="comments" :articles="articles" :item="row" :sup_this="sup_this" />
+            </el-tooltip>
+            <el-tooltip effect="dark" content="删除" placement="top">
+              <el-button
+                type="danger"
+                size="small"
+                circle
+                plain
+                icon="el-icon-delete"
+                class="del-btn"
+                @click="handleDel(scope.$index, scope.row)"
+              />
+            </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <pagination
       v-show="total > 0"
       :total="total"
@@ -98,10 +83,11 @@ import Edit from "./components/edit";
 import Pagination from "@/components/Pagination";
 import { getComments, deleteComment } from "@/api/comments";
 import { getArticles } from "@/api/articles";
+import gravatar from "gravatar";
 
 export default {
   name: "CommentList",
-  components: { TableHeader, Edit,Pagination },
+  components: { TableHeader, Edit, Pagination },
   data() {
     return {
       listQuery: {
@@ -116,13 +102,22 @@ export default {
     };
   },
 
+  filters: {
+    buildAvatar(email) {
+      return gravatar.url(email, { s: "32", r: "x", d: "retro" }, false);
+    }
+  },
+
   methods: {
     // 获取评论
     async fetch() {
       this.loading = true;
       const res = await getComments(this.listQuery);
       if (res.code) {
-        const { data, pagination: { total,page,per_page } } = res.result;
+        const {
+          data,
+          pagination: { total, page, per_page }
+        } = res.result;
         this.comments = data;
         this.listQuery = {
           page,
@@ -179,3 +174,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.app-container {
+  overflow-y: auto;
+}
+</style>

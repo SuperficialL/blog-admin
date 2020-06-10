@@ -11,7 +11,7 @@
           </div>
           <count-to
             :start-val="0"
-            :end-val="siteInfo.article_total"
+            :end-val="siteInfo.articles"
             :duration="2600"
             class="card-panel-num"
           />
@@ -29,7 +29,7 @@
           </div>
           <count-to
             :start-val="0"
-            :end-val="siteInfo.comment_total"
+            :end-val="siteInfo.comments"
             :duration="3000"
             class="card-panel-num"
           />
@@ -47,7 +47,7 @@
           </div>
           <count-to
             :start-val="0"
-            :end-val="siteInfo.tag_total"
+            :end-val="siteInfo.tags"
             :duration="3200"
             class="card-panel-num"
           />
@@ -65,7 +65,7 @@
           </div>
           <count-to
             :start-val="0"
-            :end-val="siteInfo.user_total"
+            :end-val="siteInfo.comments"
             :duration="3600"
             class="card-panel-num"
           />
@@ -94,8 +94,8 @@ export default {
 
     async fetch() {
       const res = await getSiteInfo();
-      if (res.code === 200) {
-        this.siteInfo = res.data;
+      if (res.code) {
+        this.siteInfo = res.result;
       }
     }
   },

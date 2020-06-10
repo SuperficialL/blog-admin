@@ -1,6 +1,13 @@
 <template>
-  <el-dialog :title="isAdd ? '编辑分类' : '新增分类'" :visible.sync="dialog" width="30%">
-    <el-form :model="form" :rules="rules" ref="form" style="text-align:left;" label-width="80px" size="mini">
+  <el-dialog :title="isAdd ? '编辑分类' : '修改分类'" :visible.sync="dialog" width="30%">
+    <el-form
+      :model="form"
+      :rules="rules"
+      ref="form"
+      style="text-align:left;"
+      label-width="80px"
+      size="mini"
+    >
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name" placeholder="请输入名称"></el-input>
       </el-form-item>
@@ -18,15 +25,10 @@
         </el-select>
       </el-form-item>
       <el-form-item label="图标">
-        <el-popover placement="bottom-start" width="456" trigger="click">
+        <el-popover placement="bottom-end" width="469" :offset="-20" trigger="click">
           <icon-select ref="iconSelect" @selected="selected" />
           <el-input slot="reference" v-model="form.icon" placeholder="点击选择图标" readonly>
-            <i
-              v-if="form.icon"
-              slot="prefix"
-              :class="form.icon"
-              class="el-input__icon iconfont"
-            />
+            <i v-if="form.icon" slot="prefix" :class="form.icon" class="el-input__icon iconfont" />
             <i v-else slot="prefix" class="el-icon-search el-input__icon" />
           </el-input>
         </el-popover>
@@ -44,10 +46,7 @@
 
 <script>
 import IconSelect from "@/components/IconSelect";
-import {
-  createCategory,
-  updateCategory
-} from "@/api/category";
+import { createCategory, updateCategory } from "@/api/category";
 export default {
   components: {
     IconSelect
@@ -101,7 +100,7 @@ export default {
       this.form = {
         name: "",
         slug: "",
-        parent:null,
+        parent: null,
         icon: "",
         ordering: 100
       };
@@ -109,12 +108,14 @@ export default {
 
     // 提交表单
     submit() {
-      this.$refs["form"].validate((valid) => {
+      this.$refs["form"].validate(valid => {
         if (valid) {
           this.loading = true;
           if (this.isAdd) {
             this.add();
-          } else this.update();
+          } else {
+            this.update();
+          }
         } else {
           return false;
         }
@@ -123,7 +124,8 @@ export default {
 
     // 添加数据
     async add() {
-      const res = await createCategory(this.form);
+      const { ...category } = this.form;
+      const res = await createCategory(category);
       if (res.code) {
         this.resetForm();
         this.$message({
@@ -132,16 +134,15 @@ export default {
           message: res.message,
           duration: 2500
         });
-        this.loading = false;
         this.$parent.$parent.fetch();
-      } else {
-        this.loading = false;
       }
+      this.loading = false;
     },
 
     // 修改数据
     async update() {
-      const res = await updateCategory(this.form._id, this.form);
+      const { _id, ...category } = this.form;
+      const res = await updateCategory(_id, category);
       if (res.code) {
         this.resetForm();
         this.$message({
@@ -150,11 +151,9 @@ export default {
           message: res.message,
           duration: 2500
         });
-        this.loading = false;
         this.sup_this.fetch();
-      } else {
-        this.loading = false;
       }
+      this.loading = false;
     },
 
     // 取消表单
@@ -164,9 +163,3 @@ export default {
   }
 };
 </script>
-
-<style>
-  .el-form-item__content {
-    text-align: left;
-  }
-</style>

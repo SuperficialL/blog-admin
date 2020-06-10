@@ -138,11 +138,10 @@ code {
 
 // main-container全局样式
 .app-container {
-  padding: 20px;
+  // padding: 20px;
   display: flex;
   flex-direction: column;
-  min-height: 100%;
-  overflow: hidden;
+  height: 100%;
   .content {
     flex-grow: 1;
   }
@@ -151,7 +150,7 @@ code {
 // markdown编辑器工具栏吸顶
 .v-note-op {
   position: sticky;
-  top: 344px;
+  top: -11px;
 }
 
 .components-container {

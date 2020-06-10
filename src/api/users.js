@@ -19,7 +19,7 @@ export function login(data) {
 export function getUserInfo() {
   // 获取管理员信息
   return request({
-    url: "profile",
+    url: "auth",
     method: "get",
   });
 }
