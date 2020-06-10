@@ -76,8 +76,19 @@
       <el-row>
         <el-col :span="24">
           <el-form-item label="缩略图:">
+            <!-- <el-upload
+              class="avatar-uploader"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+            >
+              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload> -->
             <el-upload
-              list-type="picture-card"
+              class="avatar-uploader"
+              :show-file-list="false"
               accept="image/*"
               :headers="getAuthHeaders()"
               :action="uploadUrl"
@@ -86,11 +97,30 @@
               :on-remove="handleRemove"
             >
               <img v-if="article.thumbnail" :src="article.thumbnail" class="avatar" />
-              <i class="el-icon-plus"></i>
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
-            <el-dialog :visible.sync="dialogVisible">
+            <!-- <el-dialog :visible.sync="dialogVisible">
               <img width="100%" :src="article.thumbnail" />
-            </el-dialog>
+            </el-dialog>-->
+            <!-- <div class="cover">
+              <el-button size="small" type="text" @click="showImages = true">
+                <i class="el-icon-plus"></i>
+              </el-button>
+            </div>
+
+            <el-dialog center title="选择缩略图" :visible.sync="showImages" width="50%" @open="fetchPictures">
+              <div class="pictures">
+                <ul>
+                  <li>
+                    <img src="" alt="">
+                  </li>
+                </ul>
+              </div>
+              <span slot="footer" class="dialog-footer">
+                <el-button size="small" @click="showImages = false">取 消</el-button>
+                <el-button size="small" type="primary" @click="showImages = false">确 定</el-button>
+              </span>
+            </el-dialog>-->
           </el-form-item>
         </el-col>
       </el-row>
@@ -120,6 +150,7 @@
 <script>
 import { getArticle, updateArticle, createArticle } from "@/api/articles";
 import { getCategories } from "@/api/category";
+import { getPictures } from "@/api/pictures";
 import { getTags } from "@/api/tags";
 import { uploadImg } from "@/api/upload";
 export default {
@@ -127,6 +158,7 @@ export default {
   props: ["id"],
   data() {
     return {
+      showImages: false,
       active: false,
       article: {},
       // 富文本中的图片
@@ -148,6 +180,10 @@ export default {
   },
 
   methods: {
+    // 获取图床
+    async fetchPictures() {
+      const res = await getPictures();
+    },
     // 移除封面图片
     handleRemove(file, fileList) {},
     // 设置封面图片回调地址
@@ -258,13 +294,12 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
-
 .wrapper {
   height: 100%;
   padding: 10px 0;
   overflow-y: auto;
+  padding: 10px 0;
 }
-
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
@@ -278,14 +313,14 @@ export default {
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
+  width: 148px;
+  height: 148px;
+  line-height: 148px;
   text-align: center;
 }
 .avatar {
-  width: 178px;
-  height: 178px;
+  width: 148px;
+  height: 148px;
   display: block;
 }
 </style>

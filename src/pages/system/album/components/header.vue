@@ -2,7 +2,7 @@
   <div class="table-header">
     <div class="title">
       <i class="el-icon-menu"></i>
-      <span style="margin-left:5px;">文章列表</span>
+      <span style="margin-left:5px;">图片列表</span>
     </div>
     <div class="operation">
       <el-input
@@ -14,16 +14,21 @@
       >
         <el-button slot="append" icon="el-icon-search"></el-button>
       </el-input>
-      <el-button icon="el-icon-plus" size="mini" @click="$router.push('posts/create')">
-        添加文章
+      <el-button icon="el-icon-plus" size="mini" @click="$refs.form.dialog = true">
+        添加图片
       </el-button>
     </div>
+    <eForm ref="form" :is-add="true"/>
   </div>
 </template>
 
 <script>
+import eForm from "./form";
 export default {
   name: "TableHeader",
+  components: {
+    eForm
+  },
   data() {
     return {
       searchVal: ""
@@ -37,7 +42,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  margin-bottom: 10px;
   .title {
     color: #666;
   }

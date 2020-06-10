@@ -1,8 +1,15 @@
 <template>
   <div class="app-container">
-    <table-header ref="tHeader" :categories="categories" />
+    <table-header ref="tHeader" :multipleSelection="multipleSelection" />
     <div class="content">
-      <el-table v-loading="loading" ref="multipleTable" :data="articles" border>
+      <el-table
+        v-loading="loading"
+        ref="multipleTable"
+        :data="articles"
+        @selection-change="handleSelectionChange"
+        border
+      >
+        <el-table-column align="center" type="selection" width="55"></el-table-column>
         <el-table-column align="center" label="序号" width="60">
           <template slot-scope="{ row, $index }">
             <span>{{ (listQuery.page - 1) * listQuery.per_page + $index + 1 }}</span>
@@ -109,14 +116,17 @@ export default {
       categories: [],
       total: 0,
       loading: false,
+      multipleSelection: [],
       listQuery: {
         page: 1,
         per_page: 10
-      },
-      SearchVal: ""
+      }
     };
   },
   methods: {
+    handleSelectionChange(item) {
+      this.multipleSelection = item;
+    },
     async fetch() {
       this.loading = true;
       const res = await getArticles(this.listQuery);
@@ -145,7 +155,7 @@ export default {
       }
     },
 
-    async handleDel(index, row) {
+    handleDel(index, row) {
       this.$confirm(`此操作将永久删除 ${row.title} 这篇文章?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

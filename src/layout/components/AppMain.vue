@@ -28,10 +28,8 @@ export default {
   /*84 = navbar + tags-view = 50 +34 */
   position: relative;
   width: 100%;
-  height: calc(100vh - 84px);
-  // overflow-y: auto;
+  height: calc(100vh - 86px);
   overflow: hidden;
-  // overflow-x: hidden;
   &::-webkit-scrollbar {
     width: 5px;
     height: 5px;

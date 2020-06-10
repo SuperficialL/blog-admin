@@ -192,6 +192,6 @@ const IS_DEV = process.env.NODE_ENV === "development";
 export default new Router({
   mode: IS_DEV ? "hash" : "history",
   base: process.env.BASE_URL,
-  // scrollBehavior: () => { y: 0 },
+  scrollBehavior: () => { x: 0; y: 0; },
   routes: constantRouterMap
 });

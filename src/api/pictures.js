@@ -1,47 +1,47 @@
 /*
  * @author: SuperficialL
  * @Date: 2019-08-24 12:35:32
- * @LastEditTime: 2019-10-09 22:21:55
+ * @LastEditTime: 2020-05-14 11:52:00
  * @Description: 图床接口
  */
 
 import request from "@/utils/request";
 
-export function getMusices(params) {
+export function getPictures(params) {
   return request({
-    url: "musices",
+    url: "pictures",
     method: "get",
     params
   });
 }
 
-export function getMusic(id) {
+export function getPicture(id) {
   return request({
-    url: `musices/${id}`,
+    url: `pictures/${id}`,
     method: "get"
   });
 }
 
 
-export function createMusic(data) {
+export function createPicture(data) {
   return request({
-    url: "musices",
+    url: "pictures",
     method: "post",
     data
   });
 }
 
-export function updateMusic(id, data) {
+export function updatePicture(id, data) {
   return request({
-    url: `musices/${id}`,
-    method: "put",
+    url: `pictures/${id}`,
+    method: "patch",
     data
   });
 }
 
-export function deleteMusic(id) {
+export function deletePicture(id) {
   return request({
-    url: `musices/${id}`,
+    url: `pictures/${id}`,
     method: "delete"
   });
 }
