@@ -15,7 +15,9 @@ module.exports = {
 
   // css相关配置
   css: {
-    loaderOptions: {}
+    loaderOptions: {
+      css: {}
+    }
   },
 
   devServer: {
@@ -35,6 +37,7 @@ module.exports = {
 
   configureWebpack: {
     resolve: {
+      extensions: [".js", ".vue", ".json"],
       alias: {
         "@": resolve("src")
       }
@@ -51,7 +54,11 @@ module.exports = {
 
       config.plugins.delete("preload");
       config.plugins.delete("prefetch");
+
+      config.output.filename("js/[name].[chunkhash].js").end();
+      config.output.chunkFilename("js/[name].[chunkhash].js").end();
     }
+
     // webpack链接API，用于生成和修改webpack配置
     config.module
       .rule("svg")

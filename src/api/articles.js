@@ -1,7 +1,7 @@
 /*
  * @author: SuperficialL
  * @Date: 2019-08-24 12:35:32
- * @LastEditTime: 2019-10-15 22:23:17
+ * @LastEditTime: 2020-07-22 13:24:05
  * @Description: 文章接口
  */
 import request from "@/utils/request";
@@ -45,6 +45,15 @@ export function deleteArticle(id) {
   // 删除单条文章数据
   return request({
     url: `articles/${id}`,
-    method: "delete"
+    method: "delete",
+  });
+}
+
+export function deleteManyArticle(data) {
+  // 删除多条文章数据
+  return request({
+    url: "articles",
+    method: "delete",
+    data
   });
 }

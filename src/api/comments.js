@@ -1,7 +1,7 @@
 /*
  * @Author: Superficial
  * @Date: 2019-11-10 14:54:26
- * @LastEditTime: 2019-11-10 14:55:45
+ * @LastEditTime: 2020-07-22 14:35:03
  * @Description: 评论接口
  */
 import request from "@/utils/request";
@@ -46,5 +46,14 @@ export function deleteComment(id) {
   return request({
     url: `comments/${id}`,
     method: "delete"
+  });
+}
+
+export function deleteManyComment(data) {
+  // 删除多条数据
+  return request({
+    url: "comments",
+    method: "delete",
+    data
   });
 }

@@ -8,8 +8,8 @@
       label-width="80px"
       size="mini"
     >
-      <el-form-item label="名称" prop="title">
-        <el-input v-model="form.title" placeholder="请输入名称"></el-input>
+      <el-form-item label="名称" prop="name">
+        <el-input v-model="form.name" placeholder="请输入名称"></el-input>
       </el-form-item>
       <el-form-item label="别名">
         <el-input v-model="form.slug" placeholder="请输入别名"></el-input>
@@ -40,11 +40,11 @@ export default {
       loading: false,
       dialog: false,
       form: {
-        title: "",
+        name: "",
         slug: ""
       },
       rules: {
-        title: [
+        name: [
           {
             required: true,
             message: "分类名不可为空~",
@@ -60,7 +60,7 @@ export default {
       this.dialog = false;
       this.$refs["form"].resetFields();
       this.form = {
-        title: "",
+        name: "",
         slug: ""
       };
     },

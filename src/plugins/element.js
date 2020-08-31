@@ -92,7 +92,7 @@ const Elements = [
 ];
 
 // 设置elementUI默认大小
-Vue.prototype.$ELEMENT = { size: Cookies.get("size") || "medium" };
+Vue.prototype.$ELEMENT = { size: Cookies.get("size") || "mini" };
 
 Vue.use(Loading.directive);
 

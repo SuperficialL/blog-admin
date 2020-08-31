@@ -5,7 +5,6 @@
       label-width="100px"
       :model="article"
       :rules="rules"
-      @submit.native.prevent="save('form')"
     >
       <el-row>
         <el-col :span="24">
@@ -15,7 +14,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12">
+        <el-col :span="8">
           <el-form-item label="分类:" class="postInfo-container-item">
             <el-select
               v-model="article.category"
@@ -34,7 +33,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
           <el-form-item label="标签:" class="postInfo-container-item">
             <el-select
               v-model="article.tags"
@@ -48,17 +47,18 @@
               <el-option
                 v-for="(item, index) in tagListOptions"
                 :key="index"
-                :label="item.title"
+                :label="item.name"
                 :value="item._id"
               ></el-option>
             </el-select>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="24">
+        <el-col :span="8">
           <el-form-item label="文章状态">
-            <el-tooltip :content="article.status | statusFilter" placement="top">
+            <el-tooltip
+              :content="article.status | statusFilter"
+              placement="top"
+            >
               <el-switch
                 v-model="article.status"
                 active-color="#13ce66"
@@ -76,16 +76,6 @@
       <el-row>
         <el-col :span="24">
           <el-form-item label="缩略图:">
-            <!-- <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-            >
-              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload> -->
             <el-upload
               class="avatar-uploader"
               :show-file-list="false"
@@ -96,36 +86,64 @@
               :on-success="UploadSuccess"
               :on-remove="handleRemove"
             >
-              <img v-if="article.thumbnail" :src="article.thumbnail" class="avatar" />
+              <img
+                v-if="article.thumbnail"
+                :src="article.thumbnail"
+                class="avatar"
+              />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
-            <!-- <el-dialog :visible.sync="dialogVisible">
-              <img width="100%" :src="article.thumbnail" />
-            </el-dialog>-->
-            <!-- <div class="cover">
-              <el-button size="small" type="text" @click="showImages = true">
-                <i class="el-icon-plus"></i>
-              </el-button>
-            </div>
-
-            <el-dialog center title="选择缩略图" :visible.sync="showImages" width="50%" @open="fetchPictures">
-              <div class="pictures">
-                <ul>
-                  <li>
-                    <img src="" alt="">
-                  </li>
-                </ul>
-              </div>
-              <span slot="footer" class="dialog-footer">
-                <el-button size="small" @click="showImages = false">取 消</el-button>
-                <el-button size="small" type="primary" @click="showImages = false">确 定</el-button>
-              </span>
-            </el-dialog>-->
           </el-form-item>
         </el-col>
       </el-row>
-
-      <el-row :class="{sticky:active}">
+      <el-row>
+        <el-col :span="24">
+          <el-form-item label="描述:">
+            <el-input
+              type="textarea"
+              :rows="2"
+              placeholder="请输入描述内容"
+              v-model="article.description"
+            >
+            </el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24">
+          <el-form-item label="关键词:">
+            <el-tag
+              :key="tag"
+              v-for="tag in article.keywords"
+              closable
+              size="medium"
+              :disable-transitions="false"
+              @close="handleClose(tag)"
+            >
+              {{ tag }}
+            </el-tag>
+            <el-input
+              class="input-new-tag"
+              v-if="inputVisible"
+              v-model="keywords"
+              ref="saveTagInput"
+              size="mini"
+              @keyup.enter.native="handleInputConfirm"
+              @blur="handleInputConfirm"
+            >
+            </el-input>
+            <el-button
+              v-else
+              class="button-new-tag"
+              size="small"
+              @click="showInput"
+            >
+              + 关键字
+            </el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :class="{ sticky: active }">
         <el-col :span="24">
           <mavon-editor
             ref="md"
@@ -139,7 +157,7 @@
       <el-row>
         <el-col :span="24">
           <el-form-item>
-            <el-button type="primary" native-type="submit">保存</el-button>
+            <el-button type="primary" @click="save('form')">保存</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -150,7 +168,7 @@
 <script>
 import { getArticle, updateArticle, createArticle } from "@/api/articles";
 import { getCategories } from "@/api/category";
-import { getPictures } from "@/api/pictures";
+// import { getPictures } from "@/api/pictures";
 import { getTags } from "@/api/tags";
 import { uploadImg } from "@/api/upload";
 export default {
@@ -158,7 +176,6 @@ export default {
   props: ["id"],
   data() {
     return {
-      showImages: false,
       active: false,
       article: {},
       // 富文本中的图片
@@ -175,17 +192,38 @@ export default {
       dialogVisible: false,
       loading: false,
       tagListOptions: [],
-      catListOptions: []
+      catListOptions: [],
+      inputVisible: false,
+      keywords: ""
     };
   },
 
   methods: {
+    // 删除关键字 keywords
+    handleClose(tag) {
+      this.article.keywords.splice(this.article.keywords.indexOf(tag), 1);
+    },
+    showInput() {
+      this.inputVisible = true;
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus();
+      });
+    },
+    handleInputConfirm() {
+      let keywords = this.keywords;
+      if (keywords) {
+        this.article.keywords.push(keywords);
+      }
+      this.inputVisible = false;
+      this.keywords = "";
+    },
     // 获取图床
     async fetchPictures() {
-      const res = await getPictures();
+      // const res = await getPictures();
     },
     // 移除封面图片
     handleRemove(file, fileList) {},
+
     // 设置封面图片回调地址
     handlePictureCardPreview(file) {
       this.article.thumbnail = file.url;
@@ -268,14 +306,17 @@ export default {
       formData.append("file", file);
       const res = await uploadImg(formData);
       if (res.code) {
-        this.$refs.md.$img2Url(pos, res.url);
+        const { url } = res.result;
+        this.$refs.md.$img2Url(pos, url);
       }
     },
 
     UploadSuccess(res) {
-      // 设置图片上传后的地址
-      this.$set(this.article, "thumbnail", res.url);
-      // this.article.img = res
+      if (res.code) {
+        // 设置图片上传后的地址
+        this.$set(this.article, "thumbnail", res.result.url);
+        // this.article.img = res.url
+      }
     },
 
     scroll(e) {
@@ -294,6 +335,26 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
+
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
+.button-new-tag {
+  margin-left: 10px;
+  height: 28px;
+  line-height: 26px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  width: 90px;
+  vertical-align: bottom;
+  margin-left: 10px;
+  // height: 28px;
+  // line-height: 26px;
+  // padding-top: 0;
+  // padding-bottom: 0;
+}
 .wrapper {
   height: 100%;
   padding: 10px 0;

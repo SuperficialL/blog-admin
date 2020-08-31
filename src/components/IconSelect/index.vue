@@ -25,8 +25,7 @@
 </template>
 
 <script>
-// import icons from "./icons";
-import icons from "./blog_icons";
+import icons from "./icons";
 export default {
   name: "IconSelect",
   data() {

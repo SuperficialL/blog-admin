@@ -37,7 +37,7 @@ export const constantRouterMap = [
         name: "Home",
         meta: {
           title: "首页",
-          icon: "dashboard",
+          icon: "home",
           affix: true
         }
       }
@@ -59,7 +59,7 @@ export const constantRouterMap = [
         name: "Category",
         meta: {
           title: "分类管理",
-          // icon: "documentation"
+          icon: "category"
         }
       },
 
@@ -70,7 +70,7 @@ export const constantRouterMap = [
         name: "Tag",
         meta: {
           title: "标签管理",
-          // icon: "documentation"
+          icon: "tag"
         }
       },
 
@@ -81,7 +81,7 @@ export const constantRouterMap = [
         name: "Post",
         meta: {
           title: "博文管理",
-          // icon: "documentation"
+          icon: "post"
         }
       },
       {
@@ -91,7 +91,7 @@ export const constantRouterMap = [
         hidden: true,
         meta: {
           title: "创建文章",
-          // icon: "documentation"
+          icon: "documentation"
         }
       },
       {
@@ -113,7 +113,7 @@ export const constantRouterMap = [
         name: "Comment",
         meta: {
           title: "评论管理",
-          // icon: "documentation"
+          icon: "pinglun1"
         }
       },
     ]
@@ -154,7 +154,7 @@ export const constantRouterMap = [
     name: "System",
     meta: {
       title: "系统管理",
-      icon: "list"
+      icon: "system"
     },
     children: [
       {
@@ -163,7 +163,7 @@ export const constantRouterMap = [
         name: "site",
         meta: {
           title: "站点设置",
-          icon: "user"
+          icon: "site-setting"
         }
       },
       {

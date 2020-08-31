@@ -23,7 +23,7 @@ export default {
       const _this = this.$refs.form;
       _this.form = {
         _id: this.item._id, 
-        title: this.item.title,
+        name: this.item.name,
         slug: this.item.slug,
       };
       _this.dialog = true;

@@ -12,37 +12,59 @@
       >
         <el-table-column align="center" label="序号" width="80">
           <template slot-scope="scope">
-            <span>{{ (listQuery.page - 1) * listQuery.per_page + scope.$index + 1 }}</span>
+            <span>{{
+              (listQuery.page - 1) * listQuery.per_page + scope.$index + 1
+            }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column prop="title" sortable align="center" label="标签名称"></el-table-column>
+        <el-table-column
+          prop="name"
+          sortable
+          align="center"
+          label="标签名称"
+        ></el-table-column>
 
-        <el-table-column prop="slug" sortable align="center" label="别名"></el-table-column>
+        <el-table-column
+          prop="slug"
+          sortable
+          align="center"
+          label="别名"
+        ></el-table-column>
 
-        <el-table-column align="center" sortable prop="created_time" label="创建时间">
-          <template slot-scope="{ row }">{{ row.created_time | dateFormat }}</template>
+        <el-table-column
+          align="center"
+          sortable
+          prop="created_time"
+          label="创建时间"
+        >
+          <template slot-scope="{ row }">{{
+            row.created_time | dateFormat
+          }}</template>
         </el-table-column>
 
-        <el-table-column align="center" sortable prop="updated_time" label="最后修改时间">
-          <template slot-scope="{ row }">{{ row.updated_time | dateFormat }}</template>
+        <el-table-column
+          align="center"
+          sortable
+          prop="updated_time"
+          label="最后修改时间"
+        >
+          <template slot-scope="{ row }">{{
+            row.updated_time | dateFormat
+          }}</template>
         </el-table-column>
 
         <el-table-column label="操作" align="center">
           <template slot-scope="{ row, index }">
-            <el-tooltip effect="dark" content="编辑" placement="top">
-              <edit :item="row" :sup_this="sup_this" />
-            </el-tooltip>
-            <el-tooltip effect="dark" content="删除" placement="top">
-              <el-button
-                circle
-                plain
-                type="danger"
-                size="small"
-                icon="el-icon-delete"
-                @click="remove(index, row)"
-              />
-            </el-tooltip>
+            <edit :item="row" :sup_this="sup_this" />
+            <el-button
+              circle
+              plain
+              type="danger"
+              size="small"
+              icon="el-icon-delete"
+              @click="remove(index, row)"
+            />
           </template>
         </el-table-column>
       </el-table>
